@@ -2,8 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -22,7 +20,7 @@
             <left>
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <ImageView fitHeight="30" fitWidth="30" />
-                    <Button text="Back" />
+               <MFXButton text="Back" />
                 </HBox>
             </left>
 
@@ -30,7 +28,7 @@
             <center>
                 <HBox alignment="CENTER" spacing="10.0">
                     <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Order #12345" />
-                    <Button text="Refresh" />
+               <MFXButton text="Refresh" />
                 </HBox>
             </center>
 
@@ -38,7 +36,7 @@
             <right>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0">
                     <Label style="-fx-font-size: 14px;" text="Logged in as: User" />
-                    <Button text="Logout" />
+               <MFXButton text="Logout" />
                 </HBox>
             </right>
 
@@ -47,18 +45,7 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox alignment="CENTER" prefHeight="258.0" prefWidth="528.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="285.0" fitWidth="495.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                  </ImageView>
-               </children>
-            </HBox>
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
          </center>
          <right>
             <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER">
@@ -73,7 +60,54 @@
       </BorderPane>
    </center>
    <bottom>
-      <BorderPane prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <BorderPane prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <center>
+            <HBox prefHeight="84.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+               <children>
+                  <BorderPane prefHeight="84.0" prefWidth="255.0">
+                     <center>
+                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="27.0" text="1/3" />
+                           </children>
+                        </HBox>
+                     </center>
+                     <left>
+                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="56.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <MFXButton text="&lt;-" />
+                           </children>
+                        </HBox>
+                     </left>
+                     <right>
+                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="50.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <MFXButton text="-&gt;" />
+                           </children>
+                        </HBox>
+                     </right>
+                  </BorderPane>
+               </children>
+            </HBox>
+         </center>
+         <left>
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="209.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton alignment="TOP_RIGHT" text="Camera">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </MFXButton>
+               </children>
+            </HBox>
+         </left>
+         <right>
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="198.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton alignment="TOP_RIGHT" text="Save" />
+               </children>
+            </HBox>
+         </right></BorderPane>
    </bottom>
 
 </BorderPane>
