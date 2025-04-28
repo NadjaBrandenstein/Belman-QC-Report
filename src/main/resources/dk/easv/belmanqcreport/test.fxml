@@ -1,23 +1,26 @@
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.control.Label?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<BorderPane xmlns="http://javafx.com/javafx" prefWidth="600.0" prefHeight="400.0">
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
     <!-- Top area (can be like a title bar) -->
     <top>
         <BorderPane style="-fx-background-color: #3399FF;" BorderPane.alignment="CENTER">
 
             <padding>
-                <Insets top="0" right="20" bottom="0" left="20"/>
+                <Insets bottom="0" left="20" right="20" top="0" />
             </padding>
             <!-- LEFT SIDE -->
             <left>
-                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <ImageView fitHeight="30" fitWidth="30" />
                     <Button text="Back" />
                 </HBox>
@@ -25,38 +28,52 @@
 
             <!-- CENTER -->
             <center>
-                <HBox spacing="10.0" alignment="CENTER">
-                    <Label text="Order #12345" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Order #12345" />
                     <Button text="Refresh" />
                 </HBox>
             </center>
 
             <!-- RIGHT SIDE -->
             <right>
-                <HBox spacing="10.0" alignment="CENTER_RIGHT">
-                    <Label text="Logged in as: User" style="-fx-font-size: 14px;" />
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <Label style="-fx-font-size: 14px;" text="Logged in as: User" />
                     <Button text="Logout" />
                 </HBox>
             </right>
 
         </BorderPane>
     </top>
-
-    <!-- Left menu or sidebar -->
-    <left>
-        <VBox spacing="10.0" BorderPane.alignment="CENTER">
-            <Button text="Menu 1" maxWidth="Infinity" />
-            <Button text="Menu 2" maxWidth="Infinity" />
-            <Button text="Menu 3" maxWidth="Infinity" />
-        </VBox>
-    </left>
-
-    <!-- Center content -->
-    <center>
-        <VBox spacing="15.0" BorderPane.alignment="CENTER">
-            <Button text="Center Button 1" maxWidth="Infinity"/>
-            <Button text="Center Button 2" maxWidth="Infinity"/>
-        </VBox>
-    </center>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <HBox alignment="CENTER" prefHeight="258.0" prefWidth="528.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="285.0" fitWidth="495.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </children>
+            </HBox>
+         </center>
+         <right>
+            <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton text="X" />
+               </children>
+            </HBox>
+         </right>
+         <left>
+            <HBox prefHeight="258.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+   </center>
+   <bottom>
+      <BorderPane prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </bottom>
 
 </BorderPane>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPagination?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane prefHeight="100.0" prefWidth="953.0">
+               <left>
+                  <HBox>
+                     <children>
+                        <ImageView fitHeight="80.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <MFXButton text="Back" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="10.0" top="33.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+               </left>
+               <center>
+                  <HBox>
+                     <children>
+                        <Label text="OrderNumber" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="240.0" top="38.0" />
+                           </HBox.margin>
+                        </Label>
+                        <MFXButton text="Refresh" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="10.0" top="35.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+               </center>
+               <right>
+                  <HBox prefHeight="100.0">
+                     <children>
+                        <Label text="Employee" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="50.0" top="38.0" />
+                           </HBox.margin>
+                        </Label>
+                        <MFXButton text="Logout" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="15.0" right="10.0" top="35.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
+               </right>
+               <top>
+                  <HBox />
+               </top>
+               <bottom>
+                  <HBox />
+               </bottom>
+            </BorderPane>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox>
+         <children>
+            <MFXPagination HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="430.0" />
+               </HBox.margin>
+            </MFXPagination>
+            <MFXButton prefHeight="66.0" prefWidth="120.0" text="Camera" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="100.0" />
+               </HBox.margin>
+            </MFXButton>
+            <MFXButton prefHeight="66.0" prefWidth="120.0" text="Save" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </MFXButton>
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="416.0" fitWidth="806.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="40.0" top="25.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label prefHeight="18.0" prefWidth="29.0" text="1/3" HBox.hgrow="ALWAYS" />
+            <MFXButton text="X" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </center>
+</BorderPane>

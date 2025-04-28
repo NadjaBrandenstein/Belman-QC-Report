@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="425.0" fitWidth="797.0" layoutX="76.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="172.60000000000002" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="102.0" />
@@ -20,7 +19,7 @@
       <MFXButton layoutX="520.0" layoutY="44.0" maxHeight="26.0" maxWidth="59.0" prefHeight="26.0" prefWidth="59.0" text="Refresh" AnchorPane.topAnchor="44.0" />
       <Label layoutX="791.0" layoutY="49.0" text="Employee" AnchorPane.rightAnchor="107.39999999999998" AnchorPane.topAnchor="49.0" />
       <MFXButton layoutX="858.0" layoutY="45.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="59.0" text="Logout" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="45.0" />
-      <MFXButton layoutX="817.0" layoutY="117.0" prefHeight="34.0" prefWidth="41.0" text="X" AnchorPane.leftAnchor="817.0" AnchorPane.rightAnchor="91.60000000000005" AnchorPane.topAnchor="117.0" />
+      <MFXButton layoutX="817.0" layoutY="117.0" prefHeight="34.0" prefWidth="41.0" text="X" AnchorPane.rightAnchor="91.60000000000005" AnchorPane.topAnchor="117.0" />
       <MFXPagination layoutX="430.0" layoutY="536.0" AnchorPane.bottomAnchor="132.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="430.0" />
       <Label layoutX="468.0" layoutY="120.0" text="1/3" AnchorPane.topAnchor="120.0" />
    </children>
