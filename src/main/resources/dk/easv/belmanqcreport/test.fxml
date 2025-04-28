@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -64,36 +64,28 @@
          <center>
             <HBox prefHeight="84.0" prefWidth="150.0" BorderPane.alignment="CENTER">
                <children>
-                  <BorderPane prefHeight="84.0" prefWidth="255.0">
-                     <center>
-                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <Label prefHeight="18.0" prefWidth="27.0" text="1/3" />
-                           </children>
-                        </HBox>
-                     </center>
-                     <left>
-                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="56.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <MFXButton text="&lt;-" />
-                           </children>
-                        </HBox>
-                     </left>
-                     <right>
-                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="50.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <MFXButton text="-&gt;" />
-                           </children>
-                        </HBox>
-                     </right>
-                  </BorderPane>
+                  <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <MFXButton text="&lt;-" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <Label prefHeight="18.0" prefWidth="27.0" text="1/3" />
+                        <MFXButton text="-&gt;" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </center>
          <left>
             <HBox alignment="CENTER" prefHeight="84.0" prefWidth="209.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton alignment="TOP_RIGHT" text="Camera">
+                  <MFXButton alignment="TOP_RIGHT" text="Camera" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="15.0" />
                      </HBox.margin>
