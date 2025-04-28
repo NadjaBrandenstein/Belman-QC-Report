@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXTableColumn?>
-<?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -45,21 +46,37 @@
         </BorderPane>
     </top>
    <center>
+      
+   </center>
+   <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <right>
-            <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER" />
-         </right>
+         <top>
+            <HBox prefHeight="39.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+         </top>
+         <bottom>
+            <HBox prefHeight="43.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+         </bottom>
          <left>
-            <HBox alignment="CENTER" prefHeight="362.0" prefWidth="298.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="305.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTableView footerVisible="false" prefHeight="323.0" prefWidth="203.0" HBox.hgrow="ALWAYS">
-                      <tableColumns>
-                          <MFXTableColumn fx:id="colFName" text="First Name" />
-                          <MFXTableColumn fx:id="colLName" text="Last Name" />
-                      </tableColumns>
-                  </MFXTableView>
-               </children></HBox>
+                  <TableView prefHeight="280.0" prefWidth="246.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="ID" />
+                      <TableColumn prefWidth="75.0" text="First Name" />
+                        <TableColumn prefWidth="75.0" text="Last Name" />
+                        <TableColumn prefWidth="75.0" text="Role" />
+                    </columns>
+                  </TableView>
+               </children>
+            </HBox>
          </left>
+         <right>
+            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="294.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ListView prefHeight="280.0" prefWidth="230.0" />
+               </children>
+            </HBox>
+         </right>
       </BorderPane>
    </center>
 
