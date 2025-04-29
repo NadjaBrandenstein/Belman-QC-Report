@@ -19,4 +19,7 @@ public class MyImage {
         this.imageFile = imageFile;
     }
 
+    public String toURI() {
+        return imageFile.toURI().toString();
+    }
 }

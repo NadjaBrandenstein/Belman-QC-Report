@@ -5,13 +5,18 @@ import dk.easv.belmanqcreport.BLL.CameraHandling;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFx Imports
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -70,7 +75,60 @@ public class OperatorController {
 
     @FXML
     private void btnCamera(ActionEvent actionEvent) {
-        MyImage image = cameraHandler.captureImage();
+
+        Stage stage = new Stage();
+        BorderPane borderPane = new BorderPane();
+        ImageView preview = new ImageView();
+        preview.setFitHeight(400);
+        preview.setFitWidth(600);
+        preview.setPreserveRatio(true);
+
+        Button captureBtn = new Button("Capture");
+
+        borderPane.setCenter(preview);
+        borderPane.setBottom(captureBtn);
+
+        Scene scene = new Scene(borderPane, 600, 500);
+        stage.setScene(scene);
+        stage.setTitle("Live Camera Preview");
+        stage.show();
+
+        cameraHandler.startCamera();
+
+        Thread previewThread = new Thread (() -> {
+           while (cameraHandler.isCameraActive()) {
+               Image img = cameraHandler.getCurrentFrame();
+                if (img != null) {
+                    Platform.runLater(() -> preview.setImage(img));
+                }
+                try {
+                 Thread.sleep(33);
+                }
+                catch(InterruptedException ignored) { }
+           }
+        });
+        previewThread.setDaemon(true);
+        previewThread.start();
+
+        captureBtn.setOnAction(event -> {
+            MyImage myImg = cameraHandler.captureImage();
+            if (myImg != null) {
+                Platform.runLater(() -> {
+                    Image fxImage = new Image(myImg.toURI().toString());
+                    ImageView imageView = new ImageView(fxImage);
+                    imageView.setFitHeight(400);
+                    imageView.setFitWidth(600);
+                    imageView.setPreserveRatio(true);
+                    imageHboxCenter.getChildren().clear();
+                    imageHboxCenter.getChildren().add(imageView);
+                });
+            }
+            cameraHandler.stopCamera();
+            stage.close();
+        });
+        stage.setOnCloseRequest(event -> {cameraHandler.stopCamera();});
+
+        /*MyImage image = cameraHandler.captureImage();
         if(image != null) {
             File imageFile = image.getImageFile();
             Image fxImage = new Image(imageFile.toURI().toString());
@@ -84,7 +142,7 @@ public class OperatorController {
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to capture image");
             alert.showAndWait();
-        }
+        }*/
 
 
     }
