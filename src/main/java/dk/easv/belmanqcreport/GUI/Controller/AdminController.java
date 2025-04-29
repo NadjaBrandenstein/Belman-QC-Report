@@ -50,4 +50,9 @@ public class AdminController {
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
     }
+
+    @FXML
+    private void txtSearch(ActionEvent actionEvent) {
+        
+    }
 }
