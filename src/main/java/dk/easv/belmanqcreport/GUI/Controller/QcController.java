@@ -1,8 +1,13 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-
+// JavaFX Imports
 import javafx.event.ActionEvent;
 
 public class QcController {
+
+
+
+
+
     public void btnBack(ActionEvent actionEvent) {
     }
 
