@@ -4,7 +4,6 @@ public class Order {
     private int orderID;
     private String imagePath;
     private String comment;
-    public String getComment;
 
     public Order(int orderID, String imagePath, String comment) {
         this.orderID = orderID;

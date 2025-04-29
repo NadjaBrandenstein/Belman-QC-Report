@@ -49,7 +49,7 @@ public class OrderDAO_DB implements IOrder {
         PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, order.getOrderID());
             stmt.setString(2, order.getImagePath());
-            stmt.setString(3, order.getComment);
+            stmt.setString(3, order.getComment());
 
             stmt.executeUpdate();
         }

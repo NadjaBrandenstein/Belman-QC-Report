@@ -2,6 +2,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Other Import
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFX Imports
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ public class ImageHandlingController {
     @FXML
     private MFXButton btnSave;
     @FXML
-    private TextField txtComment;
+    private MFXTextField txtComment;
 
 
     @FXML
@@ -42,8 +43,6 @@ public class ImageHandlingController {
     private void btnSave(ActionEvent actionEvent) {
     }
 
-    @FXML
-    private void txtComment(ActionEvent actionEvent) {
-    }
+
 
 }
