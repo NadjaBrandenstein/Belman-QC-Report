@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -46,38 +47,54 @@
         </BorderPane>
     </top>
    <center>
-      
+
    </center>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <HBox prefHeight="39.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="39.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXTextField maxHeight="20.0" minHeight="22.0" prefHeight="20.0" prefWidth="126.0">
+                     <HBox.margin>
+                        <Insets top="7.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+               </children></HBox>
          </top>
          <bottom>
             <HBox prefHeight="43.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
          </bottom>
          <left>
-            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="305.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="362.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView prefHeight="280.0" prefWidth="246.0">
+                  <TableView fx:id="tblEmployee" prefHeight="280.0" prefWidth="310.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="ID" />
-                      <TableColumn prefWidth="75.0" text="First Name" />
-                        <TableColumn prefWidth="75.0" text="Last Name" />
-                        <TableColumn prefWidth="75.0" text="Role" />
+                      <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="colFName" prefWidth="75.0" text="First Name" />
+                        <TableColumn fx:id="colLName" prefWidth="75.0" text="Last Name" />
+                        <TableColumn fx:id="colRole" prefWidth="75.0" text="Role" />
                     </columns>
                   </TableView>
                </children>
             </HBox>
          </left>
          <right>
-            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="294.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ListView prefHeight="280.0" prefWidth="230.0" />
-               </children>
+            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="22.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="10.0" />
+               </BorderPane.margin>
             </HBox>
          </right>
+         <center>
+            <ListView fx:id="lstOrderNumber" prefHeight="280.0" prefWidth="266.0" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
    </center>
+   <left>
+      <HBox prefHeight="362.0" prefWidth="3.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <HBox prefHeight="362.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+   </right>
 
 </BorderPane>

@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class HelloApplication extends Application {
+public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Operator.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Operator.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
         stage.setTitle("Belman");
         stage.setScene(scene);
