@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -54,7 +54,7 @@
          <top>
             <HBox prefHeight="39.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTextField maxHeight="20.0" minHeight="22.0" prefHeight="20.0" prefWidth="126.0">
+                  <MFXTextField maxHeight="20.0" minHeight="22.0" onAction="#txtSearch" prefHeight="20.0" prefWidth="126.0">
                      <HBox.margin>
                         <Insets top="7.0" />
                      </HBox.margin>

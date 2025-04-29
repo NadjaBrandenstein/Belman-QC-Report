@@ -1,7 +1,8 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+// JavaFX Imports
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 
