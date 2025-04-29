@@ -4,6 +4,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -24,9 +25,7 @@
                 </HBox>
             </left>
             <center>
-                <HBox alignment="CENTER" spacing="10.0">
-                    <MFXButton onAction="#btnRefresh" text="Refresh" />
-                </HBox>
+                <HBox alignment="CENTER" spacing="10.0" />
             </center>
             <right>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0">
@@ -41,25 +40,22 @@
          <top>
             <BorderPane prefHeight="82.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <left>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <MFXButton onAction="#btnQRCode" text="QR Code " />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="82.0" prefWidth="139.0" BorderPane.alignment="CENTER" />
                </left>
                <center>
-                  <HBox alignment="CENTER" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <HBox alignment="CENTER" prefHeight="82.0" prefWidth="312.0" BorderPane.alignment="CENTER">
                      <children>
-                        <MFXButton onAction="#btnManual" text="Manual" />
+                        <MFXButton onAction="#btnQRCode" text="QR Code " />
+                        <MFXButton onAction="#btnManual" text="Manual">
+                           <HBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                           </HBox.margin></MFXButton>
+                        <MFXButton onAction="#btnChip" text="Chip" />
                      </children>
                   </HBox>
                </center>
                <right>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <MFXButton onAction="#btnChip" text="Chip" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="160.0" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
          </top>
@@ -72,7 +68,7 @@
                            <children>
                               <MFXTextField fx:id="txtUsername" prefHeight="51.0" prefWidth="170.0" promptText="Username">
                                  <VBox.margin>
-                                    <Insets top="25.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </MFXTextField>
                               <MFXPasswordField fx:id="txtPassword" prefHeight="51.0" prefWidth="169.0" promptText="Password">
@@ -80,6 +76,17 @@
                                     <Insets top="25.0" />
                                  </VBox.margin>
                               </MFXPasswordField>
+                              <Label fx:id="lblForgotPassword" text="Forgot Password">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="lblLoginStatus">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <MFXButton onAction="#btnLogin" text="Login" />
                            </children>
                         </VBox>
                      </children>
@@ -95,7 +102,7 @@
                <center>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <MFXButton onAction="#btnLogin" text="Login" />
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
                      </children>
                   </HBox>
                </center>

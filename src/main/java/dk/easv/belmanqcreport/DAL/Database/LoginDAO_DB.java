@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.ILogin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +18,8 @@ public class LoginDAO_DB implements ILogin {
     private final DBConnection dbConnection;
 
 
-    public LoginDAO_DB(DBConnection dbConnection) {
-        this.dbConnection = dbConnection;
+    public LoginDAO_DB() throws IOException {
+        dbConnection = new DBConnection();
     }
 
 
@@ -97,5 +98,39 @@ public class LoginDAO_DB implements ILogin {
             stmt.setString(1, login.getUsername());
             stmt.executeUpdate();
         }
+    }
+
+    public Login getLoginByUsername(String username) throws Exception {
+        String sql = "SELECT username, password, UserTypeID FROM Login WHERE username = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String user = rs.getString("username");
+                String hashedPassword = rs.getString("password");
+                // Assuming you want to get userType too:
+                String userType = getUserTypeById(rs.getInt("UserTypeID"));
+                return new Login(user, hashedPassword, userType);
+            }
+        }
+
+        return null;
+    }
+
+    private String getUserTypeById(int id) throws Exception {
+        String sql = "SELECT userType FROM UserType WHERE id = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("userType");
+            }
+        }
+        return null;
     }
 }
