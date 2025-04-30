@@ -4,44 +4,52 @@ public class User {
     private int userID;
     private String firstName;
     private String lastName;
-    private int userType;
+    private String userType;
 
-    private User(int userID, String firstName, String lastName, int userType) {
+    public User(int userID, String firstName, String lastName, String userType) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;
     }
 
-    private int getUserID() {
+    public User(String userType) {
+        this.userType = userType;
+    }
+
+    public User() {
+
+    }
+
+    public int getUserID() {
         return userID;
     }
 
-    private void setUserID(int userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    private String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    private void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    private String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    private void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    private int getUserType() {
+    public String getUserType() {
         return userType;
     }
 
-    private void setUserType(int userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
 }
