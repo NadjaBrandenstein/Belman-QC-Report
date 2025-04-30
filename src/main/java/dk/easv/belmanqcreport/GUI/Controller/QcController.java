@@ -1,17 +1,60 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-// JavaFX Imports
-import javafx.event.ActionEvent;
+// Project Imports
+import dk.easv.belmanqcreport.BE.MyImage;
+import dk.easv.belmanqcreport.BLL.CameraHandling;
+//Other Imports
+import io.github.palexdev.materialfx.controls.MFXButton;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
+// JavaFX Imports
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+// Java Imports
 import java.io.File;
 import java.io.IOException;
 
 public class QcController {
 
+    @FXML
+    private Label lblOrderNumber;
+    @FXML
+    private Label lblEmployee;
+    @FXML
+    private Label lblImageCount;
+    @FXML
+    private HBox imageHboxCenter;
+    @FXML
+    private HBox imageHboxCamera;
+    @FXML
+    private MFXButton btnBack;
+    @FXML
+    private MFXButton btnRefresh;
+    @FXML
+    private MFXButton btnLogout;
+    @FXML
+    private MFXButton btnDelete;
+    @FXML
+    private MFXButton btnPrevious;
+    @FXML
+    private MFXButton btnNext;
+    @FXML
+    private MFXButton btnCamera;
+    @FXML
+    private MFXButton btnSave;
+
+    private final CameraHandling cameraHandler = new CameraHandling();
 
     public void btnBack(ActionEvent actionEvent) {
     }
@@ -28,7 +71,41 @@ public class QcController {
     public void btnNext(ActionEvent actionEvent) {
     }
 
-    public void btnCamera(ActionEvent actionEvent) {
+    @FXML
+    private void btnCamera(ActionEvent actionEvent) {
+
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Live Camera Preview");
+            stage.setScene(scene);
+
+            stage.setResizable(true);
+            stage.setMaximized(true);
+
+            CameraController controller = loader.getController();
+            controller.setQcController(this);
+
+            stage.setOnCloseRequest(event -> controller.cleanup());
+            stage.show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open camera.");
+            alert.showAndWait();
+        }
+    }
+
+    public void displayCapturedImage (MyImage myImg) {
+        Platform.runLater(() -> {
+            Image fxImage = new Image(myImg.toURI());
+            ImageView imageView = new ImageView(fxImage);
+            imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
+            imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+            imageHboxCenter.getChildren().clear();
+            imageHboxCenter.getChildren().add(imageView);
+        });
     }
 
     public void btnPDFSave(ActionEvent actionEvent) {

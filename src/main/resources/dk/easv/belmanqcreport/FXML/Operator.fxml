@@ -45,7 +45,7 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" HBox.hgrow="ALWAYS" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
          </center>
          <right>
             <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER">

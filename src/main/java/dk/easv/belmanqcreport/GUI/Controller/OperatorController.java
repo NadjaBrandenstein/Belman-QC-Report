@@ -11,15 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.io.File;
+// Java Imports
 import java.io.IOException;
 
 public class OperatorController {
@@ -32,6 +29,8 @@ public class OperatorController {
     private Label lblImageCount;
     @FXML
     private HBox imageHboxCenter;
+    @FXML
+    private HBox imageHboxCamera;
     @FXML
     private MFXButton btnBack;
     @FXML
@@ -80,10 +79,13 @@ public class OperatorController {
 
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
-            Scene scene = new Scene(loader.load(), 500, 600);
+            Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setTitle("Live Camera Preview");
             stage.setScene(scene);
+
+            stage.setResizable(true);
+            stage.setMaximized(true);
 
             CameraController controller = loader.getController();
             controller.setParentController(this);
@@ -102,9 +104,8 @@ public class OperatorController {
         Platform.runLater(() -> {
            Image fxImage = new Image(myImg.toURI());
            ImageView imageView = new ImageView(fxImage);
-           imageView.setFitHeight(258);
-           imageView.setFitWidth(528);
-           imageView.setPreserveRatio(true);
+            imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
+            imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
            imageHboxCenter.getChildren().clear();
            imageHboxCenter.getChildren().add(imageView);
         });
