@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="470.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OrderListController">
+<AnchorPane prefHeight="470.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OrderListController" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
    <children>
       <ListView fx:id="lstOrderNumbers" layoutX="57.0" layoutY="73.0" prefHeight="341.0" prefWidth="263.0" />
       <MFXTextField layoutX="57.0" layoutY="38.0" maxHeight="22.0" minHeight="22.0" onAction="#txtSearch" prefHeight="22.0" prefWidth="126.0" promptText="Search" />

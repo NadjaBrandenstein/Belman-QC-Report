@@ -13,29 +13,30 @@ import java.util.Collections;
 import java.util.List;
 
 public class OrderDAO_DB implements IOrder {
+
     @Override
     public List<Order> getAllOrder() throws Exception {
         DBConnection dbConnection = new DBConnection();
         List<Order> orders = new ArrayList<>();
 
-        String sql = "SELECT orderID, imagePath, comment FROM Order";
+        String sql = "SELECT orderID, userID, imagePath, comment FROM [Order]";
 
-        Order order = null;
         try (Connection conn = dbConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 int orderID = rs.getInt("orderID");
+                int userID = rs.getInt("userID");
                 String imagePath = rs.getString("imagePath");
                 String comment = rs.getString("comment");
 
 
-                order = new Order(orderID, imagePath.toString(), comment);
-                order.add(order);
+                Order order = new Order(orderID, userID, imagePath.toString(), comment);
+                orders.add(order);
             }
         }
-        return Collections.singletonList(order);
+        return orders;
     }
 
 
@@ -62,7 +63,7 @@ public class OrderDAO_DB implements IOrder {
     @Override
     public Order updateOrder(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
-        String sql = "UPDATE Order SET iamgePath = ?, comment = ? WHERE orderID = ?";
+        String sql = "UPDATE [Order] SET imagePath = ?, comment = ? WHERE orderID = ?";
 
         try (Connection conn = dbConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {

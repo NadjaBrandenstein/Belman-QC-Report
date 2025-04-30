@@ -1,4 +1,17 @@
 package dk.easv.belmanqcreport.GUI.Controller;
+// JavaFX Imports
+import dk.easv.belmanqcreport.Main;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
@@ -56,13 +69,37 @@ public class QcController {
 
     private final CameraHandling cameraHandler = new CameraHandling();
 
+    private Window primaryStage;
+
     public void btnBack(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.setTitle("Belman");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnRefresh(ActionEvent actionEvent) {
     }
 
     public void btnLogout(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.setTitle("Belman");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnPrevious(ActionEvent actionEvent) {
@@ -109,28 +146,36 @@ public class QcController {
     }
 
     public void btnPDFSave(ActionEvent actionEvent) {
-        File file = new File("GeneratedReport.pdf");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+        fileChooser.setInitialFileName("Report.pdf");
 
-        try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage(PDRectangle.A4);
-            document.addPage(page);
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            try (PDDocument document = new PDDocument()) {
+                PDPage page = new PDPage(PDRectangle.A4);
+                document.addPage(page);
 
 
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
 
 
-            contentStream.newLineAtOffset(100, 750);
+                contentStream.newLineAtOffset(100, 750);
 
-            contentStream.showText("This is a sample PDF report.");
-            contentStream.endText();
-            contentStream.close();
+                contentStream.showText("This is a sample PDF report.");
+                contentStream.endText();
+                contentStream.close();
 
-            document.save(file);
-            System.out.println("PDF saved to " + file.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
+                document.save(file);
+                System.out.println("PDF saved to " + file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 }
