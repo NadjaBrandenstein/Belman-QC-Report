@@ -37,5 +37,16 @@ public class Order {
     }
 
     public void add(Order order) {
+        setOrderID(order.getOrderID());
+        setImagePath(order.getImagePath());
+        setComment(order.getComment());
+    }
+
+    public String getFirstname() {
+        return getFirstname().toLowerCase();
+    }
+
+    public String getLastname() {
+        return getLastname().toLowerCase();
     }
 }
