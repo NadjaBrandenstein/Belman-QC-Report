@@ -143,7 +143,6 @@ public class LoginController implements Initializable {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
-
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.show();
