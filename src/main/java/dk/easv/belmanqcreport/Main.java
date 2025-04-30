@@ -24,8 +24,5 @@ public class Main extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        PDFGenerator pdfGen = PDFGeneratorImp.getInstance();
-        pdfGen.generatePDF("report.pdf");
-    }
+    public static void main(String[] args) {launch(args);}
 }
