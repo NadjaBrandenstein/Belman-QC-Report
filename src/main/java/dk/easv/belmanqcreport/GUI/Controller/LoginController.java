@@ -5,27 +5,33 @@ import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.Manager.LoginManager;
 import dk.easv.belmanqcreport.BLL.UTIL.AuthService;
 import dk.easv.belmanqcreport.Main;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 // JavaFX Imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginController {
+public class LoginController{
     public MFXTextField txtUsername;
     public MFXPasswordField txtPassword;
     public ImageView logoImage;
     public Label lblForgotPassword;
     public Label lblLoginStatus;
+    public MFXButton btnLogin;
     private Stage stage;
     private Login login;
     private User user;
@@ -36,6 +42,8 @@ public class LoginController {
         login = new Login();
         user = new User();
     }
+
+
 
 
     public void btnBack(ActionEvent actionEvent) {
@@ -124,4 +132,12 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void btnLoginKey(KeyEvent keyEvent) {
+        if (keyEvent.getCode().toString().equals("ENTER")) {
+            btnLogin.fire(); // This doesn't work unless you reference the button directly
+        }
+    }
+
+
 }

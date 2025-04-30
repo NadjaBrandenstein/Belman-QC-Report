@@ -66,12 +66,12 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="150.0" prefWidth="206.0">
                            <children>
-                              <MFXTextField fx:id="txtUsername" prefHeight="51.0" prefWidth="170.0" promptText="Username">
+                              <MFXTextField fx:id="txtUsername" onKeyPressed="#btnLoginKey" prefHeight="51.0" prefWidth="170.0" promptText="Username">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
                               </MFXTextField>
-                              <MFXPasswordField fx:id="txtPassword" prefHeight="51.0" prefWidth="169.0" promptText="Password">
+                              <MFXPasswordField fx:id="txtPassword" onKeyPressed="#btnLoginKey" prefHeight="51.0" prefWidth="169.0" promptText="Password">
                                  <VBox.margin>
                                     <Insets top="25.0" />
                                  </VBox.margin>
@@ -86,7 +86,7 @@
                                     <Insets bottom="10.0" top="25.0" />
                                  </VBox.margin>
                               </Label>
-                              <MFXButton onAction="#btnLogin" text="Login" />
+                              <MFXButton fx:id="btnLogin" onAction="#btnLogin" onKeyPressed="#btnLoginKey" text="Login" />
                            </children>
                         </VBox>
                      </children>
