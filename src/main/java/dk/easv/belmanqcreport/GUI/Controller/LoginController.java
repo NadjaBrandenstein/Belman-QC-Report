@@ -13,11 +13,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -25,7 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController{
+public class LoginController implements Initializable {
     public MFXTextField txtUsername;
     public MFXPasswordField txtPassword;
     public ImageView logoImage;
@@ -37,10 +39,32 @@ public class LoginController{
     private User user;
 
     private AuthService authService;
+
+
     public LoginController() throws IOException {
         authService = new AuthService();
         login = new Login();
         user = new User();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;"); // Make it look like a link
+        lblForgotPassword.setCursor(Cursor.HAND); // Change cursor to hand on hover
+
+        lblForgotPassword.setOnMouseClicked(event -> {
+            try {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/ForgotPassword.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+                stage.setTitle("Belman");
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -138,6 +162,4 @@ public class LoginController{
             btnLogin.fire(); // This doesn't work unless you reference the button directly
         }
     }
-
-
 }

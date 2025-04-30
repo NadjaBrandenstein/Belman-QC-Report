@@ -1,2 +1,15 @@
 
 
+.mfx-button {
+    -fx-background-color: #004b88;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+/* on hover */
+.mfx-button:hover {
+    -fx-background-color: #006fcb;
+}
