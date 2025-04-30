@@ -56,10 +56,6 @@ public class CameraHandling {
             return null;
         }
 
-        /*webcam.open();
-        BufferedImage image = webcam.getImage();
-        webcam.close();*/
-
         try{
             BufferedImage img = webcam.getImage();
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -74,7 +70,6 @@ public class CameraHandling {
                 e.printStackTrace();
         }
         return null;
-
     }
 
 }

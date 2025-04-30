@@ -3,9 +3,9 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
-// Other Imports
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.Main;
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFx Imports
 import javafx.application.Platform;
@@ -14,27 +14,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.awt.*;
-
+// Java Imports
 import java.io.File;
 import java.io.IOException;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OperatorController {
@@ -47,6 +39,8 @@ public class OperatorController {
     private Label lblImageCount;
     @FXML
     private HBox imageHboxCenter;
+    @FXML
+    private HBox imageHboxCamera;
     @FXML
     private MFXButton btnBack;
     @FXML
@@ -69,6 +63,9 @@ public class OperatorController {
     private ImageHandlingModel imageHandlingModel;
 
     private final CameraHandling cameraHandler = new CameraHandling();
+    private final List<MyImage> capturedImages = new ArrayList<>();
+    private int currentImageIndex = -1;
+
 
     @FXML
     private void initialize() {
@@ -174,10 +171,22 @@ public class OperatorController {
 
     @FXML
     private void btnPrevious(ActionEvent actionEvent) {
+        if(currentImageIndex > 0) {
+            currentImageIndex--;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
+
     }
 
     @FXML
     private void btnNext(ActionEvent actionEvent) {
+        if(currentImageIndex < capturedImages.size() -1) {
+            currentImageIndex++;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
+
     }
 
     @FXML
@@ -185,13 +194,18 @@ public class OperatorController {
 
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
-            Scene scene = new Scene(loader.load(), 500, 600);
+            Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setTitle("Live Camera Preview");
             stage.setScene(scene);
 
+            stage.setResizable(true);
+            stage.setMaximized(true);
+
             CameraController controller = loader.getController();
             controller.setParentController(this);
+
+            controller.initialize();
 
             stage.setOnCloseRequest(event -> controller.cleanup());
             stage.show();
@@ -205,14 +219,30 @@ public class OperatorController {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
-           Image fxImage = new Image(myImg.toURI());
-           ImageView imageView = new ImageView(fxImage);
-           imageView.setFitHeight(258);
-           imageView.setFitWidth(528);
-           imageView.setPreserveRatio(true);
-           imageHboxCenter.getChildren().clear();
-           imageHboxCenter.getChildren().add(imageView);
+
+           capturedImages.add(myImg);
+           currentImageIndex = capturedImages.size() -1;
+           showImageAtIndex(currentImageIndex);
+           updateImageCountLabel();
+
         });
+    }
+
+    public void showImageAtIndex(int index) {
+        if(index >= 0 && index < capturedImages.size()) {
+            MyImage img = capturedImages.get(index);
+            Image fxImage = new Image(img.toURI());
+
+            ImageView imageView = new ImageView(fxImage);
+            imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
+            imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+            imageHboxCenter.getChildren().clear();
+            imageHboxCenter.getChildren().add(imageView);
+        }
+    }
+
+    public void updateImageCountLabel() {
+        lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
     }
 
     @FXML

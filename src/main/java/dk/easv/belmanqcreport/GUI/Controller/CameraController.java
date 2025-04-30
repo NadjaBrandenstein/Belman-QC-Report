@@ -1,25 +1,34 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
+// JavaFX Imports
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class CameraController {
 
     @FXML
     ImageView preview;
+    @FXML
+    private HBox imageHboxCamera;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private OperatorController parentController;
+    private QcController qcController;
     private Thread previewThread;
 
     public void setParentController(OperatorController controller) {
         this.parentController = controller;
+    }
+
+    public void setQcController(QcController controller) {
+        this.qcController = controller;
     }
 
     public void initialize() {
@@ -29,7 +38,14 @@ public class CameraController {
             while (cameraHandler.isCameraActive()) {
                 Image img = cameraHandler.getCurrentFrame();
                 if (img != null) {
-                    Platform.runLater(() -> preview.setImage(img));
+                    Platform.runLater(() -> {
+                        imageHboxCamera.getChildren().clear();
+                        ImageView imageView = new ImageView(img);
+                        imageView.setPreserveRatio(true);
+                        imageView.fitWidthProperty().bind(imageHboxCamera.widthProperty());
+                        imageView.fitHeightProperty().bind(imageHboxCamera.heightProperty());
+                        imageHboxCamera.getChildren().add(imageView);
+                    });
                 }
                 try {
                     Thread.sleep(33);
@@ -48,8 +64,14 @@ public class CameraController {
         if(myImg != null && parentController != null) {
             parentController.displayCapturedImage(myImg);
         }
-        cameraHandler.stopCamera();
-        ((Stage) preview.getScene().getWindow()).close();
+        else if (qcController != null ) {
+            qcController.displayCapturedImage(myImg);
+        }
+
+        cleanup();
+        Stage stage = (Stage) imageHboxCamera.getScene().getWindow();
+        stage.close();
+
     }
 
     public void cleanup() {
