@@ -11,7 +11,7 @@
 
     <!-- Top area (can be like a title bar) -->
     <top>
-        <BorderPane prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: #3399FF;" BorderPane.alignment="CENTER">
+        <BorderPane prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: #004b88;" BorderPane.alignment="CENTER">
 
             <padding>
                 <Insets bottom="0" left="20" right="20" top="0" />
