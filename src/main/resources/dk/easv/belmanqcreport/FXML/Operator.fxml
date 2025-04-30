@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -45,7 +45,7 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" HBox.hgrow="ALWAYS" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS" />
          </center>
          <right>
             <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER">
@@ -71,7 +71,7 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </MFXButton>
-                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" text="1/3" />
+                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
                         <MFXButton onAction="#btnNext" text="-&gt;" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets left="10.0" />
