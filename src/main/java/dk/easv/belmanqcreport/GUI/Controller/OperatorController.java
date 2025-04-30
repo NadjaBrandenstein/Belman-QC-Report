@@ -3,9 +3,9 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
-// Other Imports
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.Main;
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFx Imports
 import javafx.application.Platform;
@@ -14,9 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -24,15 +21,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.awt.*;
-
+// Java Imports
 import java.io.File;
-import java.io.IOException;
 import java.io.IOException;
 import java.util.List;
 
@@ -186,6 +178,8 @@ public class OperatorController {
 
             CameraController controller = loader.getController();
             controller.setParentController(this);
+
+            controller.initialize();
 
             stage.setOnCloseRequest(event -> controller.cleanup());
             stage.show();

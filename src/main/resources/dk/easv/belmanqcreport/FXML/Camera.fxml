@@ -9,19 +9,9 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="dk.easv.belmanqcreport.GUI.Controller.CameraController">
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.CameraController" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" >
-   <center>
-      <ImageView fx:id="preview" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-   </center>
-   <bottom>
-      <MFXButton onAction="#captureBtn" prefHeight="70.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER_LEFT">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" />
-         </BorderPane.margin>
-      </MFXButton>
-   </bottom>
+            fx:controller="dk.easv.belmanqcreport.GUI.Controller.CameraController"
+            prefHeight="500.0" prefWidth="600.0"
+            stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
 
    <center>
       <HBox fx:id="imageHboxCamera" spacing="10" alignment="CENTER">
@@ -34,5 +24,13 @@
          </StackPane>
       </HBox>
    </center>
+
+   <bottom>
+      <MFXButton onAction="#captureBtn" prefHeight="70.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER_LEFT">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" />
+         </BorderPane.margin>
+      </MFXButton>
+   </bottom>
 
 </BorderPane>
