@@ -7,28 +7,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="dk.easv.belmanqcreport.GUI.Controller.CameraController"
-            prefHeight="500.0" prefWidth="600.0"
-            stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
+<BorderPane prefHeight="500.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.CameraController">
 
    <center>
-      <HBox fx:id="imageHboxCamera" spacing="10" alignment="CENTER">
-         <StackPane maxWidth="Infinity" maxHeight="Infinity">
-            <ImageView fx:id="preview"
-                       preserveRatio="true"
-                       fitWidth="900"
-                       fitHeight="700"
-                       smooth="true" />
+      <HBox fx:id="imageHboxCamera" alignment="CENTER" spacing="10">
+         <StackPane maxHeight="Infinity" maxWidth="Infinity">
+            <ImageView fx:id="preview" fitHeight="690.0" fitWidth="900" preserveRatio="true" smooth="true" />
          </StackPane>
       </HBox>
    </center>
 
    <bottom>
-      <MFXButton onAction="#captureBtn" prefHeight="70.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER_LEFT">
+      <MFXButton onAction="#captureBtn" prefHeight="62.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" />
+            <Insets bottom="10.0" left="10.0" top="10.0" />
          </BorderPane.margin>
       </MFXButton>
    </bottom>
