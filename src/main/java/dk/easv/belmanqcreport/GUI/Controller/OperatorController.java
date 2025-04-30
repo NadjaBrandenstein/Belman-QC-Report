@@ -5,11 +5,16 @@ import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 // Other Imports
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
+import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFx Imports
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -20,11 +25,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.awt.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.IOException;
 import java.util.List;
 
@@ -117,6 +126,17 @@ public class OperatorController {
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.setTitle("Belman");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -125,6 +145,17 @@ public class OperatorController {
 
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.setTitle("Belman");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -142,75 +173,36 @@ public class OperatorController {
     @FXML
     private void btnCamera(ActionEvent actionEvent) {
 
-        Stage stage = new Stage();
-        BorderPane borderPane = new BorderPane();
-        ImageView preview = new ImageView();
-        preview.setFitHeight(400);
-        preview.setFitWidth(600);
-        preview.setPreserveRatio(true);
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
+            Scene scene = new Scene(loader.load(), 500, 600);
+            Stage stage = new Stage();
+            stage.setTitle("Live Camera Preview");
+            stage.setScene(scene);
 
-        Button captureBtn = new Button("Capture");
+            CameraController controller = loader.getController();
+            controller.setParentController(this);
 
-        borderPane.setCenter(preview);
-        borderPane.setBottom(captureBtn);
-
-        Scene scene = new Scene(borderPane, 600, 500);
-        stage.setScene(scene);
-        stage.setTitle("Live Camera Preview");
-        stage.show();
-
-        cameraHandler.startCamera();
-
-        Thread previewThread = new Thread (() -> {
-           while (cameraHandler.isCameraActive()) {
-               Image img = cameraHandler.getCurrentFrame();
-                if (img != null) {
-                    Platform.runLater(() -> preview.setImage(img));
-                }
-                try {
-                 Thread.sleep(33);
-                }
-                catch(InterruptedException ignored) { }
-           }
-        });
-        previewThread.setDaemon(true);
-        previewThread.start();
-
-        captureBtn.setOnAction(event -> {
-            MyImage myImg = cameraHandler.captureImage();
-            if (myImg != null) {
-                Platform.runLater(() -> {
-                    Image fxImage = new Image(myImg.toURI().toString());
-                    ImageView imageView = new ImageView(fxImage);
-                    imageView.setFitHeight(400);
-                    imageView.setFitWidth(600);
-                    imageView.setPreserveRatio(true);
-                    imageHboxCenter.getChildren().clear();
-                    imageHboxCenter.getChildren().add(imageView);
-                });
-            }
-            cameraHandler.stopCamera();
-            stage.close();
-        });
-        stage.setOnCloseRequest(event -> {cameraHandler.stopCamera();});
-
-        /*MyImage image = cameraHandler.captureImage();
-        if(image != null) {
-            File imageFile = image.getImageFile();
-            Image fxImage = new Image(imageFile.toURI().toString());
-            ImageView imageView = new ImageView(fxImage);
-            imageView.setFitHeight(258);
-            imageView.setFitWidth(528);
-            imageView.setPreserveRatio(true);
-            imageHboxCenter.getChildren().clear();
-            imageHboxCenter.getChildren().add(imageView);
+            stage.setOnCloseRequest(event -> controller.cleanup());
+            stage.show();
         }
-        else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to capture image");
+        catch (IOException e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open camera.");
             alert.showAndWait();
-        }*/
+        }
+    }
 
-
+    public void displayCapturedImage (MyImage myImg) {
+        Platform.runLater(() -> {
+           Image fxImage = new Image(myImg.toURI());
+           ImageView imageView = new ImageView(fxImage);
+           imageView.setFitHeight(258);
+           imageView.setFitWidth(528);
+           imageView.setPreserveRatio(true);
+           imageHboxCenter.getChildren().clear();
+           imageHboxCenter.getChildren().add(imageView);
+        });
     }
 
     @FXML

@@ -14,6 +14,10 @@ public class Login {
     public Login(String username, String password) {
     }
 
+    public Login() {
+
+    }
+
     public String getUsername() {
         return username;
     }
