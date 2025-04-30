@@ -31,6 +31,8 @@ import javafx.stage.Window;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QcController {
 
@@ -62,6 +64,8 @@ public class QcController {
     private MFXButton btnSave;
 
     private final CameraHandling cameraHandler = new CameraHandling();
+    private final List<MyImage> capturedImages = new ArrayList<>();
+    private int currentImageIndex = -1;
 
     private Window primaryStage;
 
@@ -97,9 +101,19 @@ public class QcController {
     }
 
     public void btnPrevious(ActionEvent actionEvent) {
+        if(currentImageIndex > 0) {
+            currentImageIndex--;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
     }
 
     public void btnNext(ActionEvent actionEvent) {
+        if(currentImageIndex < capturedImages.size() -1) {
+            currentImageIndex++;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
     }
 
     @FXML
@@ -130,13 +144,30 @@ public class QcController {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
-            Image fxImage = new Image(myImg.toURI());
+
+            capturedImages.add(myImg);
+            currentImageIndex = capturedImages.size() -1;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+
+        });
+    }
+
+    public void showImageAtIndex(int index) {
+        if(index >= 0 && index < capturedImages.size()) {
+            MyImage img = capturedImages.get(index);
+            Image fxImage = new Image(img.toURI());
+
             ImageView imageView = new ImageView(fxImage);
             imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
             imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
             imageHboxCenter.getChildren().clear();
             imageHboxCenter.getChildren().add(imageView);
-        });
+        }
+    }
+
+    public void updateImageCountLabel() {
+        lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
     }
 
     public void btnPDFSave(ActionEvent actionEvent) {

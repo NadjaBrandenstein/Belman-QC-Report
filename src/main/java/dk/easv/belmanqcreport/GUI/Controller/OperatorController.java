@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OperatorController {
@@ -60,6 +61,9 @@ public class OperatorController {
     private ImageHandlingModel imageHandlingModel;
 
     private final CameraHandling cameraHandler = new CameraHandling();
+    private final List<MyImage> capturedImages = new ArrayList<>();
+    private int currentImageIndex = -1;
+
 
     @FXML
     private void initialize() {
@@ -157,10 +161,22 @@ public class OperatorController {
 
     @FXML
     private void btnPrevious(ActionEvent actionEvent) {
+        if(currentImageIndex > 0) {
+            currentImageIndex--;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
+
     }
 
     @FXML
     private void btnNext(ActionEvent actionEvent) {
+        if(currentImageIndex < capturedImages.size() -1) {
+            currentImageIndex++;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
+
     }
 
     @FXML
@@ -193,13 +209,30 @@ public class OperatorController {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
-           Image fxImage = new Image(myImg.toURI());
-           ImageView imageView = new ImageView(fxImage);
+
+           capturedImages.add(myImg);
+           currentImageIndex = capturedImages.size() -1;
+           showImageAtIndex(currentImageIndex);
+           updateImageCountLabel();
+
+        });
+    }
+
+    public void showImageAtIndex(int index) {
+        if(index >= 0 && index < capturedImages.size()) {
+            MyImage img = capturedImages.get(index);
+            Image fxImage = new Image(img.toURI());
+
+            ImageView imageView = new ImageView(fxImage);
             imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
             imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
-           imageHboxCenter.getChildren().clear();
-           imageHboxCenter.getChildren().add(imageView);
-        });
+            imageHboxCenter.getChildren().clear();
+            imageHboxCenter.getChildren().add(imageView);
+        }
+    }
+
+    public void updateImageCountLabel() {
+        lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
     }
 
     @FXML
