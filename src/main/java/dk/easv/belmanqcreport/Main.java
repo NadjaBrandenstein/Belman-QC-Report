@@ -1,5 +1,7 @@
 package dk.easv.belmanqcreport;
 
+import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
+import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -7,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -22,6 +25,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        PDFGenerator pdfGen = PDFGeneratorImp.getInstance();
+        pdfGen.generatePDF("report.pdf");
     }
 }
