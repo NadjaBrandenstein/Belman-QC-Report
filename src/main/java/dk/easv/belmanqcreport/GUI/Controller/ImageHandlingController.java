@@ -43,8 +43,12 @@ public class ImageHandlingController {
     private MFXTextField txtComment;
     @FXML
     private HBox imageHboxCenter;
+    @FXML
+    private
+    Label alertLbl;
 
     private ImageHandlingModel model;
+    private Order currentOrder;
 
     @FXML
     private void initialize() throws Exception {
@@ -61,6 +65,7 @@ public class ImageHandlingController {
     }
 
     public void setOrderDetails(Order order) {
+        this.currentOrder = order;
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
         txtComment.setText(order.getComment());
 
@@ -127,6 +132,15 @@ public class ImageHandlingController {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+        String newComment = txtComment.getText();
+        currentOrder.setComment(newComment);
+        try {
+            model.updateOrder(currentOrder);
+            alertLbl.setText("Saved!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertLbl.setText("Failed!");
+        }
     }
 
 

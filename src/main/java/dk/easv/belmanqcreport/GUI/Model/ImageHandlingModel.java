@@ -20,4 +20,8 @@ public class ImageHandlingModel {
         return orderManager.getAllOrders();
     }
 
+    public void updateOrder(Order order) throws Exception {
+        orderManager.updateOrders(order);
+    }
+
 }

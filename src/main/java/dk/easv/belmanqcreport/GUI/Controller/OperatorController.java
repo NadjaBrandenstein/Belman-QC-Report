@@ -63,6 +63,8 @@ public class OperatorController {
     private MFXButton btnCamera;
     @FXML
     private MFXButton btnSave;
+    @FXML
+    private ImageView commentIcon;
 
     private ImageHandlingModel imageHandlingModel;
 
@@ -77,6 +79,7 @@ public class OperatorController {
             if(!orders.isEmpty()){
                 Order order = orders.get(0);
                 setOrderImage(order.getImagePath());
+                showOrderDetails(order);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,9 +89,8 @@ public class OperatorController {
 
     private void setOrderImage(String imagePath) {
 
-        String baseDirectory = "src/main/resources/Pic";
 
-        File file = new File(baseDirectory + imagePath);
+        File file = new File(imagePath);
         if (!file.exists()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Image file does not exist." + file.getAbsolutePath());
             alert.showAndWait();
@@ -122,6 +124,14 @@ public class OperatorController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showOrderDetails(Order order) {
+        lblOrderNumber.setText(String.valueOf(order.getOrderID()));
+
+        boolean hasComment = order.getComment() != null
+                && !order.getComment().isEmpty();
+        commentIcon.setVisible(hasComment);
     }
 
     @FXML
