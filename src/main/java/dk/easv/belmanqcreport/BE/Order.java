@@ -2,11 +2,13 @@ package dk.easv.belmanqcreport.BE;
 
 public class Order {
     private int orderID;
+    private int userID;
     private String imagePath;
     private String comment;
 
-    public Order(int orderID, String imagePath, String comment) {
+    public Order(int orderID, int userID, String imagePath, String comment) {
         this.orderID = orderID;
+        this.userID = userID;
         this.imagePath = imagePath;
         this.comment = comment;
     }
@@ -16,7 +18,7 @@ public class Order {
         return orderID;
     }
 
-    private void setOrderID(int orderID) {
+    public void setOrderID(int orderID) {
         this.orderID = orderID;
     }
 
@@ -24,7 +26,7 @@ public class Order {
         return imagePath;
     }
 
-    private void setImagePath(String imagePath) {
+    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
@@ -32,7 +34,7 @@ public class Order {
         return comment;
     }
 
-    private void setComment(String comment) {
+    public void setComment(String comment) {
         this.comment = comment;
     }
 

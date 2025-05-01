@@ -1,6 +1,24 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-// JavaFX Imports
+
+// Project Imports
+import dk.easv.belmanqcreport.BE.MyImage;
+import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.Main;
+//Other Imports
+import io.github.palexdev.materialfx.controls.MFXButton;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+// JavaFX Imports
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -8,21 +26,46 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
+// Java Imports
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QcController {
 
+    @FXML
+    private Label lblOrderNumber;
+    @FXML
+    private Label lblEmployee;
+    @FXML
+    private Label lblImageCount;
+    @FXML
+    private HBox imageHboxCenter;
+    @FXML
+    private HBox imageHboxCamera;
+    @FXML
+    private MFXButton btnBack;
+    @FXML
+    private MFXButton btnRefresh;
+    @FXML
+    private MFXButton btnLogout;
+    @FXML
+    private MFXButton btnDelete;
+    @FXML
+    private MFXButton btnPrevious;
+    @FXML
+    private MFXButton btnNext;
+    @FXML
+    private MFXButton btnCamera;
+    @FXML
+    private MFXButton btnSave;
+
+    private final CameraHandling cameraHandler = new CameraHandling();
+    private final List<MyImage> capturedImages = new ArrayList<>();
+    private int currentImageIndex = -1;
 
     private Window primaryStage;
 
@@ -58,12 +101,73 @@ public class QcController {
     }
 
     public void btnPrevious(ActionEvent actionEvent) {
+        if(currentImageIndex > 0) {
+            currentImageIndex--;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
     }
 
     public void btnNext(ActionEvent actionEvent) {
+        if(currentImageIndex < capturedImages.size() -1) {
+            currentImageIndex++;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+        }
     }
 
-    public void btnCamera(ActionEvent actionEvent) {
+    @FXML
+    private void btnCamera(ActionEvent actionEvent) {
+
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Live Camera Preview");
+            stage.setScene(scene);
+
+            stage.setResizable(true);
+            stage.setMaximized(true);
+
+            CameraController controller = loader.getController();
+            controller.setQcController(this);
+
+            stage.setOnCloseRequest(event -> controller.cleanup());
+            stage.show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open camera.");
+            alert.showAndWait();
+        }
+    }
+
+    public void displayCapturedImage (MyImage myImg) {
+        Platform.runLater(() -> {
+
+            capturedImages.add(myImg);
+            currentImageIndex = capturedImages.size() -1;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
+
+        });
+    }
+
+    public void showImageAtIndex(int index) {
+        if(index >= 0 && index < capturedImages.size()) {
+            MyImage img = capturedImages.get(index);
+            Image fxImage = new Image(img.toURI());
+
+            ImageView imageView = new ImageView(fxImage);
+            imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
+            imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+            imageHboxCenter.getChildren().clear();
+            imageHboxCenter.getChildren().add(imageView);
+        }
+    }
+
+    public void updateImageCountLabel() {
+        lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
     }
 
     public void btnPDFSave(ActionEvent actionEvent) {

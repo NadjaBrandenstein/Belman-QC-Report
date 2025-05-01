@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.ImageHandlingController" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.ImageHandlingController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -62,6 +62,11 @@
             <HBox alignment="CENTER" prefHeight="115.0" prefWidth="450.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="98.0" prefWidth="348.0" />
+                  <Label fx:id="alertLbl" prefHeight="18.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
                </children>
             </HBox>
          </left>
