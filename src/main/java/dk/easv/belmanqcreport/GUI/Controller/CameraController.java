@@ -99,8 +99,8 @@ public class CameraController {
 
         Image icon = new Image(iconUrl.toExternalForm());
         ImageView imageView = new ImageView(icon);
-        imageView.setFitHeight(20);
-        imageView.setFitWidth(20);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
         imageView.setPreserveRatio(true);
 
         button.setGraphic(imageView);

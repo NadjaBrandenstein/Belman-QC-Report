@@ -11,14 +11,45 @@
 
 /* on hover */
 .mfx-button:hover {
-    -fx-background-color: #006fcb;
+    -fx-background-color: #006FCB;
 }
 
-.label{
-    -fx-text-fill: Orange;
+Label{
+    -fx-text-fill: black;
+}
+
+.whiteLabel {
+    -fx-text-fill: white;
 }
 
 .ContextMenu{
     -fx-text-fill: black;
 
 }
+
+MFXTextField {
+    -fx-border-color: #004b88;
+}
+
+MFXPasswordField {
+    -fx-border-color: #004b88;
+}
+
+.table-view {
+    -fx-border-color: #004b88;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #004b88;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #004b88;
+    -fx-border-color: #004b88;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+}
+

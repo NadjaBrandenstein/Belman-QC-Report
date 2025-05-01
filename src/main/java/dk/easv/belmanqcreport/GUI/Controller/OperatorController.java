@@ -75,21 +75,21 @@ public class OperatorController {
     private void initialize() {
 
         btnBack.setText("");
-        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
+        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png", 20, 20);
         btnLogout.setText("");
-        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
         btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
         btnPrevious.setText("");
-        setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png");
+        setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
-        setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png");
+        setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
         btnCamera.setText("");
-        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png");
+        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
         btnSave.setText("");
-        setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png");
+        setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
 
         imageHandlingModel = new ImageHandlingModel();
 
@@ -144,6 +144,7 @@ public class OperatorController {
             Stage stage = (Stage) imageHboxCenter.getScene().getWindow();
 
             stage.setTitle("Image Handling");
+            stage.setMaximized(true);
             stage.setScene(scene);
 
 
@@ -169,6 +170,7 @@ public class OperatorController {
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
             stage.setTitle("Belman");
             stage.setScene(scene);
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -188,6 +190,7 @@ public class OperatorController {
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
             stage.setTitle("Belman");
             stage.setScene(scene);
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -290,7 +293,7 @@ public class OperatorController {
 
             imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
             imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
-            imageView.setPreserveRatio(true);
+            imageView.setPreserveRatio(false);
 
             imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
 
@@ -308,17 +311,22 @@ public class OperatorController {
     private void btnSave(ActionEvent actionEvent) {
     }
 
-    private void setButtonIcon(Button button, String iconPath) {
-        URL iconUrl = getClass().getResource(iconPath);
+    private void setButtonIcon(Button button, String iconPath, double width, double height) {
         if (button == null) {
+            System.out.println("Button is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
             System.out.println("Error loading icon: " + iconPath);
             return;
         }
 
         Image icon = new Image(iconUrl.toExternalForm());
         ImageView imageView = new ImageView(icon);
-        imageView.setFitHeight(20);
-        imageView.setFitWidth(20);
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
         imageView.setPreserveRatio(true);
 
         button.setGraphic(imageView);

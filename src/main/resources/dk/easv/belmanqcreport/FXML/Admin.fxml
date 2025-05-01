@@ -14,14 +14,14 @@
 
     <!-- Top area (can be like a title bar) -->
     <top>
-        <BorderPane prefHeight="37.0" prefWidth="600.0" style="-fx-background-color: #004b88;" BorderPane.alignment="CENTER">
+        <BorderPane prefHeight="37.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 
             <padding>
                 <Insets bottom="0" left="20" right="20" top="0" />
             </padding>
             <!-- LEFT SIDE -->
             <left>
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
                     <ImageView fx:id="logoImage" fitHeight="30" fitWidth="30" />
                <MFXButton fx:id="btnBack" onAction="#btnBack" />
                 </HBox>
@@ -29,19 +29,25 @@
 
             <!-- CENTER -->
             <center>
-                <HBox alignment="CENTER" spacing="10.0">
-                    <Label fx:id="lblOrderNumber" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Order #12345" />
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
+                    <Label fx:id="lblOrderNumber" style="-fx-font-size: 16px; -fx-font-weight: bold;" styleClass="whiteLabel" text="Order #12345" />
                <MFXButton fx:id="btnRefresh" onAction="#btnRefresh" />
                 </HBox>
             </center>
 
             <!-- RIGHT SIDE -->
             <right>
-                <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                    <Label fx:id="lblEmployee" style="-fx-font-size: 14px;" text="Logged in as: User" />
+                <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-background-color: #004b88;">
+                    <Label fx:id="lblEmployee" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
                <MFXButton fx:id="btnLogout" onAction="#btnLogout" />
                 </HBox>
             </right>
+         <top>
+            <HBox prefHeight="12.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
+         </top>
+         <bottom>
+            <HBox prefHeight="10.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
+         </bottom>
 
         </BorderPane>
     </top>
@@ -50,9 +56,9 @@
             <top>
                 <HBox prefHeight="56.0" prefWidth="597.0" BorderPane.alignment="CENTER">
                     <children>
-                        <MFXTextField fx:id="txtSearch" maxHeight="20.0" minHeight="22.0" prefHeight="20.0" prefWidth="126.0">
+                        <MFXTextField fx:id="txtSearch" alignment="TOP_LEFT" maxHeight="30.0" minHeight="22.0" prefHeight="30.0" prefWidth="145.0" promptText="Search">
                             <HBox.margin>
-                                <Insets left="28.0" top="7.0" />
+                                <Insets left="77.0" top="7.0" />
                             </HBox.margin>
                         </MFXTextField>
                     </children>

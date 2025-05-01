@@ -146,6 +146,7 @@ public class LoginController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
         stage.setTitle("Belman");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -155,6 +156,7 @@ public class LoginController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
         stage.setTitle("Belman");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -164,6 +166,7 @@ public class LoginController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
         stage.setTitle("Belman");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

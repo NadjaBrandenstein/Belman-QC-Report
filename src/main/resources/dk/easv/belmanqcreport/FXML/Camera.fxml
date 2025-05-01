@@ -12,17 +12,26 @@
    <center>
       <HBox fx:id="imageHboxCamera" alignment="CENTER" spacing="10">
          <StackPane maxHeight="Infinity" maxWidth="Infinity">
-            <ImageView fx:id="preview" fitHeight="690.0" fitWidth="900" preserveRatio="true" smooth="true" />
+            <ImageView fx:id="preview" fitHeight="690.0" fitWidth="900" preserveRatio="true" smooth="true">
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin></ImageView>
          </StackPane>
       </HBox>
    </center>
-
    <bottom>
-      <MFXButton fx:id="captureBtn" onAction="#captureBtn" prefHeight="62.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER_LEFT">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" top="10.0" />
-         </BorderPane.margin>
-      </MFXButton>
+      <BorderPane prefHeight="105.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <center>
+            <MFXButton fx:id="captureBtn" onAction="#captureBtn" prefHeight="62.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="27.0" left="10.0" top="5.0" />
+               </BorderPane.margin>
+            </MFXButton>
+         </center>
+      </BorderPane>
    </bottom>
+   <top>
+      <HBox prefHeight="17.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+   </top>
 
 </BorderPane>
