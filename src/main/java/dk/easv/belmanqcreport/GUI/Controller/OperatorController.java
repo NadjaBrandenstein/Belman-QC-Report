@@ -167,7 +167,22 @@ public class OperatorController {
 
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
+        if(currentImageIndex >= 0 && currentImageIndex < capturedImages.size()) {
+            capturedImages.remove(currentImageIndex);
 
+            if(currentImageIndex >= capturedImages.size()) {
+                currentImageIndex = capturedImages.size() -1;
+            }
+
+            if(capturedImages.isEmpty()) {
+                imageHboxCenter.getChildren().clear();
+                lblImageCount.setText("0 / 0");
+            }
+            else {
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            }
+        }
     }
 
     @FXML
