@@ -68,7 +68,7 @@
                </children></HBox>
          </center>
          <right>
-            <HBox prefHeight="250.0" prefWidth="63.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="250.0" prefWidth="84.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXButton fx:id="btnDelete" onAction="#btnDelete" text="X">
                      <HBox.margin>
@@ -78,7 +78,7 @@
             </HBox>
          </right>
          <left>
-            <HBox prefHeight="258.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="250.0" prefWidth="84.0" BorderPane.alignment="CENTER" />
          </left>
          <top>
             <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
@@ -109,18 +109,18 @@
             </HBox>
          </center>
          <left>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="209.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="231.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXButton fx:id="btnCamera" alignment="TOP_RIGHT" onAction="#btnCamera" text="Camera" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </MFXButton>
                </children>
             </HBox>
          </left>
          <right>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="198.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="210.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXButton fx:id="btnSave" alignment="TOP_RIGHT" onAction="#btnSave" text="Save" />
                </children>
