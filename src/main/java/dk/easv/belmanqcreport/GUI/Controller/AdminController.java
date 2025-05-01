@@ -9,17 +9,22 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
-public class AdminController {
+public class AdminController implements Initializable {
 
     @FXML
     private Label lblOrderNumber;
@@ -47,7 +52,15 @@ public class AdminController {
     @FXML
     private MFXButton btnLogout;
 
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        btnBack.setText("");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        btnRefresh.setText("");
+        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
+        btnLogout.setText("");
+        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+    }
     @FXML
     private void btnBack(ActionEvent actionEvent) {
         try {
@@ -86,4 +99,20 @@ public class AdminController {
     private void txtSearch(ActionEvent actionEvent) {
         
     }
+    private void setButtonIcon(Button button, String iconPath) {
+        URL iconUrl = getClass().getResource(iconPath);
+        if (button == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        imageView.setPreserveRatio(true);
+
+        button.setGraphic(imageView);
+    }
+
 }

@@ -6,10 +6,13 @@ import dk.easv.belmanqcreport.BLL.CameraHandling;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 public class CameraController {
 
@@ -32,6 +35,7 @@ public class CameraController {
     }
 
     public void initialize() {
+
         cameraHandler.startCamera();
 
         Thread previewThread = new Thread (() -> {
@@ -79,6 +83,22 @@ public class CameraController {
         if(previewThread != null && previewThread.isAlive()) {
             previewThread.interrupt();
         }
+    }
+
+    private void setButtonIcon(Button button, String iconPath) {
+        URL iconUrl = getClass().getResource(iconPath);
+        if (button == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        imageView.setPreserveRatio(true);
+
+        button.setGraphic(imageView);
     }
 
 }
