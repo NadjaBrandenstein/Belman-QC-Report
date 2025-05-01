@@ -52,16 +52,16 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+            <HBox fx:id="imageHboxCenter" alignment="BOTTOM_RIGHT" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
-                  <ImageView fx:id="commentIcon" pickOnBounds="true" preserveRatio="true" styleClass="comment-icon" visible="false">
+                  <ImageView fx:id="commentIcon" styleClass="comment-icon" visible="false" pickOnBounds="true" preserveRatio="true">
                       <image>
                           <!-- @/icons/comment.png → src/main/resources/icons/comment.png -->
                           <Image url="@/dk/easv/belmanqcreport/Icons/icon.png" />
                       </image>
 
                      <HBox.margin>
-                        <Insets left="10" top="10" />
+                        <Insets />
                      </HBox.margin>
 
                   </ImageView>

@@ -24,4 +24,6 @@ public class ImageHandlingModel {
         orderManager.updateOrders(order);
     }
 
+
+
 }

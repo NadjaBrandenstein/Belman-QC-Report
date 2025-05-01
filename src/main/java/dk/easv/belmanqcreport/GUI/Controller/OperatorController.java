@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -63,6 +64,7 @@ public class OperatorController {
     private ImageView commentIcon;
 
     private ImageHandlingModel imageHandlingModel;
+    private Order currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private final List<MyImage> capturedImages = new ArrayList<>();
@@ -94,14 +96,14 @@ public class OperatorController {
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
             if(!orders.isEmpty()){
-                Order order = orders.get(0);
-                setOrderImage(order.getImagePath());
-                showOrderDetails(order);
+                currentOrder = orders.get(0);
+                //setOrderImage(currentOrder.getImagePath());
+                showOrderDetails(currentOrder);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
+        //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
     }
 
     private void setOrderImage(String imagePath) {
@@ -129,14 +131,21 @@ public class OperatorController {
         imageHboxCenter.setBackground(new Background(bgImg));
     }
 
-    private void openImageHandlingScene() {
+    private void openImageHandlingScene(MyImage image) {
         try{
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/ImageHandling.fxml"));
-            Scene scene = new Scene(loader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            Parent root = loader.load();
+            ImageHandlingController controller = loader.getController();
+            controller.setImageDetails(image);
+
+
+            Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
             Stage stage = (Stage) imageHboxCenter.getScene().getWindow();
+
             stage.setTitle("Image Handling");
             stage.setScene(scene);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -262,6 +271,7 @@ public class OperatorController {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
+            myImg.setOrderID(currentOrder.getOrderID());
 
            capturedImages.add(myImg);
            currentImageIndex = capturedImages.size() -1;
@@ -272,16 +282,22 @@ public class OperatorController {
     }
 
     public void showImageAtIndex(int index) {
-        if(index >= 0 && index < capturedImages.size()) {
+        if(index < 0 || index >= capturedImages.size()) return;
+
             MyImage img = capturedImages.get(index);
             Image fxImage = new Image(img.toURI());
-
             ImageView imageView = new ImageView(fxImage);
+
             imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
             imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
-            imageHboxCenter.getChildren().clear();
-            imageHboxCenter.getChildren().add(imageView);
-        }
+            imageView.setPreserveRatio(true);
+
+            imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
+
+            imageHboxCenter.getChildren().setAll(imageView);
+            /*imageHboxCenter.getChildren().clear();
+            imageHboxCenter.getChildren().add(imageView);*/
+
     }
 
     public void updateImageCountLabel() {
