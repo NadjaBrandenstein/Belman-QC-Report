@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.LoginController">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.LoginController" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
 
     <!-- Top area -->
     <top>
@@ -74,12 +74,12 @@
                                     <Insets top="25.0" />
                                  </VBox.margin>
                               </MFXPasswordField>
-                              <Label fx:id="lblForgotPassword" text="Forgot Password">
+                              <Label fx:id="lblForgotPassword" text="Forgot Password" textFill="#004b88">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label fx:id="lblLoginStatus" style="-fx-text-fill: black;">
+                              <Label fx:id="lblLoginStatus">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="25.0" />
                                  </VBox.margin>

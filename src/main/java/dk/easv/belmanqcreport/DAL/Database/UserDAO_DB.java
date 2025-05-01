@@ -29,7 +29,7 @@ public class UserDAO_DB implements IUser {
         List<User> users = new ArrayList<>();
 
         String sql = """
-        SELECT u.fname, u.lname, ut.userType
+        SELECT u.userID,u.fname, u.lname, ut.userType
         FROM [User] u
         JOIN UserType ut on u.userTypeID = ut.userTypeID
         """;

@@ -3,6 +3,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.User;
 // Other Imports
+import dk.easv.belmanqcreport.GUI.Model.UserModel;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFX Imports
@@ -14,11 +15,13 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.naming.Context;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,14 +55,51 @@ public class AdminController implements Initializable {
     @FXML
     private MFXButton btnLogout;
 
+    private UserModel userModel;
+
+    public AdminController() throws IOException {
+        userModel = new UserModel();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // button icon
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
         btnRefresh.setText("");
         setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+
+        // TabelView
+        colId.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        colFName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colLName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("userType"));
+
+        try {
+            tblEmployee.setItems(userModel.getAllUsers());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        // ListView
+
+
+        // Search
+
+
+        // context menu
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem assignRole = new MenuItem("Assign Role");
+
+        contextMenu.getItems().add(assignRole);
+
+        tblEmployee.setContextMenu(contextMenu);
     }
     
     @FXML
