@@ -13,3 +13,7 @@
 .mfx-button:hover {
     -fx-background-color: #006fcb;
 }
+
+.label{
+    -fx-text-fill: white;
+}
