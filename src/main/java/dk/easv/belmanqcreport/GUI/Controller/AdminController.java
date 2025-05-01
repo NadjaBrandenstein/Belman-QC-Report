@@ -95,9 +95,20 @@ public class AdminController implements Initializable {
 
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem assignRole = new MenuItem("Assign Role");
+        MenuItem qcRole = new MenuItem("QC");
+        MenuItem manuelLogin = new MenuItem("Manuel Login");
+        MenuItem chipLogin = new MenuItem("Chip Login");
+        MenuItem createUser = new MenuItem("Create User");
+        MenuItem editUser = new MenuItem("Edit User");
+        MenuItem deleteUser = new MenuItem("Delete User");
+        MenuItem createManualLogin = new MenuItem("Create manual Login");
+        MenuItem createQRLogin = new MenuItem("Create QR Login");
+        MenuItem createChipLogin = new MenuItem("Create Chip Login");
 
-        contextMenu.getItems().add(assignRole);
+        Menu assingRole = new Menu("Assign Role");
+
+        assingRole.getItems().addAll(qcRole,manuelLogin,chipLogin);
+        contextMenu.getItems().add(assingRole);
 
         tblEmployee.setContextMenu(contextMenu);
     }

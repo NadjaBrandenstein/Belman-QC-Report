@@ -15,5 +15,10 @@
 }
 
 .label{
-    -fx-text-fill: white;
+    -fx-text-fill: Orange;
+}
+
+.ContextMenu{
+    -fx-text-fill: black;
+
 }
