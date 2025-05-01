@@ -89,6 +89,14 @@ public class AdminController implements Initializable {
 
 
         // Search
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userModel.searchUser(newValue);
+            } catch (Exception e) {
+                displayError(e);
+                e.printStackTrace();
+            }
+        });
 
 
         // context menu
@@ -112,6 +120,15 @@ public class AdminController implements Initializable {
 
         tblEmployee.setContextMenu(contextMenu);
     }
+
+    private void displayError(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error");
+        alert.setContentText(e.getMessage());
+        alert.showAndWait();
+    }
+
     @FXML
     private void btnBack(ActionEvent actionEvent) {
         try {
@@ -146,10 +163,6 @@ public class AdminController implements Initializable {
         }
     }
 
-    @FXML
-    private void txtSearch(ActionEvent actionEvent) {
-        
-    }
     private void setButtonIcon(Button button, String iconPath) {
         URL iconUrl = getClass().getResource(iconPath);
         if (button == null) {

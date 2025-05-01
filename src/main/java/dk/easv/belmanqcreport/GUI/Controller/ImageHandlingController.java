@@ -1,5 +1,6 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 // Other Import
+import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.Main;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 
 import java.io.File;
 import java.net.URL;
@@ -27,7 +29,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public abstract class ImageHandlingController implements Initializable {
+import static javafx.scene.layout.BackgroundPosition.CENTER;
+import static javafx.scene.layout.BackgroundRepeat.NO_REPEAT;
+import static javafx.scene.layout.BackgroundSize.AUTO;
+
+public class ImageHandlingController {
 
     @FXML
     private Label lblOrderNumber;
@@ -52,6 +58,7 @@ public abstract class ImageHandlingController implements Initializable {
 
     private ImageHandlingModel model;
     private Order currentOrder;
+    private MyImage currentImage;
 
     @FXML
     private void initialize() throws Exception {
@@ -74,10 +81,25 @@ public abstract class ImageHandlingController implements Initializable {
            List<Order> orders = model.getAllOrders();
            if (!orders.isEmpty()) {
                setOrderDetails(orders.get(0));
+
            }
        } catch (Exception e) {
            e.printStackTrace();
        }
+    }
+
+    public void setImageDetails(MyImage img){
+        this.currentImage = img;
+
+        Image fx = new Image(new File(img.toURI()).toURI().toString());
+
+        imageHboxCenter.setBackground(new Background(
+                new BackgroundImage(
+                        fx, NO_REPEAT, NO_REPEAT, CENTER,
+                        new BackgroundSize(AUTO, AUTO, false, false, true, false)
+                )
+        ));
+        txtComment.setText(img.getComment());
     }
 
     public void setOrderDetails(Order order) {
@@ -99,12 +121,12 @@ public abstract class ImageHandlingController implements Initializable {
         Image image = new Image(file.toURI().toString());
         javafx.scene.layout.BackgroundImage backgroundImage = new javafx.scene.layout.BackgroundImage(
                 image,
-                javafx.scene.layout.BackgroundRepeat.NO_REPEAT,
-                javafx.scene.layout.BackgroundRepeat.NO_REPEAT,
-                javafx.scene.layout.BackgroundPosition.CENTER,
+                NO_REPEAT,
+                NO_REPEAT,
+                CENTER,
                 new javafx.scene.layout.BackgroundSize(
-                        javafx.scene.layout.BackgroundSize.AUTO,
-                        javafx.scene.layout.BackgroundSize.AUTO,
+                        AUTO,
+                        AUTO,
                         false, false, true, false
                 )
         );

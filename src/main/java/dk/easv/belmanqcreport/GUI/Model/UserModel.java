@@ -2,6 +2,12 @@ package dk.easv.belmanqcreport.GUI.Model;
 
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.Manager.UserManager;
+import javafx.collections.ObservableList;
+
+import java.util.List;
+
+import dk.easv.belmanqcreport.BE.User;
+import dk.easv.belmanqcreport.BLL.Manager.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,6 +18,12 @@ public class UserModel {
 
     private ObservableList<User> tblEmployee;
     private UserManager userManager;
+
+    public void searchUser(String query) throws Exception{
+        List<User> searchResult = userManager.searchUser(query);
+        tblEmployee.clear();
+        tblEmployee.addAll(searchResult);
+    }
 
     public UserModel() throws IOException {
         userManager = new UserManager();
