@@ -1,4 +1,4 @@
-package dk.easv.belmanqcreport.DAL;
+package dk.easv.belmanqcreport.DAL.Interface;
 
 import java.util.List;
 import dk.easv.belmanqcreport.BE.Login;

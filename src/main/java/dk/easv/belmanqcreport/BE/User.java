@@ -5,6 +5,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String userType;
+    private int userTypeID;
 
     public User(int userID, String firstName, String lastName, String userType) {
         this.userID = userID;
@@ -51,5 +52,13 @@ public class User {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public int getUserTypeID() {
+        return userTypeID;
+    }
+
+    public void setUserTypeID(int userTypeID) {
+        this.userTypeID = userTypeID;
     }
 }
