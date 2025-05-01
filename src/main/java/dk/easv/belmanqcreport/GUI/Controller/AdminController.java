@@ -7,6 +7,7 @@ import dk.easv.belmanqcreport.GUI.Model.UserModel;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFX Imports
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,12 +30,13 @@ import java.util.ResourceBundle;
 
 public class AdminController implements Initializable {
 
+
     @FXML
     private Label lblOrderNumber;
     @FXML
     private Label lblEmployee;
     @FXML
-    private TextField txtSearch;
+    private MFXTextField txtSearch;
     @FXML
     private TableView<User> tblEmployee;
     @FXML
@@ -46,8 +48,11 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<User, String> colRole;
     @FXML
-    private ListView<Order> lstOrderNumber;
-
+    public TableColumn colManual;
+    @FXML
+    public TableColumn colQRCode;
+    @FXML
+    public TableColumn colChip;
     @FXML
     private MFXButton btnBack;
     @FXML
