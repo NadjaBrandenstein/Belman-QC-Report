@@ -53,7 +53,7 @@
          <top>
             <HBox prefHeight="56.0" prefWidth="597.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTextField fx:id="searchUser" maxHeight="20.0" minHeight="22.0" prefHeight="20.0" prefWidth="126.0">
+                  <MFXTextField fx:id="txtSearch" maxHeight="20.0" minHeight="22.0" prefHeight="20.0" prefWidth="126.0">
                      <HBox.margin>
                         <Insets left="28.0" top="7.0" />
                      </HBox.margin>
