@@ -1,4 +1,4 @@
 package dk.easv.belmanqcreport.GUI.Model;
 
-public class AdminModel {
+public class UserModel {
 }

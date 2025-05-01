@@ -2,7 +2,7 @@
 
     import dk.easv.belmanqcreport.BE.Login;
     import dk.easv.belmanqcreport.DAL.DBConnection;
-    import dk.easv.belmanqcreport.DAL.ILogin;
+    import dk.easv.belmanqcreport.DAL.Interface.ILogin;
 
     import java.io.IOException;
     import java.sql.Connection;

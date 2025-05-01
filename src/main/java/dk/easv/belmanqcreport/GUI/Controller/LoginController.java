@@ -45,12 +45,13 @@ public class LoginController implements Initializable {
         authService = new AuthService();
         login = new Login();
         user = new User();
+        authService.setLoginController(this);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;"); // Make it look like a link
-        lblForgotPassword.setCursor(Cursor.HAND); // Change cursor to hand on hover
+        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;");
+        lblForgotPassword.setCursor(Cursor.HAND);
 
         lblForgotPassword.setOnMouseClicked(event -> {
             try {
