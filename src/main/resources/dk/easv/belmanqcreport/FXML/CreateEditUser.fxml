@@ -6,7 +6,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="367.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.FXML.CreateEditUser">
    <children>
       <MFXTextField floatingText="First Name" layoutX="45.0" layoutY="43.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="152.0" />
@@ -14,8 +13,8 @@
       <MFXButton layoutX="45.0" layoutY="322.0" text="Save" />
       <MFXButton layoutX="498.0" layoutY="322.0" text="Cancel" />
       <MFXCheckListView layoutX="250.0" layoutY="43.0" prefHeight="237.0" prefWidth="302.0" />
-      <MFXRadioButton layoutX="45.0" layoutY="179.0" text="Manual" />
-      <MFXRadioButton layoutX="45.0" layoutY="211.0" text="QR-Code" />
-      <MFXRadioButton layoutX="45.0" layoutY="245.0" text="Chip" />
+      <MFXRadioButton layoutX="41.0" layoutY="214.0" text="Manual" />
+      <MFXRadioButton layoutX="41.0" layoutY="184.0" text="QR-Code" />
+      <MFXRadioButton layoutX="41.0" layoutY="245.0" text="Chip" />
    </children>
 </AnchorPane>

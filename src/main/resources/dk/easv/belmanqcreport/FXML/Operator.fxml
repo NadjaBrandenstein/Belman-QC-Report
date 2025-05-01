@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<?import javafx.scene.image.Image?>
-<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -110,7 +109,7 @@
             </HBox>
          </center>
          <left>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="231.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="229.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXButton fx:id="btnCamera" alignment="TOP_RIGHT" onAction="#btnCamera" text="Camera" HBox.hgrow="ALWAYS">
                      <HBox.margin>
