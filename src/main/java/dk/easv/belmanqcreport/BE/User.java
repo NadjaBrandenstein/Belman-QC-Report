@@ -1,5 +1,8 @@
 package dk.easv.belmanqcreport.BE;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class User {
     private int userID;
     private String firstName;
@@ -13,6 +16,8 @@ public class User {
         this.lastName = lastName;
         this.userType = userType;
     }
+    private ObservableList<User> users = FXCollections.observableArrayList();
+
 
     public User(String userType) {
         this.userType = userType;
@@ -70,7 +75,7 @@ public class User {
         return getLastName().toLowerCase();
     }
 
-    public char[] getOrderID() {
-        return getOrderID();
+    public int getOrderID() {
+        return userID;
     }
 }

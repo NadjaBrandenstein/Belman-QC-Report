@@ -8,23 +8,37 @@ import java.util.List;
 public class Search {
     public List<User> search(List<User> searchBase, String query) {
         List<User> searchResult = new ArrayList<>();
+        if (query == null || query.isBlank()) {
+            return searchBase;
+        }
 
-        for(User user : searchBase) {
-            if(compareToFirstName(query, user) || compareToLastName(query, user) ||compareToOrderID(Integer.parseInt(query), user)){
+        String lowerQuery = query.toLowerCase();
+
+        for (User user : searchBase) {
+            if (matches(user, query)) {
                 searchResult.add(user);
             }
         }
         return searchResult;
     }
-    private boolean compareToFirstName(String query, User order) {
-        return order.getFirstname().toLowerCase().contains(query.toLowerCase());
+
+    private boolean matches(User user, String query) {
+        String lowerQuery = query.toLowerCase();
+
+        return (user.getFirstName() != null && user.getFirstName().toLowerCase().contains(lowerQuery)) ||
+                (user.getLastName() != null && user.getLastName().toLowerCase().contains(lowerQuery)) ||
+                (String.valueOf(user.getOrderID()).contains(lowerQuery));
     }
 
-    private boolean compareToLastName(String query, User order) {
-        return order.getLastname().toLowerCase().contains(query.toLowerCase());
+  /*  private boolean compareToFirstName(String query, User user) {
+        return user.getFirstname().toLowerCase().contains(query.toLowerCase());
     }
 
-    private boolean compareToOrderID(int query, User order) {
-        return String.valueOf(order.getOrderID()).contains(String.valueOf(query));
+    private boolean compareToLastName(String query, User user) {
+        return user.getLastname().toLowerCase().contains(query.toLowerCase());
     }
+
+    private boolean compareToOrderID(String query, User user) {
+        return String.valueOf(user.getOrderID()).contains(query);
+    }*/
 }

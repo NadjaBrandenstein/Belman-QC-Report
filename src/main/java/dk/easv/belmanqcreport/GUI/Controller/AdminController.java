@@ -3,11 +3,14 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.User;
 // Other Imports
+import dk.easv.belmanqcreport.BLL.UTIL.Search;
 import dk.easv.belmanqcreport.GUI.Model.UserModel;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFX Imports
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 import javax.naming.Context;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -66,6 +70,10 @@ public class AdminController implements Initializable {
         userModel = new UserModel();
     }
 
+    private ObservableList<User> users = FXCollections.observableArrayList();
+    private List<User> allUsers;
+    private Search searchEngine = new Search();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -94,13 +102,36 @@ public class AdminController implements Initializable {
 
 
         // Search
-        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                userModel.searchUser(newValue);
-            } catch (Exception e) {
-                displayError(e);
-                e.printStackTrace();
+        users = FXCollections.observableArrayList();
+        try{
+        userModel = new UserModel();
+        allUsers = userModel.getAllUsers();
+            System.out.printf("Loaded user:" + allUsers.size());
+            for (User u: allUsers){
+                System.out.println(u.getFirstName() + "" + u.getLastName());
             }
+        users.setAll(allUsers);
+        tblEmployee.setItems(users);
+        }catch(Exception e){
+            e.printStackTrace();
+            displayError(e);
+        }
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        colFName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colLName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("userType"));
+
+        System.out.println("txtSearch is null?" + (txtSearch == null));
+        txtSearch.setDisable(false);
+        txtSearch.setEditable(true);
+        txtSearch.requestFocus();
+
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<User> filtered = searchEngine.search(allUsers, newValue);
+            System.out.printf("Search term:" + newValue + "-> Result:" + filtered.size());
+            users.setAll(filtered);
         });
 
 
