@@ -6,6 +6,8 @@ import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -31,10 +33,12 @@ import javafx.stage.Window;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class QcController {
+public class QcController implements Initializable {
 
     @FXML
     private Label lblOrderNumber;
@@ -61,7 +65,7 @@ public class QcController {
     @FXML
     private MFXButton btnCamera;
     @FXML
-    private MFXButton btnSave;
+    private MFXButton btnPDFSave;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private final List<MyImage> capturedImages = new ArrayList<>();
@@ -87,7 +91,7 @@ public class QcController {
     }
 
     public void btnLogout(ActionEvent actionEvent) {
-        try {
+        try{
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
@@ -203,4 +207,41 @@ public class QcController {
         }
 
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        btnBack.setText("");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        btnRefresh.setText("");
+        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
+        btnLogout.setText("");
+        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+        btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png");
+        btnPrevious.setText("");
+        setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png");
+        btnNext.setText("");
+        setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png");
+        btnCamera.setText("");
+        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png");
+        btnPDFSave.setText("");
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/save.png");
+    }
+
+    private void setButtonIcon(Button button, String iconPath) {
+        URL iconUrl = getClass().getResource(iconPath);
+        if (button == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        imageView.setPreserveRatio(true);
+
+        button.setGraphic(imageView);
+    }
+
 }

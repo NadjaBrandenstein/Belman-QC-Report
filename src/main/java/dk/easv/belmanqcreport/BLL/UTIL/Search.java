@@ -1,30 +1,30 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Search {
-    public List<Order> search(List<Order> searchBase, String query) {
-        List<Order> searchResult = new ArrayList<>();
+    public List<User> search(List<User> searchBase, String query) {
+        List<User> searchResult = new ArrayList<>();
 
-        for(Order order : searchBase) {
-            if(compareToFirstName(query, order) || compareToLastName(query, order) ||compareToOrderID(Integer.parseInt(query), order)){
-                searchResult.add(order);
+        for(User user : searchBase) {
+            if(compareToFirstName(query, user) || compareToLastName(query, user) ||compareToOrderID(Integer.parseInt(query), user)){
+                searchResult.add(user);
             }
         }
         return searchResult;
     }
-    private boolean compareToFirstName(String query, Order order) {
+    private boolean compareToFirstName(String query, User order) {
         return order.getFirstname().toLowerCase().contains(query.toLowerCase());
     }
 
-    private boolean compareToLastName(String query, Order order) {
+    private boolean compareToLastName(String query, User order) {
         return order.getLastname().toLowerCase().contains(query.toLowerCase());
     }
 
-    private boolean compareToOrderID(int query, Order order) {
+    private boolean compareToOrderID(int query, User order) {
         return String.valueOf(order.getOrderID()).contains(String.valueOf(query));
     }
 }

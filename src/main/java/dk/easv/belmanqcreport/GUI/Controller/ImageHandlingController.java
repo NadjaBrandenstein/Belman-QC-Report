@@ -10,15 +10,19 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.*;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -58,6 +62,19 @@ public class ImageHandlingController {
 
     @FXML
     private void initialize() throws Exception {
+
+        btnBack.setText("");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+
+        btnRefresh.setText("");
+        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
+
+        btnLogout.setText("");
+        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+
+        btnSave.setText("");
+        setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png");
+
        this.model = new ImageHandlingModel();
 
        try {
@@ -164,7 +181,21 @@ public class ImageHandlingController {
         }
     }
 
+    private void setButtonIcon(MFXButton button, String iconPath) {
+        URL iconUrl = getClass().getResource(iconPath);
+        if (button == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
 
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        imageView.setPreserveRatio(true);
+
+        button.setGraphic(imageView);
+    }
 
 
 
