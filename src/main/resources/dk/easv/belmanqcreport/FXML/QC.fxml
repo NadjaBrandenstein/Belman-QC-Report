@@ -71,7 +71,7 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </MFXButton>
-                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
+                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" style="-fx-text-fill: black;"/>
                         <MFXButton onAction="#btnNext" text="-&gt;" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets left="10.0" />

@@ -81,7 +81,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label fx:id="lblLoginStatus">
+                              <Label fx:id="lblLoginStatus" style="-fx-text-fill: black;">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="25.0" />
                                  </VBox.margin>
