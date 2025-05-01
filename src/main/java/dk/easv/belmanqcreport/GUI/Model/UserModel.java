@@ -17,19 +17,13 @@ import java.util.List;
 public class UserModel {
 
     private ObservableList<User> tblEmployee;
+    private UserManager userManager;
 
     public void searchUser(String query) throws Exception{
-        List<User> searchResult = userManager().searchUser(query);
+        List<User> searchResult = userManager.searchUser(query);
         tblEmployee.clear();
         tblEmployee.addAll(searchResult);
     }
-
-    private UserManager userManager() {
-        return userManager();
-    }
-
-    private ObservableList<User> tblEmployee;
-    private UserManager userManager;
 
     public UserModel() throws IOException {
         userManager = new UserManager();
