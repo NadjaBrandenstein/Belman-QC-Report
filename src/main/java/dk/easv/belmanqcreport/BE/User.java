@@ -61,4 +61,16 @@ public class User {
     public void setUserTypeID(int userTypeID) {
         this.userTypeID = userTypeID;
     }
+
+    public String getFirstname() {
+        return getFirstName().toLowerCase();
+    }
+
+    public String getLastname() {
+        return getLastName().toLowerCase();
+    }
+
+    public char[] getOrderID() {
+        return getOrderID();
+    }
 }

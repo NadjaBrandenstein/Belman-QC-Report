@@ -13,7 +13,7 @@ public class Order {
         this.comment = comment;
     }
 
-    
+
     public int getOrderID() {
         return orderID;
     }
@@ -44,11 +44,4 @@ public class Order {
         setComment(order.getComment());
     }
 
-    public String getFirstname() {
-        return getFirstname().toLowerCase();
-    }
-
-    public String getLastname() {
-        return getLastname().toLowerCase();
-    }
 }

@@ -101,6 +101,7 @@ public class AdminController implements Initializable {
 
         tblEmployee.setContextMenu(contextMenu);
     }
+
     @FXML
     private void btnBack(ActionEvent actionEvent) {
         try {
@@ -135,10 +136,6 @@ public class AdminController implements Initializable {
         }
     }
 
-    @FXML
-    private void txtSearch(ActionEvent actionEvent) {
-        
-    }
     private void setButtonIcon(Button button, String iconPath) {
         URL iconUrl = getClass().getResource(iconPath);
         if (button == null) {
