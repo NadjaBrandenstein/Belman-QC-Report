@@ -16,6 +16,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +71,24 @@ public class OperatorController {
 
     @FXML
     private void initialize() {
+
+        btnBack.setText("");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        btnRefresh.setText("");
+        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
+        btnLogout.setText("");
+        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+        btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png");
+        btnPrevious.setText("");
+        setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png");
+        btnNext.setText("");
+        setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png");
+        btnCamera.setText("");
+        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png");
+        btnSave.setText("");
+        setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png");
+
         imageHandlingModel = new ImageHandlingModel();
 
         try{
@@ -183,6 +203,13 @@ public class OperatorController {
                 updateImageCountLabel();
             }
         }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Image");
+        alert.setHeaderText("Are you sure you want to delete this image?");
+        alert.setContentText("This action cannot be undone.");
+        alert.showAndWait();
+
     }
 
     @FXML
@@ -263,6 +290,22 @@ public class OperatorController {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+    }
+
+    private void setButtonIcon(Button button, String iconPath) {
+        URL iconUrl = getClass().getResource(iconPath);
+        if (button == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        imageView.setPreserveRatio(true);
+
+        button.setGraphic(imageView);
     }
 
 }

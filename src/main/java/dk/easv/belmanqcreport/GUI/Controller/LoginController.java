@@ -17,6 +17,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +35,7 @@ public class LoginController implements Initializable {
     public Label lblForgotPassword;
     public Label lblLoginStatus;
     public MFXButton btnLogin;
+    public MFXButton btnBack;
     private Stage stage;
     private Login login;
     private User user;
@@ -50,8 +52,15 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;");
-        lblForgotPassword.setCursor(Cursor.HAND);
+
+        btnBack.setText("");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        btnLogin.setText("");
+        setButtonIcon(btnLogin, "/dk/easv/belmanqcreport/Icons/login.png");
+
+
+        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;"); // Make it look like a link
+        lblForgotPassword.setCursor(Cursor.HAND); // Change cursor to hand on hover
 
         lblForgotPassword.setOnMouseClicked(event -> {
             try {
@@ -162,5 +171,21 @@ public class LoginController implements Initializable {
         if (keyEvent.getCode().toString().equals("ENTER")) {
             btnLogin.fire(); // This doesn't work unless you reference the button directly
         }
+    }
+
+    private void setButtonIcon(MFXButton button, String iconPath) {
+        URL iconUrl = getClass().getResource(iconPath);
+        if (button == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        imageView.setPreserveRatio(true);
+
+        button.setGraphic(imageView);
     }
 }
