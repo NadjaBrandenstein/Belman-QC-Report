@@ -3,6 +3,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 // JavaFX Imports
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,8 @@ public class CameraController {
     private OperatorController parentController;
     private QcController qcController;
     private Thread previewThread;
+    @FXML
+    private MFXButton captureBtn;
 
     public void setParentController(OperatorController controller) {
         this.parentController = controller;
@@ -35,6 +38,8 @@ public class CameraController {
     }
 
     public void initialize() {
+        captureBtn.setText("");
+        setButtonIcon(captureBtn, "/dk/easv/belmanqcreport/Icons/camera.png");
 
         cameraHandler.startCamera();
 
