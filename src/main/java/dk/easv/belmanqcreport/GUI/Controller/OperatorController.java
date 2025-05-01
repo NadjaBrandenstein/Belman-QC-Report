@@ -183,6 +183,13 @@ public class OperatorController {
                 updateImageCountLabel();
             }
         }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Image");
+        alert.setHeaderText("Are you sure you want to delete this image?");
+        alert.setContentText("This action cannot be undone.");
+        alert.showAndWait();
+
     }
 
     @FXML

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.LoginController" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css">
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.LoginController">
 
     <!-- Top area -->
     <top>
@@ -45,12 +45,12 @@
                <center>
                   <HBox alignment="CENTER" prefHeight="82.0" prefWidth="312.0" BorderPane.alignment="CENTER">
                      <children>
-                        <MFXButton onAction="#btnQRCode" text="QR Code " />
-                        <MFXButton onAction="#btnManual" text="Manual" >
+                        <MFXButton disable="true" onAction="#btnQRCode" text="QR Code " />
+                        <MFXButton onAction="#btnManual" text="Manual">
                            <HBox.margin>
                               <Insets left="25.0" right="25.0" />
                            </HBox.margin></MFXButton>
-                        <MFXButton onAction="#btnChip" text="Chip"  />
+                        <MFXButton disable="true" onAction="#btnChip" text="Chip" />
                      </children>
                   </HBox>
                </center>
