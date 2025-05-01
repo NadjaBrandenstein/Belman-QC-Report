@@ -43,12 +43,12 @@
                <center>
                   <HBox alignment="CENTER" prefHeight="82.0" prefWidth="312.0" BorderPane.alignment="CENTER">
                      <children>
-                        <MFXButton onAction="#btnQRCode" text="QR Code " />
+                        <MFXButton disable="true" onAction="#btnQRCode" text="QR Code " />
                         <MFXButton onAction="#btnManual" text="Manual">
                            <HBox.margin>
                               <Insets left="25.0" right="25.0" />
                            </HBox.margin></MFXButton>
-                        <MFXButton onAction="#btnChip" text="Chip" />
+                        <MFXButton disable="true" onAction="#btnChip" text="Chip" />
                      </children>
                   </HBox>
                </center>

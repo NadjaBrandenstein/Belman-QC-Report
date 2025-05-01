@@ -50,7 +50,7 @@
          <right>
             <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton fx:id="btnDelete" text="X" />
+                  <MFXButton fx:id="btnDelete" disable="true" text="X" />
                </children>
             </HBox>
          </right>
@@ -71,7 +71,7 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </MFXButton>
-                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" style="-fx-text-fill: black;"/>
+                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" style="-fx-text-fill: black;" />
                         <MFXButton onAction="#btnNext" text="-&gt;" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets left="10.0" />

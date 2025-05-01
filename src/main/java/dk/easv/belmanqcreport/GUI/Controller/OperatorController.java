@@ -187,6 +187,28 @@ public class OperatorController {
 
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
+        if(currentImageIndex >= 0 && currentImageIndex < capturedImages.size()) {
+            capturedImages.remove(currentImageIndex);
+
+            if(currentImageIndex >= capturedImages.size()) {
+                currentImageIndex = capturedImages.size() -1;
+            }
+
+            if(capturedImages.isEmpty()) {
+                imageHboxCenter.getChildren().clear();
+                lblImageCount.setText("0 / 0");
+            }
+            else {
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            }
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Image");
+        alert.setHeaderText("Are you sure you want to delete this image?");
+        alert.setContentText("This action cannot be undone.");
+        alert.showAndWait();
 
     }
 

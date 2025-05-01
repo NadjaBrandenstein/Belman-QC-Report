@@ -47,6 +47,7 @@ public class LoginController implements Initializable {
         authService = new AuthService();
         login = new Login();
         user = new User();
+        authService.setLoginController(this);
     }
 
     @Override
