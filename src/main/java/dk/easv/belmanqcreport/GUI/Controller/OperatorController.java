@@ -167,6 +167,7 @@ public class OperatorController {
 
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
+
     }
 
     @FXML
