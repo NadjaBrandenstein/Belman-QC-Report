@@ -3,11 +3,11 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<?import javafx.scene.image.Image?>
 <BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController">
 
     <!-- Top area (can be like a title bar) -->
@@ -46,16 +46,16 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+            <HBox fx:id="imageHboxCenter" alignment="BOTTOM_RIGHT" prefHeight="258.0" prefWidth="528.0" style="-fx-background-color: grey;" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
-                  <ImageView fx:id="commentIcon" styleClass="comment-icon" visible="false" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="commentIcon" fitHeight="30.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" styleClass="comment-icon" visible="false">
                       <image>
                           <!-- @/icons/comment.png → src/main/resources/icons/comment.png -->
-                          <Image url="@/icons/icon.png"/>
+                          <Image url="@/icons/icon.png" />
                       </image>
 
                      <HBox.margin>
-                        <Insets left="10" top="10" />
+                        <Insets />
                      </HBox.margin>
 
                   </ImageView>
