@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.naming.Context;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -92,7 +93,13 @@ public class AdminController implements Initializable {
 
         // context menu
 
+        ContextMenu contextMenu = new ContextMenu();
 
+        MenuItem assignRole = new MenuItem("Assign Role");
+
+        contextMenu.getItems().add(assignRole);
+
+        tblEmployee.setContextMenu(contextMenu);
     }
     @FXML
     private void btnBack(ActionEvent actionEvent) {
