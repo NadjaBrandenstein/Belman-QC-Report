@@ -27,6 +27,9 @@ public class User {
 
     }
 
+    public User(String firstName, String lastName) {
+    }
+
     public int getUserID() {
         return userID;
     }

@@ -96,10 +96,6 @@ public class AdminController implements Initializable {
         try{
         userModel = new UserModel();
         allUsers = userModel.getAllUsers();
-            System.out.printf("Loaded user:" + allUsers.size());
-            for (User u: allUsers){
-                System.out.println(u.getFirstName() + "" + u.getLastName());
-            }
         users.setAll(allUsers);
         tblEmployee.setItems(users);
         }catch(Exception e){
@@ -112,7 +108,6 @@ public class AdminController implements Initializable {
         colLName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         colRole.setCellValueFactory(new PropertyValueFactory<>("userType"));
 
-        System.out.println("txtSearch is null?" + (txtSearch == null));
         txtSearch.setDisable(false);
         txtSearch.setEditable(true);
         txtSearch.requestFocus();
@@ -120,7 +115,6 @@ public class AdminController implements Initializable {
 
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             List<User> filtered = searchEngine.search(allUsers, newValue);
-            System.out.printf("Search term:" + newValue + "-> Result:" + filtered.size());
             users.setAll(filtered);
         });
 
@@ -343,6 +337,7 @@ public class AdminController implements Initializable {
         //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
         stage.setTitle("Create");
         stage.setScene(scene);
+        createEditUserController.setStage(stage);
         //reference to cancel button
         createEditUserController = fxmlLoader.getController();
         // Make the new stage modal, blocking interaction with the previous window
@@ -366,4 +361,6 @@ public class AdminController implements Initializable {
             }
         }
     }
+
+
 }

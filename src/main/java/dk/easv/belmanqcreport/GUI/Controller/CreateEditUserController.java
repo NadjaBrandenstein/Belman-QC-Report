@@ -1,5 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 
+import dk.easv.belmanqcreport.BE.User;
+import dk.easv.belmanqcreport.GUI.Model.UserModel;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckListView;
 import io.github.palexdev.materialfx.controls.MFXRadioButton;
@@ -7,11 +9,13 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,23 +28,49 @@ public class CreateEditUserController implements Initializable {
     public MFXCheckListView lstRoles;
     public MFXRadioButton radioManual;
 
-    public CreateEditUserController(){
+    private UserModel userModel;
+    private Stage stage;
 
+
+
+    public CreateEditUserController() throws IOException {
+        userModel = new UserModel();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         // set button icon
-
         btnSave.setText("");
         setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png");
         btnCancel.setText("");
         setButtonIcon(btnCancel, "/dk/easv/belmanqcreport/Icons/delete.png");
+
+
     }
 
-    public void btnSave(ActionEvent actionEvent) {
+    public void btnSave(ActionEvent actionEvent) throws Exception {
+        String firstName = txtFirstName.getText().trim();
+        String lastName = txtLastName.getText().trim();
 
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Missing Information");
+            alert.setHeaderText(null);
+            alert.setContentText("First name and last name are required.");
+            alert.showAndWait();
+        }
+
+        User newUser = new User(firstName, lastName);
+        userModel.createUser(newUser);
+
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     public void btnCancel(ActionEvent actionEvent) {
@@ -63,5 +93,4 @@ public class CreateEditUserController implements Initializable {
 
         button.setGraphic(imageView);
     }
-
 }
