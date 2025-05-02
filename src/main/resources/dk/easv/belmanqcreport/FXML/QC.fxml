@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -19,7 +20,8 @@
             <!-- LEFT SIDE -->
             <left>
                 <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
-                    <ImageView fx:id="logoImage" fitHeight="30" fitWidth="30" />
+                    <ImageView fx:id="logoImage" fitHeight="30" fitWidth="45.0">
+                  </ImageView>
                <MFXButton fx:id="btnBack" onAction="#btnBack" text="Back" />
                 </HBox>
             </left>
@@ -108,7 +110,7 @@
          <right>
             <HBox alignment="CENTER" prefHeight="84.0" prefWidth="289.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton fx:id="btnSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
+                  <MFXButton fx:id="btnPDFSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
                </children>
             </HBox>
          </right></BorderPane>
