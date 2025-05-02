@@ -54,12 +54,6 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<User, String> colRole;
     @FXML
-    public TableColumn colManual;
-    @FXML
-    public TableColumn colQRCode;
-    @FXML
-    public TableColumn colChip;
-    @FXML
     private MFXButton btnBack;
     @FXML
     private MFXButton btnLogout;
@@ -96,10 +90,6 @@ public class AdminController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        // ListView
-
 
         // Search
         users = FXCollections.observableArrayList();
@@ -376,5 +366,4 @@ public class AdminController implements Initializable {
             }
         }
     }
-
 }
