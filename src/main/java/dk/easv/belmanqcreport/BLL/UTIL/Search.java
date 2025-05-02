@@ -30,15 +30,4 @@ public class Search {
                 (String.valueOf(user.getOrderID()).contains(lowerQuery));
     }
 
-  /*  private boolean compareToFirstName(String query, User user) {
-        return user.getFirstname().toLowerCase().contains(query.toLowerCase());
-    }
-
-    private boolean compareToLastName(String query, User user) {
-        return user.getLastname().toLowerCase().contains(query.toLowerCase());
-    }
-
-    private boolean compareToOrderID(String query, User user) {
-        return String.valueOf(user.getOrderID()).contains(query);
-    }*/
 }

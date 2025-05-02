@@ -40,6 +40,9 @@ public class ForgotPasswordController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
+
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
     }
@@ -51,6 +54,7 @@ public class ForgotPasswordController implements Initializable {
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
             stage.setTitle("Belman");
             stage.setScene(scene);
             stage.show();
@@ -82,6 +86,25 @@ public class ForgotPasswordController implements Initializable {
         imageView.setPreserveRatio(true);
 
         button.setGraphic(imageView);
+    }
+
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
     }
 
 

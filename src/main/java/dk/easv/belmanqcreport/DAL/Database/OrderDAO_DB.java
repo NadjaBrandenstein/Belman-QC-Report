@@ -1,5 +1,6 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
+import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IOrder;
@@ -8,18 +9,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class OrderDAO_DB implements IOrder {
 
     @Override
     public List<Order> getAllOrder() throws Exception {
         DBConnection dbConnection = new DBConnection();
-        List<Order> orders = new ArrayList<>();
 
-        String sql = "SELECT orderID, userID, imagePath, comment FROM [Order]";
+
+        String sql = "SELECT o.orderID, o.userID, i.imageID, i.imagePath, i.comment from dbo.[Order] as o " +
+                    "LEFT JOIN dbo.Image as i on o.orderID = i.orderID ORDER BY o.orderID";
+
+        Map<Integer,Order> orderMap = new HashMap<>();
 
         try (Connection conn = dbConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -28,29 +30,34 @@ public class OrderDAO_DB implements IOrder {
             while (rs.next()) {
                 int orderID = rs.getInt("orderID");
                 int userID = rs.getInt("userID");
+
+                Order order = orderMap.computeIfAbsent(orderID,
+                        id -> new Order(id, userID));
+
+                int imageID = rs.getInt("imageID");
                 String imagePath = rs.getString("imagePath");
                 String comment = rs.getString("comment");
 
-
-                Order order = new Order(orderID, userID, imagePath.toString(), comment);
-                orders.add(order);
-            }
+                if(imagePath != null) {
+                    MyImage image = new MyImage(imageID, imagePath, comment);
+                    order.getImages().add(image);
+                }
         }
-        return orders;
+    }
+        return new ArrayList<>(orderMap.values());
     }
 
 
     @Override
     public Order createOrder(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
-        String sql = "INSERT INTO Order (orderID, imagePath, comment) VALUES (?,?,?)";
+        String sql = "INSERT INTO Order (orderID) VALUES (?,?,?)";
 
 
         try (Connection conn = dbConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, order.getOrderID());
-            stmt.setString(2, order.getImagePath());
-            stmt.setString(3, order.getComment());
+
 
             stmt.executeUpdate();
         }
@@ -63,14 +70,13 @@ public class OrderDAO_DB implements IOrder {
     @Override
     public Order updateOrder(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
-        String sql = "UPDATE [Order] SET imagePath = ?, comment = ? WHERE orderID = ?";
+        String sql = "UPDATE [Order] SET orderID = ?";
 
         try (Connection conn = dbConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, order.getImagePath());
-            stmt.setString(2, order.getComment());
-            stmt.setInt(3, order.getOrderID());
+
+            stmt.setInt(1, order.getOrderID());
 
             stmt.executeUpdate();
         }

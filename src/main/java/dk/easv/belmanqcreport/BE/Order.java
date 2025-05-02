@@ -1,18 +1,35 @@
 package dk.easv.belmanqcreport.BE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Order {
     private int orderID;
     private int userID;
-    private String imagePath;
-    private String comment;
 
-    public Order(int orderID, int userID, String imagePath, String comment) {
+    private List<MyImage> images = new ArrayList<>();
+
+    public Order(int orderID, int userID) {
         this.orderID = orderID;
         this.userID = userID;
-        this.imagePath = imagePath;
-        this.comment = comment;
+
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public List<MyImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<MyImage> images) {
+        this.images = images;
+    }
 
     public int getOrderID() {
         return orderID;
@@ -22,26 +39,11 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
     public void add(Order order) {
         setOrderID(order.getOrderID());
-        setImagePath(order.getImagePath());
-        setComment(order.getComment());
+
     }
 
 }

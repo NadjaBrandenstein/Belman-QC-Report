@@ -67,12 +67,16 @@ public class OperatorController {
     private Order currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
-    private final List<MyImage> capturedImages = new ArrayList<>();
+    private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
+    @FXML
+    private ImageView logoImage;
 
 
     @FXML
     private void initialize() {
+
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
@@ -96,9 +100,10 @@ public class OperatorController {
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
             if(!orders.isEmpty()){
-                currentOrder = orders.get(0);
+                currentOrder = imageHandlingModel.getAllOrders().get(0);
+                capturedImages = new ArrayList<>(currentOrder.getImages());
                 //setOrderImage(currentOrder.getImagePath());
-                showOrderDetails(currentOrder);
+                //showOrderDetails(currentOrder);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +142,8 @@ public class OperatorController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/ImageHandling.fxml"));
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
-            controller.setImageDetails(image);
+
+            controller.setOrderDetails(currentOrder, image);
 
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
@@ -153,13 +159,13 @@ public class OperatorController {
         }
     }
 
-    private void showOrderDetails(Order order) {
+    /*private void showOrderDetails(Order order) {
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
 
         boolean hasComment = order.getComment() != null
                 && !order.getComment().isEmpty();
         commentIcon.setVisible(hasComment);
-    }
+    }*/
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
@@ -250,7 +256,9 @@ public class OperatorController {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
             Scene scene = new Scene(loader.load());
+
             Stage stage = new Stage();
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
             stage.setTitle("Live Camera Preview");
             stage.setScene(scene);
 
@@ -331,5 +339,29 @@ public class OperatorController {
 
         button.setGraphic(imageView);
     }
+
+    public void setUserName(String userName) {
+        lblEmployee.setText(userName);
+    }
+
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
+    }
+
 
 }
