@@ -67,7 +67,7 @@ public class OperatorController {
     private Order currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
-    private final List<MyImage> capturedImages = new ArrayList<>();
+    private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
 
 
@@ -96,9 +96,10 @@ public class OperatorController {
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
             if(!orders.isEmpty()){
-                currentOrder = orders.get(0);
+                currentOrder = imageHandlingModel.getAllOrders().get(0);
+                capturedImages = new ArrayList<>(currentOrder.getImages());
                 //setOrderImage(currentOrder.getImagePath());
-                showOrderDetails(currentOrder);
+                //showOrderDetails(currentOrder);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +138,8 @@ public class OperatorController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/ImageHandling.fxml"));
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
-            controller.setImageDetails(image);
+
+            controller.setOrderDetails(currentOrder, image);
 
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
@@ -153,13 +155,13 @@ public class OperatorController {
         }
     }
 
-    private void showOrderDetails(Order order) {
+    /*private void showOrderDetails(Order order) {
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
 
         boolean hasComment = order.getComment() != null
                 && !order.getComment().isEmpty();
         commentIcon.setVisible(hasComment);
-    }
+    }*/
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
