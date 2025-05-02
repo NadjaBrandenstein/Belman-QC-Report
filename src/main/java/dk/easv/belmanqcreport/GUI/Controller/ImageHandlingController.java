@@ -56,12 +56,18 @@ public class ImageHandlingController {
     private
     Label alertLbl;
 
+    private OperatorController operatorController;
+
     private ImageHandlingModel model;
     private Order currentOrder;
     private MyImage currentImage;
+    @FXML
+    private ImageView logoImage;
 
     @FXML
     private void initialize() throws Exception {
+
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
         btnBackId.setText("");
         setButtonIcon(btnBackId, "/dk/easv/belmanqcreport/Icons/backbtn.png");
@@ -76,19 +82,42 @@ public class ImageHandlingController {
         setButtonIcon(btnSaveId, "/dk/easv/belmanqcreport/Icons/save.png");
 
        this.model = new ImageHandlingModel();
+       this.operatorController = new OperatorController();
 
-       try {
-           List<Order> orders = model.getAllOrders();
-           if (!orders.isEmpty()) {
-               setOrderDetails(orders.get(0));
 
-           }
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
+
     }
 
-    public void setImageDetails(MyImage img){
+    public void setOrderDetails(Order order, MyImage image) {
+        this.currentOrder = order;
+        this.currentImage = image;
+
+        lblOrderNumber.setText(String.valueOf(order.getOrderID()));
+        showImage();
+        txtComment.setText(image.getComment());
+    }
+
+    private void showImage(){
+        String path = currentImage.getImagePath();
+        File file = new File(path);
+        if(!file.exists()){
+            System.err.println("Image file missing" + path);
+            return;
+        }
+        Image fx = new Image(file.toURI().toString());
+        Background bg = new Background(new BackgroundImage(
+                fx,
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(
+                        BackgroundSize.AUTO, BackgroundSize.AUTO,
+                        false, false, true, false
+                )
+        ));
+        imageHboxCenter.setBackground(bg);
+    }
+
+    /*public void setImageDetails(MyImage img){
         this.currentImage = img;
 
         Image fx = new Image(new File(img.toURI()).toURI().toString());
@@ -100,14 +129,15 @@ public class ImageHandlingController {
                 )
         ));
         txtComment.setText(img.getComment());
-    }
+    }*/
 
-    public void setOrderDetails(Order order) {
+    /*public void setOrderDetails(Order order, MyImage img) {
         this.currentOrder = order;
+        this.currentImage = img;
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
-        txtComment.setText(order.getComment());
+        txtComment.setText(img.getComment());
 
-        String imagePath = order.getImagePath();
+        String imagePath = img.getImagePath();
         if (imagePath == null || imagePath.isEmpty()) {
             System.err.println("Image path is null or empty");
             return;
@@ -132,7 +162,7 @@ public class ImageHandlingController {
         );
         imageHboxCenter.setBackground(new javafx.scene.layout.Background(backgroundImage));
     }
-
+*/
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
@@ -141,6 +171,7 @@ public class ImageHandlingController {
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
             stage.setTitle("Belman");
             stage.setScene(scene);
             stage.show();
@@ -170,14 +201,13 @@ public class ImageHandlingController {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
-        String newComment = txtComment.getText();
-        currentOrder.setComment(newComment);
+        currentImage.setComment(txtComment.getText());
         try {
             model.updateOrder(currentOrder);
-            alertLbl.setText("Saved!");
+            //alertLbl.setText("Saved!");
         } catch (Exception e) {
             e.printStackTrace();
-            alertLbl.setText("Failed!");
+            //alertLbl.setText("Failed!");
         }
     }
 
@@ -197,6 +227,24 @@ public class ImageHandlingController {
         button.setGraphic(imageView);
     }
 
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
+    }
 
 
 }

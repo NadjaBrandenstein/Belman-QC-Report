@@ -7,7 +7,16 @@ public class MyImage {
     //private ImageView capturedImageView;
     private File imageFile;
     private int orderID;
+
+    private int    imageID;
+    private String imagePath;
     private String comment;
+
+    public MyImage(int imageID, String imagePath, String comment) {
+        this.imageID   = imageID;
+        this.imagePath = imagePath;
+        this.comment   = comment;
+    }
 
     public MyImage(File imageFile) {
         this.imageFile = imageFile;
@@ -15,6 +24,22 @@ public class MyImage {
 
     public File getImageFile() {
         return imageFile;
+    }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(int imageID) {
+        this.imageID = imageID;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public int getOrderID() {

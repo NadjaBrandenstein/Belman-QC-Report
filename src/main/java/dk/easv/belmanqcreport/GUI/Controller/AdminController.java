@@ -1,6 +1,5 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
-import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.User;
 // Other Imports
 import dk.easv.belmanqcreport.BLL.UTIL.Search;
@@ -17,18 +16,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import javax.naming.Context;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -58,9 +60,13 @@ public class AdminController implements Initializable {
     private MFXButton btnLogout;
 
     private UserModel userModel;
+    @FXML
+    private ImageView logoImage;
+    private CreateEditUserController createEditUserController;
 
     public AdminController() throws IOException {
         userModel = new UserModel();
+        createEditUserController = new CreateEditUserController();
     }
 
     private ObservableList<User> users = FXCollections.observableArrayList();
@@ -70,7 +76,8 @@ public class AdminController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // button icon
+        // Button icon
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
         btnLogout.setText("");
@@ -104,10 +111,6 @@ public class AdminController implements Initializable {
             displayError(e);
         }
 
-        colId.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        colFName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        colLName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        colRole.setCellValueFactory(new PropertyValueFactory<>("userType"));
 
         System.out.println("txtSearch is null?" + (txtSearch == null));
         txtSearch.setDisable(false);
@@ -122,7 +125,7 @@ public class AdminController implements Initializable {
         });
 
 
-        // context menu
+        // Context menu
 
         ContextMenu contextMenu = new ContextMenu();
 
@@ -166,7 +169,7 @@ public class AdminController implements Initializable {
             User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
             if (SelectedUser != null) {
                 try {
-
+                    createUser();
                 } catch (Exception e) {
                     displayError(e);
                 }
@@ -177,7 +180,7 @@ public class AdminController implements Initializable {
             User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
             if (SelectedUser != null) {
                 try {
-
+                    editUser();
                 } catch (Exception e) {
                     displayError(e);
                 }
@@ -274,6 +277,8 @@ public class AdminController implements Initializable {
         }
     }
 
+
+
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
         try {
@@ -305,16 +310,63 @@ public class AdminController implements Initializable {
         button.setGraphic(imageView);
     }
 
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
+    }
+
     private void setRole(){
 
     }
 
-    private void createUser() {
+    private void createUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
 
+        // Load FXML and get the controller
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Open the Add/Edit Event stage
+        Stage stage = new Stage();
+        //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
+        stage.setTitle("Create");
+        stage.setScene(scene);
+        //reference to cancel button
+        createEditUserController = fxmlLoader.getController();
+        // Make the new stage modal, blocking interaction with the previous window
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
-    private void editUser() {
+    private void editUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
 
+        // Load FXML and get the controller
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Open the Add/Edit Event stage
+        Stage stage = new Stage();
+        //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
+        stage.setTitle("Create");
+        stage.setScene(scene);
+        //reference to cancel button
+        createEditUserController = fxmlLoader.getController();
+        // Make the new stage modal, blocking interaction with the previous window
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     private void deleteUser() throws Exception {

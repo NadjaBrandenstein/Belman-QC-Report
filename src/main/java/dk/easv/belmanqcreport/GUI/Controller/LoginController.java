@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -25,6 +26,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,6 +54,8 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
@@ -136,6 +140,7 @@ public class LoginController implements Initializable {
         } else {
             lblLoginStatus.setText("Login failed.");
         }
+
     }
 
 
@@ -148,6 +153,7 @@ public class LoginController implements Initializable {
         AdminController adminController = fxmlLoader.getController();
         adminController.setUserName(this.txtUsername.getText());
 
+        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
@@ -162,6 +168,8 @@ public class LoginController implements Initializable {
         OperatorController operatorController = fxmlLoader.getController();
         operatorController.setUserName(this.txtUsername.getText());
 
+        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
+
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
@@ -175,6 +183,8 @@ public class LoginController implements Initializable {
 
         QcController qcController = fxmlLoader.getController();
         qcController.setUserName(this.txtUsername.getText());
+
+        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
 
         stage.setTitle("Belman");
         stage.setScene(scene);
@@ -203,4 +213,24 @@ public class LoginController implements Initializable {
 
         button.setGraphic(imageView);
     }
+
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
+    }
+
 }

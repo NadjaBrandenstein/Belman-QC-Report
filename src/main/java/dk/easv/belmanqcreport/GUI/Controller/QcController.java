@@ -72,9 +72,12 @@ public class QcController implements Initializable {
     private int currentImageIndex = -1;
 
     private Window primaryStage;
+    @FXML
+    private ImageView logoImage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnRefresh.setText("");
@@ -111,11 +114,12 @@ public class QcController implements Initializable {
     }
 
     public void btnLogout(ActionEvent actionEvent) {
-        try{
+        try {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
             stage.setTitle("Belman");
             stage.setScene(scene);
             stage.show();
@@ -125,7 +129,7 @@ public class QcController implements Initializable {
     }
 
     public void btnPrevious(ActionEvent actionEvent) {
-        if(currentImageIndex > 0) {
+        if (currentImageIndex > 0) {
             currentImageIndex--;
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
@@ -133,7 +137,7 @@ public class QcController implements Initializable {
     }
 
     public void btnNext(ActionEvent actionEvent) {
-        if(currentImageIndex < capturedImages.size() -1) {
+        if (currentImageIndex < capturedImages.size() - 1) {
             currentImageIndex++;
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
@@ -143,7 +147,7 @@ public class QcController implements Initializable {
     @FXML
     private void btnCamera(ActionEvent actionEvent) {
 
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
@@ -158,19 +162,18 @@ public class QcController implements Initializable {
 
             stage.setOnCloseRequest(event -> controller.cleanup());
             stage.show();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open camera.");
             alert.showAndWait();
         }
     }
 
-    public void displayCapturedImage (MyImage myImg) {
+    public void displayCapturedImage(MyImage myImg) {
         Platform.runLater(() -> {
 
             capturedImages.add(myImg);
-            currentImageIndex = capturedImages.size() -1;
+            currentImageIndex = capturedImages.size() - 1;
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
 
@@ -178,7 +181,7 @@ public class QcController implements Initializable {
     }
 
     public void showImageAtIndex(int index) {
-        if(index >= 0 && index < capturedImages.size()) {
+        if (index >= 0 && index < capturedImages.size()) {
             MyImage img = capturedImages.get(index);
             Image fxImage = new Image(img.toURI());
 
@@ -256,4 +259,24 @@ public class QcController implements Initializable {
     public void setUserName(String userName) {
         lblEmployee.setText(userName);
     }
+
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
+    }
+
 }
