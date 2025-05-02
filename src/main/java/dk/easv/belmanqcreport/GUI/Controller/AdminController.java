@@ -333,4 +333,9 @@ public class AdminController implements Initializable {
             }
         }
     }
+
+    public void setUserName(String userName) {
+        lblEmployee.setText(userName);
+    }
+
 }

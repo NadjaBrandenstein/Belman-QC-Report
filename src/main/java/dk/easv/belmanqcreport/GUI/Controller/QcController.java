@@ -252,4 +252,8 @@ public class QcController implements Initializable {
     @FXML
     private void btnSave(ActionEvent actionEvent) {
     }
+
+    public void setUserName(String userName) {
+        lblEmployee.setText(userName);
+    }
 }

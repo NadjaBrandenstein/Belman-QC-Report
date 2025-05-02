@@ -332,4 +332,8 @@ public class OperatorController {
         button.setGraphic(imageView);
     }
 
+    public void setUserName(String userName) {
+        lblEmployee.setText(userName);
+    }
+
 }

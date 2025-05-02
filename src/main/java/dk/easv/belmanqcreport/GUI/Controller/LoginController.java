@@ -144,6 +144,10 @@ public class LoginController implements Initializable {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Admin.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+
+        AdminController adminController = fxmlLoader.getController();
+        adminController.setUserName(this.txtUsername.getText());
+
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
@@ -154,6 +158,10 @@ public class LoginController implements Initializable {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+
+        OperatorController operatorController = fxmlLoader.getController();
+        operatorController.setUserName(this.txtUsername.getText());
+
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
@@ -164,6 +172,10 @@ public class LoginController implements Initializable {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/QC.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+
+        QcController qcController = fxmlLoader.getController();
+        qcController.setUserName(this.txtUsername.getText());
+
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
