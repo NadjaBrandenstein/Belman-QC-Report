@@ -53,15 +53,7 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<User, String> colRole;
     @FXML
-    public TableColumn colManual;
-    @FXML
-    public TableColumn colQRCode;
-    @FXML
-    public TableColumn colChip;
-    @FXML
     private MFXButton btnBack;
-    @FXML
-    private MFXButton btnRefresh;
     @FXML
     private MFXButton btnLogout;
 
@@ -81,8 +73,6 @@ public class AdminController implements Initializable {
         // button icon
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
 
@@ -97,10 +87,6 @@ public class AdminController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        // ListView
-
 
         // Search
         users = FXCollections.observableArrayList();
@@ -289,10 +275,6 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    private void btnRefresh(ActionEvent actionEvent) {
-    }
-
-    @FXML
     private void btnLogout(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -351,5 +333,4 @@ public class AdminController implements Initializable {
             }
         }
     }
-
 }

@@ -31,7 +31,7 @@
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
                <children>
-                        <MFXTextField fx:id="txtSearch" alignment="BOTTOM_LEFT" maxHeight="20.0" minHeight="22.0" prefHeight="20.0" prefWidth="145.0" promptText="Search">
+                        <MFXTextField fx:id="txtSearch" alignment="BOTTOM_LEFT" maxHeight="30.0" minHeight="22.0" prefHeight="30.0" prefWidth="145.0" promptText="Search">
                             <HBox.margin>
                                 <Insets />
                             </HBox.margin>
@@ -65,17 +65,17 @@
                 <HBox prefHeight="46.0" prefWidth="597.0" BorderPane.alignment="CENTER" />
             </bottom>
             <left>
-                <HBox alignment="CENTER" prefHeight="280.0" prefWidth="290.0" BorderPane.alignment="CENTER" />
+                <HBox alignment="CENTER" prefHeight="280.0" prefWidth="280.0" BorderPane.alignment="CENTER" />
             </left>
             <right>
-                <HBox alignment="CENTER" prefHeight="445.0" prefWidth="290.0" BorderPane.alignment="CENTER">
+                <HBox alignment="CENTER" prefHeight="445.0" prefWidth="280.0" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets />
                     </BorderPane.margin>
                 </HBox>
             </right>
             <center>
-                <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="445.0" prefWidth="312.0" BorderPane.alignment="CENTER">
+                <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="460.0" prefWidth="320.0" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
                         <TableColumn fx:id="colFName" prefWidth="75.0" text="First Name" />
