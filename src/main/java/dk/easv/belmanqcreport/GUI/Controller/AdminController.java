@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -53,26 +55,18 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<User, String> colRole;
     @FXML
-    public TableColumn colManual;
-    @FXML
-    public TableColumn colQRCode;
-    @FXML
-    public TableColumn colChip;
-    @FXML
     private MFXButton btnBack;
-    @FXML
-    private MFXButton btnRefresh;
     @FXML
     private MFXButton btnLogout;
 
     private UserModel userModel;
     @FXML
     private ImageView logoImage;
-
-
+    private CreateEditUserController createEditUserController;
 
     public AdminController() throws IOException {
         userModel = new UserModel();
+        createEditUserController = new CreateEditUserController();
     }
 
     private ObservableList<User> users = FXCollections.observableArrayList();
@@ -86,8 +80,6 @@ public class AdminController implements Initializable {
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
 
@@ -102,10 +94,6 @@ public class AdminController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        // ListView
-
 
         // Search
         users = FXCollections.observableArrayList();
@@ -142,8 +130,8 @@ public class AdminController implements Initializable {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem qcRole = new MenuItem("QC");
-        MenuItem manuelLogin = new MenuItem("Manuel Login");
-        MenuItem chipLogin = new MenuItem("Chip Login");
+        MenuItem operatorRole = new MenuItem("Operator");
+        MenuItem adminRole = new MenuItem("Admin");
         MenuItem createUser = new MenuItem("Create User");
         MenuItem editUser = new MenuItem("Edit User");
         MenuItem deleteUser = new MenuItem("Delete User");
@@ -151,12 +139,119 @@ public class AdminController implements Initializable {
         MenuItem createQRLogin = new MenuItem("Create QR Login");
         MenuItem createChipLogin = new MenuItem("Create Chip Login");
 
-        Menu assingRole = new Menu("Assign Role");
+        createChipLogin.setDisable(true);
+        createQRLogin.setDisable(true);
 
-        assingRole.getItems().addAll(qcRole,manuelLogin,chipLogin);
-        contextMenu.getItems().add(assingRole);
+        Menu assingRole = new Menu("Assign Role");
+        Menu loginOptions = new Menu("Login Options");
+        Menu usersOptions = new Menu("User Options");
+
+        usersOptions.getItems().addAll(createUser, editUser, deleteUser);
+        loginOptions.getItems().addAll(createQRLogin,createManualLogin,createChipLogin);
+        assingRole.getItems().addAll(qcRole,operatorRole,adminRole);
+        contextMenu.getItems().addAll(assingRole,usersOptions,loginOptions);
 
         tblEmployee.setContextMenu(contextMenu);
+
+        // action on the context menu
+        deleteUser.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+                    deleteUser();
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createUser.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+                    createUser();
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        editUser.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+                    editUser();
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        qcRole.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        operatorRole.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        adminRole.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createManualLogin.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createQRLogin.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createChipLogin.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
     }
 
     private void displayError(Exception e) {
@@ -182,9 +277,7 @@ public class AdminController implements Initializable {
         }
     }
 
-    @FXML
-    private void btnRefresh(ActionEvent actionEvent) {
-    }
+
 
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
@@ -236,5 +329,60 @@ public class AdminController implements Initializable {
         logoImage.setPreserveRatio(true);
     }
 
+    private void setRole(){
 
+    }
+
+    private void createUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
+
+        // Load FXML and get the controller
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Open the Add/Edit Event stage
+        Stage stage = new Stage();
+        //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
+        stage.setTitle("Create");
+        stage.setScene(scene);
+        //reference to cancel button
+        createEditUserController = fxmlLoader.getController();
+        // Make the new stage modal, blocking interaction with the previous window
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
+    private void editUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
+
+        // Load FXML and get the controller
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Open the Add/Edit Event stage
+        Stage stage = new Stage();
+        //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
+        stage.setTitle("Create");
+        stage.setScene(scene);
+        //reference to cancel button
+        createEditUserController = fxmlLoader.getController();
+        // Make the new stage modal, blocking interaction with the previous window
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
+    private void deleteUser() throws Exception {
+        User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+
+        if(selectedUser != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Confirmation");
+            alert.setContentText("Are you sure you want to delete this user?");
+
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+            if(result == ButtonType.OK) {
+                userModel.deleteUser(selectedUser);
+                tblEmployee.getItems().remove(selectedUser);
+            }
+        }
+    }
 }

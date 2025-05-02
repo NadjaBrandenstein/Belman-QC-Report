@@ -22,25 +22,29 @@
             </padding>
             <!-- LEFT SIDE -->
             <left>
-                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
-                    <ImageView fx:id="logoImage" fitHeight="30" fitWidth="52.0">
-                  </ImageView>
-                    <MFXButton fx:id="btnBack" onAction="#btnBack" />
+                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="174.0" spacing="10.0" style="-fx-background-color: #004b88;">
+                    <ImageView fx:id="logoImage" fitHeight="30" fitWidth="30" />
+               <MFXButton fx:id="btnBack" onAction="#btnBack" />
                 </HBox>
             </left>
 
             <!-- CENTER -->
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
-                    <Label fx:id="lblOrderNumber" style="-fx-font-size: 16px; -fx-font-weight: bold;" styleClass="whiteLabel" text="Order #12345" />
-               <MFXButton fx:id="btnRefresh" onAction="#btnRefresh" />
+               <children>
+                        <MFXTextField fx:id="txtSearch" alignment="BOTTOM_LEFT" maxHeight="30.0" minHeight="22.0" prefHeight="30.0" prefWidth="145.0" promptText="Search">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </MFXTextField>
+               </children>
                 </HBox>
             </center>
 
             <!-- RIGHT SIDE -->
             <right>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-background-color: #004b88;">
-                    <Label fx:id="lblEmployee" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
+                    <Label fx:id="lblEmployee" prefHeight="20.0" prefWidth="113.6" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
                <MFXButton fx:id="btnLogout" onAction="#btnLogout" />
                 </HBox>
             </right>
@@ -56,39 +60,28 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <top>
-                <HBox prefHeight="56.0" prefWidth="597.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <MFXTextField fx:id="txtSearch" alignment="TOP_LEFT" maxHeight="30.0" minHeight="22.0" prefHeight="30.0" prefWidth="145.0" promptText="Search">
-                            <HBox.margin>
-                                <Insets left="77.0" top="7.0" />
-                            </HBox.margin>
-                        </MFXTextField>
-                    </children>
-                </HBox>
+                <HBox prefHeight="56.0" prefWidth="597.0" BorderPane.alignment="CENTER" />
             </top>
             <bottom>
                 <HBox prefHeight="46.0" prefWidth="597.0" BorderPane.alignment="CENTER" />
             </bottom>
             <left>
-                <HBox alignment="CENTER" prefHeight="280.0" prefWidth="78.0" BorderPane.alignment="CENTER" />
+                <HBox alignment="CENTER" prefHeight="280.0" prefWidth="280.0" BorderPane.alignment="CENTER" />
             </left>
             <right>
-                <HBox alignment="CENTER" prefHeight="260.0" prefWidth="88.0" BorderPane.alignment="CENTER">
+                <HBox alignment="CENTER" prefHeight="445.0" prefWidth="280.0" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                     </BorderPane.margin>
                 </HBox>
             </right>
             <center>
-                <TableView fx:id="tblEmployee" prefHeight="280.0" prefWidth="418.0" BorderPane.alignment="CENTER">
+                <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="460.0" prefWidth="320.0" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
                         <TableColumn fx:id="colFName" prefWidth="75.0" text="First Name" />
                         <TableColumn fx:id="colLName" prefWidth="75.0" text="Last Name" />
                         <TableColumn fx:id="colRole" prefWidth="75.0" text="Role" />
-                        <TableColumn fx:id="colManual" prefWidth="75.0" text="Manual" />
-                        <TableColumn fx:id="colQRCode" prefWidth="75.0" text="QR-Code" />
-                        <TableColumn fx:id="colChip" prefWidth="75.0" text="Chip" />
                     </columns>
                 </TableView>
             </center>

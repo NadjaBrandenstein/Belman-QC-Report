@@ -206,6 +206,12 @@ public class OperatorController {
         if(currentImageIndex >= 0 && currentImageIndex < capturedImages.size()) {
             capturedImages.remove(currentImageIndex);
 
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Image");
+            alert.setHeaderText("Are you sure you want to delete this image?");
+            alert.setContentText("This action cannot be undone.");
+            alert.showAndWait();
+
             if(currentImageIndex >= capturedImages.size()) {
                 currentImageIndex = capturedImages.size() -1;
             }
@@ -219,12 +225,6 @@ public class OperatorController {
                 updateImageCountLabel();
             }
         }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Image");
-        alert.setHeaderText("Are you sure you want to delete this image?");
-        alert.setContentText("This action cannot be undone.");
-        alert.showAndWait();
 
     }
 
@@ -282,10 +282,10 @@ public class OperatorController {
         Platform.runLater(() -> {
             myImg.setOrderID(currentOrder.getOrderID());
 
-           capturedImages.add(myImg);
-           currentImageIndex = capturedImages.size() -1;
-           showImageAtIndex(currentImageIndex);
-           updateImageCountLabel();
+            capturedImages.add(myImg);
+            currentImageIndex = capturedImages.size() -1;
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
 
         });
     }
@@ -293,17 +293,17 @@ public class OperatorController {
     public void showImageAtIndex(int index) {
         if(index < 0 || index >= capturedImages.size()) return;
 
-            MyImage img = capturedImages.get(index);
-            Image fxImage = new Image(img.toURI());
-            ImageView imageView = new ImageView(fxImage);
+        MyImage img = capturedImages.get(index);
+        Image fxImage = new Image(img.toURI());
+        ImageView imageView = new ImageView(fxImage);
 
-            imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
-            imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
-            imageView.setPreserveRatio(false);
+        imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
+        imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+        imageView.setPreserveRatio(false);
 
-            imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
+        imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
 
-            imageHboxCenter.getChildren().setAll(imageView);
+        imageHboxCenter.getChildren().setAll(imageView);
             /*imageHboxCenter.getChildren().clear();
             imageHboxCenter.getChildren().add(imageView);*/
 
