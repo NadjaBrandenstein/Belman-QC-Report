@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -61,14 +62,14 @@ public class AdminController implements Initializable {
     @FXML
     private MFXButton btnBack;
     @FXML
-    private MFXButton btnRefresh;
-    @FXML
     private MFXButton btnLogout;
 
     private UserModel userModel;
+    private CreateEditUserController createEditUserController;
 
     public AdminController() throws IOException {
         userModel = new UserModel();
+        createEditUserController = new CreateEditUserController();
     }
 
     private ObservableList<User> users = FXCollections.observableArrayList();
@@ -81,8 +82,6 @@ public class AdminController implements Initializable {
         // button icon
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
 
@@ -180,7 +179,7 @@ public class AdminController implements Initializable {
             User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
             if (SelectedUser != null) {
                 try {
-
+                    createUser();
                 } catch (Exception e) {
                     displayError(e);
                 }
@@ -191,7 +190,7 @@ public class AdminController implements Initializable {
             User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
             if (SelectedUser != null) {
                 try {
-
+                    editUser();
                 } catch (Exception e) {
                     displayError(e);
                 }
@@ -288,9 +287,7 @@ public class AdminController implements Initializable {
         }
     }
 
-    @FXML
-    private void btnRefresh(ActionEvent actionEvent) {
-    }
+
 
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
@@ -327,12 +324,40 @@ public class AdminController implements Initializable {
 
     }
 
-    private void createUser() {
+    private void createUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
 
+        // Load FXML and get the controller
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Open the Add/Edit Event stage
+        Stage stage = new Stage();
+        //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
+        stage.setTitle("Create");
+        stage.setScene(scene);
+        //reference to cancel button
+        createEditUserController = fxmlLoader.getController();
+        // Make the new stage modal, blocking interaction with the previous window
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
-    private void editUser() {
+    private void editUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
 
+        // Load FXML and get the controller
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Open the Add/Edit Event stage
+        Stage stage = new Stage();
+        //stage.getIcons().add(new Image("/dk.easv/eventticketeasvbar/Icon/Skærmbillede 2025-03-27 142743.png"));
+        stage.setTitle("Create");
+        stage.setScene(scene);
+        //reference to cancel button
+        createEditUserController = fxmlLoader.getController();
+        // Make the new stage modal, blocking interaction with the previous window
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     private void deleteUser() throws Exception {
