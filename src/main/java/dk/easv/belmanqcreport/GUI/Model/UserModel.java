@@ -6,13 +6,12 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-import dk.easv.belmanqcreport.BE.User;
-import dk.easv.belmanqcreport.BLL.Manager.UserManager;
+
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 
 import java.io.IOException;
-import java.util.List;
+
 
 public class UserModel {
 

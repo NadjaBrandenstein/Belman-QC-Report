@@ -69,10 +69,14 @@ public class OperatorController {
     private final CameraHandling cameraHandler = new CameraHandling();
     private final List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
+    @FXML
+    private ImageView logoImage;
 
 
     @FXML
     private void initialize() {
+
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
@@ -250,7 +254,9 @@ public class OperatorController {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
             Scene scene = new Scene(loader.load());
+
             Stage stage = new Stage();
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
             stage.setTitle("Live Camera Preview");
             stage.setScene(scene);
 
@@ -331,5 +337,25 @@ public class OperatorController {
 
         button.setGraphic(imageView);
     }
+
+    private void setImageViewIcon(ImageView logoImage, String iconPath) {
+        if (logoImage == null) {
+            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        logoImage.setImage(icon);
+        logoImage.setFitWidth(100);  // Set your desired width
+        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setPreserveRatio(true);
+    }
+
 
 }
