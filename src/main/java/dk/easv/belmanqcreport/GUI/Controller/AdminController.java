@@ -140,8 +140,8 @@ public class AdminController implements Initializable {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem qcRole = new MenuItem("QC");
-        MenuItem manuelLogin = new MenuItem("Manuel Login");
-        MenuItem chipLogin = new MenuItem("Chip Login");
+        MenuItem operatorRole = new MenuItem("Operator");
+        MenuItem adminRole = new MenuItem("Admin");
         MenuItem createUser = new MenuItem("Create User");
         MenuItem editUser = new MenuItem("Edit User");
         MenuItem deleteUser = new MenuItem("Delete User");
@@ -149,10 +149,17 @@ public class AdminController implements Initializable {
         MenuItem createQRLogin = new MenuItem("Create QR Login");
         MenuItem createChipLogin = new MenuItem("Create Chip Login");
 
-        Menu assingRole = new Menu("Assign Role");
+        createChipLogin.setDisable(true);
+        createQRLogin.setDisable(true);
 
-        assingRole.getItems().addAll(qcRole,manuelLogin,chipLogin);
-        contextMenu.getItems().add(assingRole);
+        Menu assingRole = new Menu("Assign Role");
+        Menu loginOptions = new Menu("Login Options");
+        Menu usersOptions = new Menu("User Options");
+
+        usersOptions.getItems().addAll(createUser, editUser, deleteUser);
+        loginOptions.getItems().addAll(createQRLogin,createManualLogin,createChipLogin);
+        assingRole.getItems().addAll(qcRole,operatorRole,adminRole);
+        contextMenu.getItems().addAll(assingRole,usersOptions,loginOptions);
 
         tblEmployee.setContextMenu(contextMenu);
     }
