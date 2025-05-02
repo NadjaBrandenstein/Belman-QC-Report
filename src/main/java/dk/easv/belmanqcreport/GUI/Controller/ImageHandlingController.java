@@ -41,13 +41,13 @@ public class ImageHandlingController {
     private Label lblEmployee;
 
     @FXML
-    private MFXButton btnBack;
+    private MFXButton btnBackId;
     @FXML
-    private MFXButton btnRefresh;
+    private MFXButton btnRefreshId;
     @FXML
-    private MFXButton btnLogout;
+    private MFXButton btnLogoutId;
     @FXML
-    private MFXButton btnSave;
+    private MFXButton btnSaveId;
     @FXML
     private MFXTextField txtComment;
     @FXML
@@ -63,17 +63,17 @@ public class ImageHandlingController {
     @FXML
     private void initialize() throws Exception {
 
-        btnBack.setText("");
-        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        btnBackId.setText("");
+        setButtonIcon(btnBackId, "/dk/easv/belmanqcreport/Icons/backbtn.png");
 
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
+        btnRefreshId.setText("");
+        setButtonIcon(btnRefreshId, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
 
-        btnLogout.setText("");
-        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+        btnLogoutId.setText("");
+        setButtonIcon(btnLogoutId, "/dk/easv/belmanqcreport/Icons/logout.png");
 
-        btnSave.setText("");
-        setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png");
+        btnSaveId.setText("");
+        setButtonIcon(btnSaveId, "/dk/easv/belmanqcreport/Icons/save.png");
 
        this.model = new ImageHandlingModel();
 
