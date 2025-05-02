@@ -29,6 +29,7 @@ import javax.naming.Context;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -162,6 +163,106 @@ public class AdminController implements Initializable {
         contextMenu.getItems().addAll(assingRole,usersOptions,loginOptions);
 
         tblEmployee.setContextMenu(contextMenu);
+
+        // action on the context menu
+        deleteUser.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+                    deleteUser();
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createUser.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        editUser.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        qcRole.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        operatorRole.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        adminRole.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createManualLogin.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createQRLogin.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
+
+        createChipLogin.setOnAction((ActionEvent event) -> {
+            User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+            if (SelectedUser != null) {
+                try {
+
+                } catch (Exception e) {
+                    displayError(e);
+                }
+            }
+        });
     }
 
     private void displayError(Exception e) {
@@ -220,6 +321,35 @@ public class AdminController implements Initializable {
         imageView.setPreserveRatio(true);
 
         button.setGraphic(imageView);
+    }
+
+    private void setRole(){
+
+    }
+
+    private void createUser() {
+
+    }
+
+    private void editUser() {
+
+    }
+
+    private void deleteUser() throws Exception {
+        User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+
+        if(selectedUser != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Confirmation");
+            alert.setContentText("Are you sure you want to delete this user?");
+
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+            if(result == ButtonType.OK) {
+                userModel.deleteUser(selectedUser);
+                tblEmployee.getItems().remove(selectedUser);
+            }
+        }
     }
 
 }

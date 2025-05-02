@@ -60,7 +60,7 @@ public class UserDAO_DB implements IUser {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getUserTypeID()); // Make sure this is available on your User class
+            ps.setInt(3, user.getUserTypeID());
 
             ps.executeUpdate();
 
