@@ -7,6 +7,7 @@ import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.Main;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 // JavaFx Imports
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
@@ -34,8 +36,6 @@ import java.util.List;
 
 public class OperatorController {
 
-    @FXML
-    private Label lblOrderNumber;
     @FXML
     private Label lblEmployee;
     @FXML
@@ -62,6 +62,10 @@ public class OperatorController {
     private MFXButton btnSave;
     @FXML
     private ImageView commentIcon;
+    @FXML
+    private ImageView logoImage;
+    @FXML
+    private MFXComboBox<Order> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
     private Order currentOrder;
@@ -69,8 +73,6 @@ public class OperatorController {
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
-    @FXML
-    private ImageView logoImage;
 
 
     @FXML
@@ -99,12 +101,39 @@ public class OperatorController {
 
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
-            if(!orders.isEmpty()){
+            cbOrderNumber.getItems().addAll(orders);
+
+            cbOrderNumber.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(Order order) {
+                    return order == null ? "" : String.valueOf(order.getOrderID());
+                }
+
+                @Override
+                public Order fromString(String string) {
+                    return null;
+                }
+            });
+
+            cbOrderNumber.setOnAction(event -> {
+                currentOrder = cbOrderNumber.getSelectedItem();
+                capturedImages = new ArrayList<>(currentOrder.getImages());
+                displayImages(capturedImages);
+            });
+            
+            if (!orders.isEmpty()) {
+                cbOrderNumber.getSelectionModel().selectFirst();
+                currentOrder = cbOrderNumber.getSelectedItem();
+                capturedImages = new ArrayList<>(currentOrder.getImages());
+                showImageAtIndex(0);
+                updateImageCountLabel();
                 currentOrder = imageHandlingModel.getAllOrders().get(0);
                 capturedImages = new ArrayList<>(currentOrder.getImages());
                 //setOrderImage(currentOrder.getImagePath());
                 //showOrderDetails(currentOrder);
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -306,8 +335,6 @@ public class OperatorController {
         imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
 
         imageHboxCenter.getChildren().setAll(imageView);
-            /*imageHboxCenter.getChildren().clear();
-            imageHboxCenter.getChildren().add(imageView);*/
 
     }
 
@@ -358,10 +385,40 @@ public class OperatorController {
 
         Image icon = new Image(iconUrl.toExternalForm());
         logoImage.setImage(icon);
-        logoImage.setFitWidth(100);  // Set your desired width
-        logoImage.setFitHeight(100); // Set your desired height
+        logoImage.setFitWidth(100);
+        logoImage.setFitHeight(100);
         logoImage.setPreserveRatio(true);
     }
 
+
+    @FXML
+    private void cbOrderNumber(ActionEvent actionEvent) {
+
+        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        if (selectedOrder != null) {
+            currentOrder = selectedOrder;
+            capturedImages = new ArrayList<>(currentOrder.getImages());
+            currentImageIndex = 0;
+            if (!capturedImages.isEmpty()) {
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            } else {
+                imageHboxCenter.getChildren().clear();
+                lblImageCount.setText("0 / 0");
+            }
+        }
+
+    }
+
+    private void displayImages(List<MyImage> capturedImages) {
+        imageHboxCenter.getChildren().clear();
+        for (MyImage image : capturedImages) {
+            ImageView imageView = new ImageView(String.valueOf(image));
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+            imageView.setPreserveRatio(true);
+            imageHboxCenter.getChildren().add(imageView);
+        }
+    }
 
 }

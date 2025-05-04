@@ -2,12 +2,16 @@ package dk.easv.belmanqcreport.GUI.Controller;
 
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
+import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.util.StringConverter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -66,9 +70,14 @@ public class QcController implements Initializable {
     private MFXButton btnCamera;
     @FXML
     private MFXButton btnPDFSave;
+    @FXML
+    private MFXComboBox<Order> cbOrderNumber;
+
+    private ImageHandlingModel imageHandlingModel;
+    private Order currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
-    private final List<MyImage> capturedImages = new ArrayList<>();
+    private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
 
     private Window primaryStage;
@@ -94,6 +103,43 @@ public class QcController implements Initializable {
         setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
         btnPDFSave.setText("");
         setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
+
+        imageHandlingModel = new ImageHandlingModel();
+
+        try {
+            List<Order> orders = imageHandlingModel.getAllOrders();
+            cbOrderNumber.getItems().addAll(orders);
+
+            cbOrderNumber.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(Order order) {
+                    return order == null ? "" : String.valueOf(order.getOrderID());
+                }
+
+                @Override
+                public Order fromString(String string) {
+                    return null;
+                }
+            });
+
+            cbOrderNumber.setOnAction(event -> {
+                currentOrder = cbOrderNumber.getSelectedItem();
+                capturedImages = new ArrayList<>(currentOrder.getImages());
+                displayImages(capturedImages);
+            });
+
+            if (!orders.isEmpty()) {
+                cbOrderNumber.getSelectionModel().selectFirst();
+                currentOrder = cbOrderNumber.getSelectedItem();
+                capturedImages = new ArrayList<>(currentOrder.getImages());
+                displayImages(capturedImages);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void btnBack(ActionEvent actionEvent) {
@@ -279,4 +325,33 @@ public class QcController implements Initializable {
         logoImage.setPreserveRatio(true);
     }
 
+    @FXML
+    private void cbOrderNumber(ActionEvent actionEvent) {
+
+        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        if (selectedOrder != null) {
+            currentOrder = selectedOrder;
+            capturedImages = new ArrayList<>(currentOrder.getImages());
+            currentImageIndex = 0;
+            if (!capturedImages.isEmpty()) {
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            } else {
+                imageHboxCenter.getChildren().clear();
+                lblImageCount.setText("0 / 0");
+            }
+        }
+
+    }
+
+    private void displayImages(List<MyImage> capturedImages) {
+        imageHboxCenter.getChildren().clear();
+        for (MyImage image : capturedImages) {
+            ImageView imageView = new ImageView(String.valueOf(image));
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+            imageView.setPreserveRatio(true);
+            imageHboxCenter.getChildren().add(imageView);
+        }
+    }
 }
