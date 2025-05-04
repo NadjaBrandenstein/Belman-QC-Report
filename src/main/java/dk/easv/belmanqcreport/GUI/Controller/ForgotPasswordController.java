@@ -1,5 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 
+import dk.easv.belmanqcreport.BE.Login;
+import dk.easv.belmanqcreport.DAL.Database.LoginDAO_DB;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
@@ -66,6 +68,37 @@ public class ForgotPasswordController implements Initializable {
 
     @FXML
     public void btnChangePassword(ActionEvent keyEvent) {
+        String username = txtUsername.getText();
+        String newPassword = txtNewPassword.getText().trim();
+        String confirmPassword = txtConfirmPassword.getText().trim();
+
+        if (username.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            lblLoginStatus.setText("Please fill in all fields.");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            lblLoginStatus.setText("Passwords do not match.");
+            return;
+        }
+
+        try {
+            LoginDAO_DB loginDAO = new LoginDAO_DB();
+            Login user = loginDAO.getLoginByUsername(username);
+
+            if (user == null) {
+                lblLoginStatus.setText("User not found.");
+                return;
+            }
+            user.setPassword(newPassword);
+
+            loginDAO.updateLogin(user);
+
+            lblLoginStatus.setText("Password changed successfully.");
+        }catch (Exception e){
+            lblLoginStatus.setText("Error changing password.");
+            e.printStackTrace();
+        }
     }
 
     @FXML
