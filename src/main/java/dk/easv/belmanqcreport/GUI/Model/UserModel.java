@@ -35,7 +35,7 @@ public class UserModel {
         return tblEmployee;
     }
 
-    public void UpdateUser(User user) throws Exception {
+    public void updateUser(User user) throws Exception {
         userManager.updateUser(user);
     }
 

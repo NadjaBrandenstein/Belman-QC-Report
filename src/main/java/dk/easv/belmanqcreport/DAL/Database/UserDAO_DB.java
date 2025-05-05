@@ -76,6 +76,7 @@ public class UserDAO_DB implements IUser {
     }
 
 
+
     @Override
     public User updateUser(User user) throws Exception {
         String sql = "UPDATE [User] SET fname = ?, lname = ?, userTypeID = ? WHERE userID = ?";
@@ -109,5 +110,24 @@ public class UserDAO_DB implements IUser {
             ps.executeUpdate();
         }
     }
+
+    private int getUserTypeIDByName(String userTypeName) throws Exception {
+        String sql = "SELECT userTypeID FROM UserType WHERE userType = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userTypeName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("userTypeID");
+                } else {
+                    throw new Exception("UserType '" + userTypeName + "' not found.");
+                }
+            }
+        }
+    }
+
 
 }

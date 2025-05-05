@@ -6,11 +6,15 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckListView;
 import io.github.palexdev.materialfx.controls.MFXRadioButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -25,16 +29,23 @@ public class CreateEditUserController implements Initializable {
     public MFXTextField txtLastName;
     public MFXButton btnSave;
     public MFXButton btnCancel;
-    public MFXCheckListView lstRoles;
+
     public MFXRadioButton radioManual;
+    public ListView<String> lstRoleCheckList;
+
 
     private UserModel userModel;
     private Stage stage;
+
+    private boolean isEditMode = false;
+    private User editingUser;
+
 
 
 
     public CreateEditUserController() throws IOException {
         userModel = new UserModel();
+
     }
 
     public void setStage(Stage stage) {
@@ -50,7 +61,8 @@ public class CreateEditUserController implements Initializable {
         btnCancel.setText("");
         setButtonIcon(btnCancel, "/dk/easv/belmanqcreport/Icons/delete.png");
 
-
+        ObservableList<String> lstRoles = FXCollections.observableArrayList("qc", "operator", "admin");
+        lstRoleCheckList.getItems().setAll(lstRoles);
     }
 
     public void btnSave(ActionEvent actionEvent) throws Exception {
@@ -63,15 +75,63 @@ public class CreateEditUserController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("First name and last name are required.");
             alert.showAndWait();
+            return;
         }
 
+        // Get the selected role(s)
+        lstRoleCheckList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        // Get selected role
+        String selectedRole = lstRoleCheckList.getSelectionModel().getSelectedItem();
+
+        if (selectedRole == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Role Selected");
+            alert.setHeaderText(null);
+            alert.setContentText("At least one role must be selected.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Map the selected role to the corresponding ID
+        int userTypeID = 0;
+        switch (selectedRole.toLowerCase()) {
+            case "qc":
+                userTypeID = 1; // qc -> 1
+                break;
+            case "operator":
+                userTypeID = 2; // operator -> 2
+                break;
+            case "admin":
+                userTypeID = 3; // admin -> 3
+                break;
+            default:
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Role");
+                alert.setHeaderText(null);
+                alert.setContentText("The selected role is not valid.");
+                alert.showAndWait();
+                return;
+        }
+
+        // Create new user
         User newUser = new User(firstName, lastName);
-        userModel.createUser(newUser);
+        newUser.setUserTypeID(userTypeID); // Set the role ID for the new user
 
-        if (stage != null) {
-            stage.close();
+        if (isEditMode && editingUser != null) {
+            editingUser.setFirstName(firstName);
+            editingUser.setLastName(lastName);
+            editingUser.setUserTypeID(userTypeID); // Update the role ID
+            userModel.updateUser(editingUser);
+        } else {
+            userModel.createUser(newUser);
         }
+
+        // Close the stage after saving
+        if (stage != null) stage.close();
     }
+
+
 
     public void btnCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -93,4 +153,15 @@ public class CreateEditUserController implements Initializable {
 
         button.setGraphic(imageView);
     }
+
+    public void setUserForEdit(User user) {
+        if (user != null) {
+            isEditMode = true;
+            editingUser = user;
+            txtFirstName.setText(user.getFirstName());
+            txtLastName.setText(user.getLastName());
+            // You can also set roles/login type if needed
+        }
+    }
+
 }

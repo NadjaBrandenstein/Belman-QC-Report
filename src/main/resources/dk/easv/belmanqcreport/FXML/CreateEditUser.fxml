@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXCheckListView?>
 <?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="367.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.CreateEditUserController">
+<AnchorPane prefHeight="367.0" prefWidth="472.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.CreateEditUserController">
    <children>
       <MFXTextField fx:id="txtFirstName" floatingText="First Name" layoutX="45.0" layoutY="43.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="152.0" />
       <MFXTextField fx:id="txtLastName" floatingText="Last Name" layoutX="45.0" layoutY="109.0" prefHeight="50.0" prefWidth="152.0" />
       <MFXButton fx:id="btnSave" layoutX="45.0" layoutY="322.0" onAction="#btnSave" text="Save" />
-      <MFXButton fx:id="btnCancel" layoutX="498.0" layoutY="322.0" onAction="#btnCancel" text="Cancel" />
-      <MFXCheckListView fx:id="lstRoles" layoutX="250.0" layoutY="43.0" prefHeight="237.0" prefWidth="302.0" />
+      <MFXButton fx:id="btnCancel" layoutX="365.0" layoutY="322.0" onAction="#btnCancel" text="Cancel" />
       <MFXRadioButton fx:id="radioManual" layoutX="41.0" layoutY="214.0" text="Manual" />
       <MFXRadioButton layoutX="41.0" layoutY="184.0" text="QR-Code" />
       <MFXRadioButton layoutX="41.0" layoutY="245.0" text="Chip" />
+      <ListView fx:id="lstRoleCheckList" layoutX="223.0" layoutY="43.0" prefHeight="260.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
