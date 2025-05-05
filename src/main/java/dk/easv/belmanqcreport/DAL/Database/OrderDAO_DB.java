@@ -18,7 +18,7 @@ public class OrderDAO_DB implements IOrder {
         DBConnection dbConnection = new DBConnection();
 
 
-        String sql = "SELECT o.orderID, o.userID, i.imageID, i.imagePath, i.comment from dbo.[Order] as o " +
+        String sql = "SELECT o.orderID, o.userID, o.orderNumber , i.imageID, i.imagePath, i.comment from dbo.[Order] as o " +
                     "LEFT JOIN dbo.Image as i on o.orderID = i.orderID ORDER BY o.orderID";
 
         Map<Integer,Order> orderMap = new HashMap<>();
@@ -30,9 +30,10 @@ public class OrderDAO_DB implements IOrder {
             while (rs.next()) {
                 int orderID = rs.getInt("orderID");
                 int userID = rs.getInt("userID");
+                String orderNumber = rs.getString("orderNumber");
 
                 Order order = orderMap.computeIfAbsent(orderID,
-                        id -> new Order(id, userID));
+                        id -> new Order(id, userID, orderNumber));
 
                 int imageID = rs.getInt("imageID");
                 String imagePath = rs.getString("imagePath");

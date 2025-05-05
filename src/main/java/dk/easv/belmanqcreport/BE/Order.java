@@ -6,12 +6,14 @@ import java.util.List;
 public class Order {
     private int orderID;
     private int userID;
+    private String orderNumber;
 
     private List<MyImage> images = new ArrayList<>();
 
-    public Order(int orderID, int userID) {
+    public Order(int orderID, int userID, String orderNumber) {
         this.orderID = orderID;
         this.userID = userID;
+        this.orderNumber = orderNumber;
 
     }
 
@@ -39,6 +41,9 @@ public class Order {
         this.orderID = orderID;
     }
 
+    public void setOrderNumber(String orderNumber) {this.orderNumber = orderNumber;}
+
+    public String getOrderNumber() {return orderNumber;}
 
 
     public void add(Order order) {

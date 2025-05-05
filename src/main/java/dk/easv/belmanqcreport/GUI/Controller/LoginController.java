@@ -9,6 +9,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 // JavaFX Imports
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -173,7 +174,9 @@ public class LoginController implements Initializable {
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
+        //stage.setFullScreen(true);
         stage.show();
+
     }
 
     private void qcPage() throws IOException {
