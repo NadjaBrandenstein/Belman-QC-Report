@@ -53,7 +53,10 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="269.0" prefWidth="494.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="269.0" prefWidth="494.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fx:id="imageView" fitHeight="269.0" fitWidth="555.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+               </children></HBox>
          </center>
          <right>
             <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER" />
@@ -68,7 +71,7 @@
          <left>
             <HBox alignment="CENTER" prefHeight="115.0" prefWidth="458.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="98.0" prefWidth="348.0" />
+                  <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="62.0" prefWidth="348.0" />
                   <Label fx:id="alertLbl" prefHeight="18.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />

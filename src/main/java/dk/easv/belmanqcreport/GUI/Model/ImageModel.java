@@ -21,4 +21,7 @@ public class ImageModel {
     public List<MyImage> getImageForOrder(int orderID) throws Exception {
         return imageManager.getImagesForOrder(orderID);
     }
+    public void updateComment(MyImage img) throws Exception {
+        imageManager.updateComment(img);
+    }
 }

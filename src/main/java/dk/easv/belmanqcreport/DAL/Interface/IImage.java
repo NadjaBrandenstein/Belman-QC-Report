@@ -9,6 +9,8 @@ public interface IImage {
 
     void updateImage(MyImage img) throws Exception;
 
+    void updateComment(MyImage img)throws Exception;
+
     void deleteImage(int imageID) throws Exception;
 
     List<MyImage> getImagesForOrder(int orderID) throws Exception;

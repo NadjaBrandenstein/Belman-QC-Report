@@ -4,10 +4,8 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IImage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +38,16 @@ public class ImageDAO_DB implements IImage {
             stmt.setString(1, img.getImagePath());
             stmt.setString(2, img.getComment());
             stmt.setInt(3, img.getImageID());
+            stmt.executeUpdate();
+        }
+    }
+    @Override
+    public void updateComment(MyImage img) throws Exception {
+        String sql = "UPDATE Image SET comment = ? WHERE imageID = ?;";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, img.getComment());
+            stmt.setInt(2, img.getImageID());
             stmt.executeUpdate();
         }
     }

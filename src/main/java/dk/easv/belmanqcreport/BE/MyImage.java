@@ -4,7 +4,7 @@ import java.io.File;
 
 public class MyImage {
 
-    //private ImageView capturedImageView;
+    
     private File imageFile;
     private int orderID;
 

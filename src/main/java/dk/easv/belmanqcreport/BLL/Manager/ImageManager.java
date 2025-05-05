@@ -21,4 +21,6 @@ public class ImageManager {
 
     public List<MyImage> getImagesForOrder(int orderID) throws Exception { return imageDAO_DB.getImagesForOrder(orderID); }
 
+    public void updateComment(MyImage img) throws Exception { imageDAO_DB.updateComment(img); }
+
 }

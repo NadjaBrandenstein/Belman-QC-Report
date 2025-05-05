@@ -138,29 +138,7 @@ public class OperatorController {
         //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
     }
 
-    private void setOrderImage(String imagePath) {
 
-        File file = new File(imagePath);
-        if (!file.exists()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Image file does not exist." + file.getAbsolutePath());
-            alert.showAndWait();
-            return;
-        }
-
-        Image img = new Image(file.toURI().toString());
-
-        BackgroundImage bgImg = new BackgroundImage(
-                img,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(
-                        BackgroundSize.AUTO, BackgroundSize.AUTO,
-                        false, false, true, false
-                )
-        );
-        imageHboxCenter.setBackground(new Background(bgImg));
-    }
 
     private void openImageHandlingScene(MyImage image) {
         try{
@@ -182,7 +160,10 @@ public class OperatorController {
             stage.initOwner(imageHboxCenter.getScene().getWindow());
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Image Handling");
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
+
             stage.setMaximized(true);
+
             stage.setScene(scene);
             stage.showAndWait();
 
@@ -349,6 +330,7 @@ public class OperatorController {
                 if(myImage.getImageID() <= 0) {
                     MyImage saved = imageModel.saveNewImage(myImage);
                     myImage.setImageID(saved.getImageID());
+                    currentOrder.getImages().add(myImage);
                 } else {
                     imageModel.updateImage(myImage);
                 }
