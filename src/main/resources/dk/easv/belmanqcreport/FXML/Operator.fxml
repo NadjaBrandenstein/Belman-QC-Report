@@ -30,7 +30,7 @@
             <!-- CENTER -->
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
-               <MFXComboBox fx:id="cbOrderNumber" onAction="#cbOrderNumber" />
+               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" onAction="#cbOrderNumber" />
                <MFXButton fx:id="btnRefresh" onAction="#btnRefresh" text="Refresh" />
                 </HBox>
             </center>
@@ -70,7 +70,7 @@
                </children></HBox>
          </center>
          <right>
-            <HBox prefHeight="450.0" prefWidth="95.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXButton fx:id="btnDelete" onAction="#btnDelete" prefHeight="25.6" prefWidth="50.0" text="X">
                      <HBox.margin>
@@ -80,7 +80,7 @@
             </HBox>
          </right>
          <left>
-            <HBox prefHeight="250.0" prefWidth="95.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER" />
          </left>
          <top>
             <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
