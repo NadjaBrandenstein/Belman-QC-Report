@@ -31,6 +31,7 @@ public class UserModel {
 
     public ObservableList<User> getAllUsers () throws Exception {
         List<User> users = userManager.getAllUser();
+        tblEmployee.clear();
         tblEmployee.addAll(users);
         return tblEmployee;
     }
