@@ -43,11 +43,7 @@ public class OperatorController {
     @FXML
     private HBox imageHboxCenter;
     @FXML
-    private HBox imageHboxCamera;
-    @FXML
     private MFXButton btnBack;
-    @FXML
-    private MFXButton btnRefresh;
     @FXML
     private MFXButton btnLogout;
     @FXML
@@ -74,7 +70,6 @@ public class OperatorController {
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
 
-
     @FXML
     private void initialize() {
 
@@ -82,8 +77,6 @@ public class OperatorController {
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
         btnDelete.setText("");
@@ -134,7 +127,6 @@ public class OperatorController {
                 //showOrderDetails(currentOrder);
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,7 +134,6 @@ public class OperatorController {
     }
 
     private void setOrderImage(String imagePath) {
-
 
         File file = new File(imagePath);
         if (!file.exists()) {
@@ -211,10 +202,6 @@ public class OperatorController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void btnRefresh(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -390,7 +377,6 @@ public class OperatorController {
         logoImage.setFitHeight(100);
         logoImage.setPreserveRatio(true);
     }
-
 
     @FXML
     private void cbOrderNumber(ActionEvent actionEvent) {

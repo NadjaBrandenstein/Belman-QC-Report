@@ -9,9 +9,6 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.util.StringConverter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -34,6 +31,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.util.StringConverter;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
@@ -45,19 +45,13 @@ import java.util.ResourceBundle;
 public class QcController implements Initializable {
 
     @FXML
-    private Label lblOrderNumber;
-    @FXML
     private Label lblEmployee;
     @FXML
     private Label lblImageCount;
     @FXML
     private HBox imageHboxCenter;
     @FXML
-    private HBox imageHboxCamera;
-    @FXML
     private MFXButton btnBack;
-    @FXML
-    private MFXButton btnRefresh;
     @FXML
     private MFXButton btnLogout;
     @FXML
@@ -71,26 +65,23 @@ public class QcController implements Initializable {
     @FXML
     private MFXButton btnPDFSave;
     @FXML
+    private ImageView logoImage;
+    @FXML
     private MFXComboBox<Order> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
     private Order currentOrder;
+    private Window primaryStage;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
-
-    private Window primaryStage;
-    @FXML
-    private ImageView logoImage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
         btnDelete.setText("");
@@ -139,7 +130,6 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
-
     }
 
     public void btnBack(ActionEvent actionEvent) {
@@ -154,9 +144,6 @@ public class QcController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void btnRefresh(ActionEvent actionEvent) {
     }
 
     public void btnLogout(ActionEvent actionEvent) {
