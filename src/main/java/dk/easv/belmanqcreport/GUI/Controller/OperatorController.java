@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
+import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -23,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -64,6 +66,8 @@ public class OperatorController {
     private MFXComboBox<Order> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
+    private ImageModel imageModel;
+
     private Order currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
@@ -91,6 +95,7 @@ public class OperatorController {
         setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
 
         imageHandlingModel = new ImageHandlingModel();
+        imageModel = new ImageModel();
 
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
@@ -164,15 +169,22 @@ public class OperatorController {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
-            controller.setOrderDetails(currentOrder, image);
+            controller.setOrderDetails(currentOrder,
+                    image, updatedImage -> {
+                capturedImages.set(currentImageIndex, updatedImage);
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            });
 
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-            Stage stage = (Stage) imageHboxCenter.getScene().getWindow();
-
+            Stage stage = new Stage();
+            stage.initOwner(imageHboxCenter.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Image Handling");
             stage.setMaximized(true);
             stage.setScene(scene);
+            stage.showAndWait();
 
 
         } catch (IOException e) {
@@ -332,6 +344,20 @@ public class OperatorController {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+        try{
+            for (MyImage myImage : capturedImages) {
+                if(myImage.getImageID() <= 0) {
+                    MyImage saved = imageModel.saveNewImage(myImage);
+                    myImage.setImageID(saved.getImageID());
+                } else {
+                    imageModel.updateImage(myImage);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
     private void setButtonIcon(Button button, String iconPath, double width, double height) {

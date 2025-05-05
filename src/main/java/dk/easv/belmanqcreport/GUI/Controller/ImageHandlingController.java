@@ -28,6 +28,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.NO_REPEAT;
@@ -59,8 +60,11 @@ public class ImageHandlingController {
     private OperatorController operatorController;
 
     private ImageHandlingModel model;
+
     private Order currentOrder;
     private MyImage currentImage;
+    private Consumer<MyImage> onSaveCallBack;
+
     @FXML
     private ImageView logoImage;
 
@@ -88,9 +92,10 @@ public class ImageHandlingController {
 
     }
 
-    public void setOrderDetails(Order order, MyImage image) {
+    public void setOrderDetails(Order order, MyImage image, Consumer<MyImage> onSave) {
         this.currentOrder = order;
         this.currentImage = image;
+        this.onSaveCallBack = onSave;
 
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
         showImage();
@@ -122,6 +127,7 @@ public class ImageHandlingController {
         ));
         imageHboxCenter.setBackground(bg);
     }
+
 
     /*public void setImageDetails(MyImage img){
         this.currentImage = img;
@@ -172,7 +178,8 @@ public class ImageHandlingController {
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
-        try {
+        ((Stage)btnBackId.getScene().getWindow()).close();
+        /*try {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
@@ -183,7 +190,7 @@ public class ImageHandlingController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @FXML
@@ -209,6 +216,7 @@ public class ImageHandlingController {
     private void btnSave(ActionEvent actionEvent) {
         currentImage.setComment(txtComment.getText());
         try {
+
             model.updateOrder(currentOrder);
             //alertLbl.setText("Saved!");
         } catch (Exception e) {
