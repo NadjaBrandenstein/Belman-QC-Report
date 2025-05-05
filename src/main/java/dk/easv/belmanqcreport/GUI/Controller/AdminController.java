@@ -111,17 +111,6 @@
             colLName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
             colRole.setCellValueFactory(new PropertyValueFactory<>("userType"));
 
-            txtSearch.setDisable(false);
-            txtSearch.setEditable(true);
-            txtSearch.requestFocus();
-
-
-            txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-                List<User> filtered = searchEngine.search(allUsers, newValue);
-                users.setAll(filtered);
-            });
-
-
             // Context menu
 
             ContextMenu contextMenu = new ContextMenu();
