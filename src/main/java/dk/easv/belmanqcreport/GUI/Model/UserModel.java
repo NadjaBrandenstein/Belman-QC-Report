@@ -49,5 +49,4 @@ public class UserModel {
         userManager.deleteUser(user);
         tblEmployee.remove(user);
     }
-
 }
