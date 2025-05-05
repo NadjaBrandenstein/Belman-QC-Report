@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -54,7 +54,7 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="690" prefWidth="900" style="-fx-background-color: grey;" BorderPane.alignment="BOTTOM_RIGHT">
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="420.0" prefWidth="710.0" style="-fx-background-color: grey;" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
                   <ImageView fx:id="commentIcon" pickOnBounds="true" preserveRatio="true" styleClass="comment-icon" visible="false">
                       <image>
@@ -127,7 +127,13 @@
                   <MFXButton fx:id="btnSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
                </children>
             </HBox>
-         </right></BorderPane>
+         </right>
+         <bottom>
+            <HBox prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+         </bottom>
+         <top>
+            <HBox prefHeight="10.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+         </top></BorderPane>
    </bottom>
 
 </BorderPane>

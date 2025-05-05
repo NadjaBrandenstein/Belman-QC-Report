@@ -63,10 +63,20 @@ MFXComboBox {
 
 .mfx-combo-box .virtual-flow .mfx-combo-box-cell:selected {
     -fx-background-color: #7fa8c5;
-    -fx-text-fill: white;
 }
 
 .mfx-combo-box .virtual-flow .mfx-combo-box-cell:hover {
     -fx-background-color: #e3e3e3;
 }
 
+.mfx-combo-box .mfx-combo-box-cell:selected .label {
+    -fx-text-fill: white;
+}
+
+.mfx-combo-box .arrow-button:hover {
+    -fx-background-color: #004b88;
+}
+
+.mfx-combo-box .arrow-button:pressed {
+    -fx-background-color: #004b88;
+}

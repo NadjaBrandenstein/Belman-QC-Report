@@ -103,10 +103,11 @@ public class OperatorController {
             List<Order> orders = imageHandlingModel.getAllOrders();
             cbOrderNumber.getItems().addAll(orders);
 
+
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderID());
+                    return order == null ? "" : String.valueOf(order.getOrderNumber());
                 }
 
                 @Override
