@@ -115,9 +115,9 @@
 
                 ContextMenu contextMenu = new ContextMenu();
 
-                MenuItem qcRole = new MenuItem("QC");
-                MenuItem operatorRole = new MenuItem("Operator");
-                MenuItem adminRole = new MenuItem("Admin");
+                MenuItem qcRole = new MenuItem("qc");
+                MenuItem operatorRole = new MenuItem("operator");
+                MenuItem adminRole = new MenuItem("admin");
                 MenuItem createUser = new MenuItem("Create User");
                 MenuItem editUser = new MenuItem("Edit User");
                 MenuItem deleteUser = new MenuItem("Delete User");
@@ -175,17 +175,17 @@
 
                 qcRole.setOnAction((ActionEvent event) -> {
                     User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
-                    setUserRole(selectedUser, "QC");
+                    setUserRole(selectedUser, "qc");
                 });
 
                 operatorRole.setOnAction((ActionEvent event) -> {
                     User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
-                    setUserRole(selectedUser, "Operator");
+                    setUserRole(selectedUser, "operator");
                 });
 
                 adminRole.setOnAction((ActionEvent event) -> {
                     User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
-                    setUserRole(selectedUser, "Admin");
+                    setUserRole(selectedUser, "admin");
                 });
 
                 createManualLogin.setOnAction((ActionEvent event) -> {
