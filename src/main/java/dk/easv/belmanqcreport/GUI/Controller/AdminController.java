@@ -348,17 +348,13 @@
 
                 public static String intToRole(int roleId) {
                     return switch (roleId) {
-                        case 1 -> "Admin";
-                        case 2 -> "Operator";
-                        case 3 -> "QC";
+                        case 1 -> "admin";
+                        case 2 -> "operator";
+                        case 3 -> "qc";
                         default -> "Unknown";
                     };
                 }
             }
-
-
-
-
 
             private void createUser() throws Exception {
                 FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
