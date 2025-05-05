@@ -99,6 +99,12 @@ public class ImageHandlingController {
 
     private void showImage(){
         String path = currentImage.getImagePath();
+
+        if(path == null || path.isEmpty()){
+            System.err.println("Image path is null or empty");
+            return;
+        }
+
         File file = new File(path);
         if(!file.exists()){
             System.err.println("Image file missing" + path);
