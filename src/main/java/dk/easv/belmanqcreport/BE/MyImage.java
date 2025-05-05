@@ -15,6 +15,7 @@ public class MyImage {
     //called by DAO
     public MyImage(int imageID, String imagePath, String comment) {
         this.imageID   = imageID;
+        this.imagePath = imagePath;
         this.imageFile = new File(imagePath);
         this.comment   = comment;
     }

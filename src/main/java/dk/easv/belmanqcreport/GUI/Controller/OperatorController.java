@@ -426,7 +426,11 @@ public class OperatorController {
     private void displayImages(List<MyImage> capturedImages) {
         imageHboxCenter.getChildren().clear();
         for (MyImage image : capturedImages) {
-            ImageView imageView = new ImageView(String.valueOf(image));
+
+            String uri = new File(image .getImagePath()).toURI().toString();
+            Image fxImage = new Image(uri);
+
+            ImageView imageView = new ImageView(fxImage);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             imageView.setPreserveRatio(true);
