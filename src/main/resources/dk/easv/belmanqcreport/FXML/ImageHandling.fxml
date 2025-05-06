@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.ImageHandlingController">
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.ImageHandlingController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -29,8 +29,7 @@
             <!-- CENTER -->
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
-                    <Label fx:id="lblOrderNumber" style="-fx-font-size: 16px; -fx-font-weight: bold;" styleClass="whiteLabel" text="Order #12345" />
-               <MFXButton fx:id="btnRefreshId" onAction="#btnRefresh" text="Refresh" />
+                    <Label fx:id="lblOrderNumber" disable="true" style="-fx-font-size: 16px; -fx-font-weight: bold;" styleClass="whiteLabel" text="Order #12345" visible="false" />
                 </HBox>
             </center>
 

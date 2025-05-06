@@ -127,6 +127,7 @@
 
                 createChipLogin.setDisable(true);
                 createQRLogin.setDisable(true);
+                createManualLogin.setDisable(true);
 
                 Menu assingRole = new Menu("Assign Role");
                 Menu loginOptions = new Menu("Login Options");

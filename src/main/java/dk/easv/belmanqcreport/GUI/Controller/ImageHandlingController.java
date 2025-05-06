@@ -80,9 +80,6 @@ public class ImageHandlingController {
         btnBackId.setText("");
         setButtonIcon(btnBackId, "/dk/easv/belmanqcreport/Icons/backbtn.png");
 
-        btnRefreshId.setText("");
-        setButtonIcon(btnRefreshId, "/dk/easv/belmanqcreport/Icons/refreshbtn.png");
-
         btnLogoutId.setText("");
         setButtonIcon(btnLogoutId, "/dk/easv/belmanqcreport/Icons/logout.png");
 
