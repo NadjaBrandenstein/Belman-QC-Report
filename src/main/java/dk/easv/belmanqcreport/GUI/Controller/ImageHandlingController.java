@@ -237,6 +237,7 @@ public class ImageHandlingController {
             e.printStackTrace();
             //alertLbl.setText("Failed!");
         }
+        ((Stage)btnBackId.getScene().getWindow()).close();
     }
 
     private void setButtonIcon(MFXButton button, String iconPath) {
