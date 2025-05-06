@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OperatorController {
 
@@ -222,6 +224,10 @@ public class OperatorController {
             alert.setTitle("Delete Image");
             alert.setHeaderText("Are you sure you want to delete this image?");
             alert.setContentText("This action cannot be undone.");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isEmpty() || result.get() != ButtonType.OK) {
+                return;
+            }
             alert.showAndWait();
 
             if(currentImageIndex >= capturedImages.size()) {
