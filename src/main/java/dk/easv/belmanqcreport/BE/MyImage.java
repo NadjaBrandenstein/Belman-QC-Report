@@ -23,7 +23,7 @@ public class MyImage {
     //called by CameraHandling
     public MyImage(File file) {
         this.imageFile = file;
-        this.imagePath = file.getAbsolutePath();
+        this.imagePath = file.getPath();
         this.comment = "";
     }
 
