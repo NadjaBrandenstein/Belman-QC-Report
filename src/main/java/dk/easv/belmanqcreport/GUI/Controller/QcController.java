@@ -7,6 +7,7 @@ import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
+import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -16,6 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.util.StringConverter;
+import javafx.scene.Parent;
+import javafx.stage.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -34,10 +37,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.util.StringConverter;
 // Java Imports
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -52,19 +54,13 @@ import java.util.ResourceBundle;
 public class QcController implements Initializable {
 
     @FXML
-    private Label lblOrderNumber;
-    @FXML
     private Label lblEmployee;
     @FXML
     private Label lblImageCount;
     @FXML
     private HBox imageHboxCenter;
     @FXML
-    private HBox imageHboxCamera;
-    @FXML
     private MFXButton btnBack;
-    @FXML
-    private MFXButton btnRefresh;
     @FXML
     private MFXButton btnLogout;
     @FXML
@@ -78,26 +74,24 @@ public class QcController implements Initializable {
     @FXML
     private MFXButton btnPDFSave;
     @FXML
+    private ImageView logoImage;
+    @FXML
     private MFXComboBox<Order> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
+    private ImageModel imageModel;
     private Order currentOrder;
+    private Window primaryStage;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
-
-    private Window primaryStage;
-    @FXML
-    private ImageView logoImage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
         btnDelete.setText("");
@@ -112,6 +106,7 @@ public class QcController implements Initializable {
         setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
 
         imageHandlingModel = new ImageHandlingModel();
+        imageModel = new ImageModel();
 
         try {
             List<Order> orders = imageHandlingModel.getAllOrders();
@@ -146,7 +141,6 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
-
     }
 
     public void btnBack(ActionEvent actionEvent) {
@@ -161,9 +155,6 @@ public class QcController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void btnRefresh(ActionEvent actionEvent) {
     }
 
     public void btnLogout(ActionEvent actionEvent) {
@@ -222,11 +213,12 @@ public class QcController implements Initializable {
         }
     }
 
-    public void displayCapturedImage(MyImage myImg) {
+    public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
+            myImg.setOrderID(currentOrder.getOrderID());
 
             capturedImages.add(myImg);
-            currentImageIndex = capturedImages.size() - 1;
+            currentImageIndex = capturedImages.size() -1;
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
 
@@ -242,7 +234,43 @@ public class QcController implements Initializable {
             imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
             imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
             imageHboxCenter.getChildren().clear();
+
+            imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
+
             imageHboxCenter.getChildren().add(imageView);
+        }
+    }
+
+    public void openImageHandlingScene(MyImage image) {
+        try{
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/ImageHandling.fxml"));
+            Parent root = loader.load();
+            ImageHandlingController controller = loader.getController();
+
+            controller.setOrderDetails(currentOrder,
+                    image, updatedImage -> {
+                        capturedImages.set(currentImageIndex, updatedImage);
+                        showImageAtIndex(currentImageIndex);
+                        updateImageCountLabel();
+                    });
+
+
+            Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
+            Stage stage = new Stage();
+            stage.initOwner(imageHboxCenter.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Image Handling");
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
+
+            stage.setMaximized(true);
+
+            stage.setScene(scene);
+            stage.showAndWait();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -308,6 +336,15 @@ public class QcController implements Initializable {
     @FXML
     private void btnSave(ActionEvent actionEvent) {
         try{
+            for (MyImage myImage : capturedImages) {
+                if(myImage.getImageID() <= 0) {
+                    MyImage saved = imageModel.saveNewImage(myImage);
+                    myImage.setImageID(saved.getImageID());
+                    currentOrder.getImages().add(myImage);
+                } else {
+                    imageModel.updateImage(myImage);
+                }
+            }
 
             WritableImage image = imageHboxCenter.snapshot(null, null);
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
@@ -374,11 +411,42 @@ public class QcController implements Initializable {
     private void displayImages(List<MyImage> capturedImages) {
         imageHboxCenter.getChildren().clear();
         for (MyImage image : capturedImages) {
-            ImageView imageView = new ImageView(String.valueOf(image));
+
+            String uri = new File(image .getImagePath()).toURI().toString();
+            Image fxImage = new Image(uri);
+
+            ImageView imageView = new ImageView(fxImage);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             imageView.setPreserveRatio(true);
+
             imageHboxCenter.getChildren().add(imageView);
+        }
+    }
+
+    public void onDeleteBtn(ActionEvent actionEvent) {
+        if(currentImageIndex < 0 || currentImageIndex >= capturedImages.size()) return;
+
+        MyImage imageToDelete = capturedImages.get(currentImageIndex);
+
+        try{
+            imageModel.deleteImage(imageToDelete);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        capturedImages.remove(currentImageIndex);
+
+        if (currentImageIndex >= capturedImages.size()) {
+            currentImageIndex = capturedImages.size() - 1;
+        }
+
+        imageHboxCenter.getChildren().clear();
+        if(capturedImages.isEmpty()) {
+            lblImageCount.setText("0 / 0");
+        } else {
+            showImageAtIndex(currentImageIndex);
+            updateImageCountLabel();
         }
     }
 }

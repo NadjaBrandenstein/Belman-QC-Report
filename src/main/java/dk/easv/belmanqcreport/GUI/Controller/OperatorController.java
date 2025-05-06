@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
+import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -23,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -43,11 +45,7 @@ public class OperatorController {
     @FXML
     private HBox imageHboxCenter;
     @FXML
-    private HBox imageHboxCamera;
-    @FXML
     private MFXButton btnBack;
-    @FXML
-    private MFXButton btnRefresh;
     @FXML
     private MFXButton btnLogout;
     @FXML
@@ -68,12 +66,13 @@ public class OperatorController {
     private MFXComboBox<Order> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
+    private ImageModel imageModel;
+
     private Order currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
-
 
     @FXML
     private void initialize() {
@@ -82,8 +81,6 @@ public class OperatorController {
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
-        btnRefresh.setText("");
-        setButtonIcon(btnRefresh, "/dk/easv/belmanqcreport/Icons/refreshbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
         btnDelete.setText("");
@@ -98,6 +95,7 @@ public class OperatorController {
         setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
 
         imageHandlingModel = new ImageHandlingModel();
+        imageModel = new ImageModel();
 
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
@@ -134,37 +132,13 @@ public class OperatorController {
                 //showOrderDetails(currentOrder);
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
     }
 
-    private void setOrderImage(String imagePath) {
 
-
-        File file = new File(imagePath);
-        if (!file.exists()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Image file does not exist." + file.getAbsolutePath());
-            alert.showAndWait();
-            return;
-        }
-
-        Image img = new Image(file.toURI().toString());
-
-        BackgroundImage bgImg = new BackgroundImage(
-                img,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(
-                        BackgroundSize.AUTO, BackgroundSize.AUTO,
-                        false, false, true, false
-                )
-        );
-        imageHboxCenter.setBackground(new Background(bgImg));
-    }
 
     private void openImageHandlingScene(MyImage image) {
         try{
@@ -173,15 +147,25 @@ public class OperatorController {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
-            controller.setOrderDetails(currentOrder, image);
+            controller.setOrderDetails(currentOrder,
+                    image, updatedImage -> {
+                capturedImages.set(currentImageIndex, updatedImage);
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            });
 
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-            Stage stage = (Stage) imageHboxCenter.getScene().getWindow();
-
+            Stage stage = new Stage();
+            stage.initOwner(imageHboxCenter.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Image Handling");
+            stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
+
             stage.setMaximized(true);
+
             stage.setScene(scene);
+            stage.showAndWait();
 
 
         } catch (IOException e) {
@@ -211,10 +195,6 @@ public class OperatorController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void btnRefresh(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -345,6 +325,21 @@ public class OperatorController {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+        try{
+            for (MyImage myImage : capturedImages) {
+                if(myImage.getImageID() <= 0) {
+                    MyImage saved = imageModel.saveNewImage(myImage);
+                    myImage.setImageID(saved.getImageID());
+                    currentOrder.getImages().add(myImage);
+                } else {
+                    imageModel.updateImage(myImage);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
     private void setButtonIcon(Button button, String iconPath, double width, double height) {
@@ -391,7 +386,6 @@ public class OperatorController {
         logoImage.setPreserveRatio(true);
     }
 
-
     @FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
 
@@ -414,7 +408,11 @@ public class OperatorController {
     private void displayImages(List<MyImage> capturedImages) {
         imageHboxCenter.getChildren().clear();
         for (MyImage image : capturedImages) {
-            ImageView imageView = new ImageView(String.valueOf(image));
+
+            String uri = new File(image .getImagePath()).toURI().toString();
+            Image fxImage = new Image(uri);
+
+            ImageView imageView = new ImageView(fxImage);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             imageView.setPreserveRatio(true);

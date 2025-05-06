@@ -4,7 +4,7 @@ import java.io.File;
 
 public class MyImage {
 
-    //private ImageView capturedImageView;
+    
     private File imageFile;
     private int orderID;
 
@@ -12,18 +12,31 @@ public class MyImage {
     private String imagePath;
     private String comment;
 
+    //called by DAO
     public MyImage(int imageID, String imagePath, String comment) {
         this.imageID   = imageID;
         this.imagePath = imagePath;
+        this.imageFile = new File(imagePath);
         this.comment   = comment;
     }
 
-    public MyImage(File imageFile) {
-        this.imageFile = imageFile;
+    //called by CameraHandling
+    public MyImage(File file) {
+        this.imageFile = file;
+        this.imagePath = file.getAbsolutePath();
+        this.comment = "";
     }
 
     public File getImageFile() {
         return imageFile;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     public int getImageID() {
@@ -42,13 +55,6 @@ public class MyImage {
         this.imagePath = imagePath;
     }
 
-    public int getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
 
     public String getComment() {
         return comment;

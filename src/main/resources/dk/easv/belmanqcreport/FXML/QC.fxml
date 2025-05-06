@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -30,13 +30,12 @@
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
                     <MFXComboBox fx:id="cbOrderNumber" onAction="#cbOrderNumber" />
-               <MFXButton fx:id="btnRefresh" onAction="#btnRefresh" text="Refresh" />
                 </HBox>
             </center>
 
             <!-- RIGHT SIDE -->
             <right>
-                <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-background-color: #004b88;">
+                <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
                     <Label fx:id="lblEmployee" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="148.0" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
                <MFXButton fx:id="btnLogout" onAction="#btnLogout" text="Logout" />
                 </HBox>
@@ -58,7 +57,7 @@
          <right>
             <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
                <children>
-                   <MFXButton fx:id="btnDelete" prefHeight="25.6" prefWidth="50.0" text="X">
+                   <MFXButton fx:id="btnDelete" onAction="#onDeleteBtn" prefHeight="25.6" prefWidth="50.0" text="X">
                        <HBox.margin>
                            <Insets left="5.0" />
                        </HBox.margin></MFXButton>

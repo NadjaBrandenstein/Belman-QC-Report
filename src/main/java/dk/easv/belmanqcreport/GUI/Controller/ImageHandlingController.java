@@ -3,6 +3,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
+import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 // JavaFX Imports
@@ -28,6 +29,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import static javafx.scene.layout.BackgroundPosition.CENTER;
 import static javafx.scene.layout.BackgroundRepeat.NO_REPEAT;
@@ -55,12 +57,18 @@ public class ImageHandlingController {
     @FXML
     private
     Label alertLbl;
+    @FXML
+    private ImageView imageView;
 
     private OperatorController operatorController;
 
     private ImageHandlingModel model;
+    private ImageModel imageModel;
+
     private Order currentOrder;
     private MyImage currentImage;
+    private Consumer<MyImage> onSaveCallBack;
+
     @FXML
     private ImageView logoImage;
 
@@ -83,39 +91,60 @@ public class ImageHandlingController {
 
        this.model = new ImageHandlingModel();
        this.operatorController = new OperatorController();
+       this.imageModel = new ImageModel();
 
 
 
     }
 
-    public void setOrderDetails(Order order, MyImage image) {
+    public void setOrderDetails(Order order, MyImage image, Consumer<MyImage> onSave) {
         this.currentOrder = order;
         this.currentImage = image;
+        this.onSaveCallBack = onSave;
 
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
-        showImage();
         txtComment.setText(image.getComment());
+        showImage();
     }
 
     private void showImage(){
         String path = currentImage.getImagePath();
+
+        System.out.println("Image path: " + path);
+        if(path == null || path.isEmpty()){
+            System.err.println("Image path is null or empty");
+            return;
+        }
+
         File file = new File(path);
+        System.out.println("Image " + file.exists() + " @" + file.getAbsolutePath());
         if(!file.exists()){
             System.err.println("Image file missing" + path);
             return;
         }
         Image fx = new Image(file.toURI().toString());
-        Background bg = new Background(new BackgroundImage(
+
+        /*BackgroundSize bs = new BackgroundSize(
+                100,100,
+                true, true,
+                false, false
+        );
+        BackgroundImage bg = new BackgroundImage(
                 fx,
-                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(
-                        BackgroundSize.AUTO, BackgroundSize.AUTO,
-                        false, false, true, false
-                )
-        ));
-        imageHboxCenter.setBackground(bg);
+                NO_REPEAT,
+                NO_REPEAT,
+                CENTER,
+                bs
+        );
+        imageHboxCenter.setBackground(new Background(bg));*/
+
+        imageView.setImage(fx);
+        imageView.setPreserveRatio(false);
+        imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
+        imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+
     }
+
 
     /*public void setImageDetails(MyImage img){
         this.currentImage = img;
@@ -166,7 +195,8 @@ public class ImageHandlingController {
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
-        try {
+        ((Stage)btnBackId.getScene().getWindow()).close();
+        /*try {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
@@ -177,7 +207,7 @@ public class ImageHandlingController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @FXML
@@ -203,7 +233,8 @@ public class ImageHandlingController {
     private void btnSave(ActionEvent actionEvent) {
         currentImage.setComment(txtComment.getText());
         try {
-            model.updateOrder(currentOrder);
+
+            imageModel.updateComment(currentImage);
             //alertLbl.setText("Saved!");
         } catch (Exception e) {
             e.printStackTrace();

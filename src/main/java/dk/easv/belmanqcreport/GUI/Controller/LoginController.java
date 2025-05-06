@@ -174,7 +174,6 @@ public class LoginController implements Initializable {
         stage.setTitle("Belman");
         stage.setScene(scene);
         stage.setMaximized(true);
-        //stage.setFullScreen(true);
         stage.show();
 
     }
