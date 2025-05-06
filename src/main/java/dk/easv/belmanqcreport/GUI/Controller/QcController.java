@@ -361,7 +361,7 @@ public class QcController implements Initializable {
             }else{
                 System.out.println("Save operation was canceled");
             }
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
