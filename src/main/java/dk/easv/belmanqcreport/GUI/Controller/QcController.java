@@ -4,13 +4,17 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
+import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.image.WritableImage;
 import javafx.util.StringConverter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -35,6 +39,9 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 // Java Imports
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -300,6 +307,26 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+        try{
+
+            WritableImage image = imageHboxCenter.snapshot(null, null);
+            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            File outputImageFile = new File("saved_image.png");
+            ImageIO.write(bufferedImage, "png", outputImageFile);
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+            fileChooser.setInitialFileName("Report.pdf");
+            File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene(). getWindow());
+            if (pdfFile != null){
+                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath());
+                System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
+            }else{
+                System.out.println("Save operation was canceled");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void setUserName(String userName) {
