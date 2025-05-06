@@ -299,12 +299,13 @@ public class OperatorController {
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
 
-            showImageAtIndex(currentImageIndex);
+
             myImg.setOrderID(currentOrder.getOrderID());
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
             updateImageCountLabel();
+            showImageAtIndex(currentImageIndex);
 
         });
     }
