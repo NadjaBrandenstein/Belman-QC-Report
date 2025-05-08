@@ -14,7 +14,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.WritableImage;
 import javafx.util.StringConverter;
 import javafx.scene.Parent;
@@ -27,8 +27,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -78,6 +76,9 @@ public class QcController implements Initializable {
     @FXML
     private MFXComboBox<Order> cbOrderNumber;
 
+    @FXML
+    private ListView<Order> orderColumn;
+
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
     private Order currentOrder;
@@ -94,8 +95,8 @@ public class QcController implements Initializable {
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
-        btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
+        /*btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);*/
         btnPrevious.setText("");
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
@@ -141,6 +142,17 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
+        populateLists();
+
+    }
+
+    private void populateLists(){
+        try {
+            List<Order> orders = imageHandlingModel.getAllOrders();
+            orderColumn.getItems().addAll(orders);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnBack(ActionEvent actionEvent) {
@@ -424,7 +436,7 @@ public class QcController implements Initializable {
         }
     }
 
-    public void onDeleteBtn(ActionEvent actionEvent) {
+    /*public void onDeleteBtn(ActionEvent actionEvent) {
         if(currentImageIndex < 0 || currentImageIndex >= capturedImages.size()) return;
 
         MyImage imageToDelete = capturedImages.get(currentImageIndex);
@@ -448,5 +460,5 @@ public class QcController implements Initializable {
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
         }
-    }
+    }*/
 }

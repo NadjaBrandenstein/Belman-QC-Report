@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -51,16 +54,23 @@
     </top>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="690" prefWidth="900" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
-         </center>
          <right>
             <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
                <children>
-                   <MFXButton fx:id="btnDelete" onAction="#onDeleteBtn" prefHeight="25.6" prefWidth="50.0" text="X">
-                       <HBox.margin>
-                           <Insets left="5.0" />
-                       </HBox.margin></MFXButton>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <MFXCheckbox fx:id="checkApprove" text="Approved">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </MFXCheckbox>
+                        <MFXCheckbox fx:id="checkDeny" layoutX="10.0" layoutY="10.0" text="Denied">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </MFXCheckbox>
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </right>
@@ -70,6 +80,32 @@
          <top>
             <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
          </top>
+         <center>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <left>
+                  <BorderPane prefHeight="440.0" prefWidth="437.0" BorderPane.alignment="CENTER">
+                     <center>
+                        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <ListView fx:id="orderColumn" prefHeight="440.0" prefWidth="125.0" />
+                              <ListView fx:id="itemColumn" prefHeight="440.0" prefWidth="125.0" />
+                              <ListView fx:id="logColumn" prefHeight="440.0" prefWidth="125.0" />
+                           </children>
+                        </HBox>
+                     </center>
+                     <left>
+                        <HBox prefHeight="440.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <HBox prefHeight="440.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </left>
+               <right>
+                  <HBox fx:id="imageHboxCenter" prefHeight="440.0" prefWidth="221.0" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </center>
       </BorderPane>
    </center>
    <bottom>
