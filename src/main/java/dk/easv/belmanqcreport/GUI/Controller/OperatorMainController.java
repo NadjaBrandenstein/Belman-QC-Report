@@ -41,6 +41,8 @@ import java.util.Optional;
 public class OperatorMainController {
 
     @FXML
+    private Label lblOrderNumber;
+    @FXML
     private Label lblEmployee;
     @FXML
     private Label lblImageCount;
@@ -377,6 +379,10 @@ public class OperatorMainController {
         logoImage.setFitWidth(100);
         logoImage.setFitHeight(100);
         logoImage.setPreserveRatio(true);
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        lblOrderNumber.setText("Order Number: " + orderNumber);
     }
 
     @FXML

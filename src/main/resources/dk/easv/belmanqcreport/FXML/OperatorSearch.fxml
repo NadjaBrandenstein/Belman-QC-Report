@@ -58,7 +58,7 @@
                         <Label text="Order number " />
                         <HBox alignment="CENTER" prefHeight="82.0" prefWidth="270.0">
                            <children>
-                              <MFXTextField fx:id="txtSerach" />
+                              <MFXTextField fx:id="txtSearch" />
                               <MFXButton fx:id="btnSearch" onAction="#btnSearch" text="Search">
                                  <HBox.margin>
                                     <Insets left="10.0" />
