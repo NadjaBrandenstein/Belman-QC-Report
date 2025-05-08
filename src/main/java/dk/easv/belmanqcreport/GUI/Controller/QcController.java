@@ -4,6 +4,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -116,7 +117,7 @@ public class QcController implements Initializable {
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderNumber());
+                    return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override
@@ -347,36 +348,47 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
-        try{
-            for (MyImage myImage : capturedImages) {
-                if(myImage.getImageID() <= 0) {
-                    MyImage saved = imageModel.saveNewImage(myImage);
-                    myImage.setImageID(saved.getImageID());
-                    currentOrder.getImages().add(myImage);
-                } else {
-                    imageModel.updateImage(myImage);
+        try {
+            ImageDataFetcher fetcher = new ImageDataFetcher();
+
+
+            List<String> imagePaths = new ArrayList<>();
+
+            for (MyImage img : capturedImages) {
+                imagePaths.add(img.getImagePath()); // Or wherever you save them
+            }
+            File pdfFile = new File("report.pdf");
+            PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
+
+            int[] imageIDs = {1, 2, 3};
+            for (int imageID : imageIDs) {
+                BufferedImage img = fetcher.getImageFromDatabase(imageID); // Or getImageByPathFromDatabase
+
+                if (img != null) {
+                    String tempPath = "temp_image_" + imageID + ".png";
+                    File tempFile = new File(tempPath);
+                    ImageIO.write(img, "png", tempFile);
+
+                    imagePaths.add(tempFile.getAbsolutePath());
                 }
             }
-
-            WritableImage image = imageHboxCenter.snapshot(null, null);
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-            File outputImageFile = new File("saved_image.png");
-            ImageIO.write(bufferedImage, "png", outputImageFile);
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
             fileChooser.setInitialFileName("Report.pdf");
-            File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene(). getWindow());
-            if (pdfFile != null){
-                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath());
+            pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
+
+            if (pdfFile != null) {
+                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
-            }else{
+            } else {
                 System.out.println("Save operation was canceled");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public void setUserName(String userName) {
         lblEmployee.setText(userName);

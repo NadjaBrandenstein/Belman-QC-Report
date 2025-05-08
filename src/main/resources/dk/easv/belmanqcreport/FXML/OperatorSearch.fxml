@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorSearchController">
+
+    <!-- Top area (can be like a title bar) -->
+    <top>
+        <BorderPane prefHeight="38.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+
+            <padding>
+                <Insets bottom="0" left="20" right="20" top="0" />
+            </padding>
+            <!-- LEFT SIDE -->
+            <left>
+                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
+                    <ImageView fx:id="logoImage" fitHeight="30" fitWidth="30">
+                  </ImageView>
+               <MFXButton fx:id="btnBack" onAction="#btnBack" text="Back" />
+                </HBox>
+            </left>
+
+            <!-- CENTER -->
+            <center>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;" />
+            </center>
+
+            <!-- RIGHT SIDE -->
+            <right>
+                <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
+                    <Label fx:id="lblEmployee" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="148.0" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
+               <MFXButton fx:id="btnLogout" onAction="#btnLogout" text="Logout" />
+                </HBox>
+            </right>
+         <top>
+            <HBox prefHeight="12.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
+         </top>
+         <bottom>
+            <HBox prefHeight="10.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
+         </bottom>
+
+        </BorderPane>
+    </top>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="440.0" prefWidth="246.0" BorderPane.alignment="BOTTOM_RIGHT">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="440.0" prefWidth="270.0">
+                     <children>
+                        <Label text="Order number " />
+                        <HBox alignment="CENTER" prefHeight="82.0" prefWidth="270.0">
+                           <children>
+                              <MFXTextField fx:id="txtSearch" />
+                              <MFXButton fx:id="btnSearch" onAction="#btnSearch" text="Search">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </MFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children></HBox>
+         </center>
+         <right>
+            <HBox prefHeight="440.0" prefWidth="301.0" BorderPane.alignment="CENTER" />
+         </right>
+         <left>
+            <HBox prefHeight="440.0" prefWidth="325.0" BorderPane.alignment="CENTER" />
+         </left>
+         <top>
+            <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
+   </center>
+   <bottom>
+      <BorderPane prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <center>
+            <HBox prefHeight="84.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </center>
+         <left>
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="336.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER" />
+         </right>
+         <bottom>
+            <HBox prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+         </bottom>
+         <top>
+            <HBox prefHeight="10.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+         </top></BorderPane>
+   </bottom>
+
+</BorderPane>

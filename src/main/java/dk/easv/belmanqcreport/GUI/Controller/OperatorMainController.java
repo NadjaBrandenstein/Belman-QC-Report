@@ -3,6 +3,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
@@ -24,7 +25,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.scene.layout.HBox;
@@ -38,8 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OperatorController {
+public class OperatorMainController {
 
+    @FXML
+    private Label lblOrderNumber;
     @FXML
     private Label lblEmployee;
     @FXML
@@ -75,6 +77,7 @@ public class OperatorController {
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
+    private Stage stage;
 
     @FXML
     private void initialize() {
@@ -107,7 +110,7 @@ public class OperatorController {
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderNumber());
+                    return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override
@@ -185,34 +188,17 @@ public class OperatorController {
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
-        try {
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
-            stage.setTitle("Belman");
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
+        if (loader != null) {
+            OperatorSearchController controller = loader.getController();
+            controller.setUserName(this.lblEmployee.getText());
+            controller.setStage(this.stage);
         }
     }
 
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
-        try {
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Login.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
-            stage.setTitle("Belman");
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
     }
 
     @FXML
@@ -372,6 +358,7 @@ public class OperatorController {
     }
 
     public void setUserName(String userName) {
+
         lblEmployee.setText(userName);
     }
 
@@ -392,6 +379,10 @@ public class OperatorController {
         logoImage.setFitWidth(100);
         logoImage.setFitHeight(100);
         logoImage.setPreserveRatio(true);
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        lblOrderNumber.setText(orderNumber);
     }
 
     @FXML
@@ -427,5 +418,10 @@ public class OperatorController {
             imageHboxCenter.getChildren().add(imageView);
         }
     }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
 
 }

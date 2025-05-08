@@ -1,5 +1,8 @@
 package dk.easv.belmanqcreport.BE;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+
 import java.io.File;
 
 public class MyImage {
@@ -70,5 +73,18 @@ public class MyImage {
 
     public String toURI() {
         return imageFile.toURI().toString();
+    }
+
+    public ImageView getImageNode() {
+        ImageView imageView = new ImageView();
+        return imageView;
+    }
+
+    public Node getImageView() {
+        return imageView();
+    }
+
+    private Node imageView() {
+        return new ImageView(imageFile.toURI().toString());
     }
 }

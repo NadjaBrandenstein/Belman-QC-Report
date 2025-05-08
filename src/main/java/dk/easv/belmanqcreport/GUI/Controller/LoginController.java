@@ -2,32 +2,24 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Other Imports
 import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.BE.User;
-import dk.easv.belmanqcreport.BLL.Manager.LoginManager;
 import dk.easv.belmanqcreport.BLL.UTIL.AuthService;
-import dk.easv.belmanqcreport.Main;
+import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 // JavaFX Imports
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,11 +38,13 @@ public class LoginController implements Initializable {
     private AuthService authService;
 
 
+
     public LoginController() throws IOException {
         authService = new AuthService();
         login = new Login();
         user = new User();
         authService.setLoginController(this);
+
     }
 
     @Override
@@ -60,25 +54,16 @@ public class LoginController implements Initializable {
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
-        btnLogin.setText("");
-        setButtonIcon(btnLogin, "/dk/easv/belmanqcreport/Icons/login.png");
+
 
 
         lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;"); // Make it look like a link
         lblForgotPassword.setCursor(Cursor.HAND); // Change cursor to hand on hover
 
         lblForgotPassword.setOnMouseClicked(event -> {
-            try {
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/ForgotPassword.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
-                stage.setTitle("Belman");
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLNavigator.navigateTo(currentStage, "dk/easv/belmanqcreport/FXML/ForgotPassword.fxml");
+
         });
     }
 
@@ -147,51 +132,31 @@ public class LoginController implements Initializable {
 
 
     private void adminpage() throws IOException {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Admin.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Admin.fxml");
 
-        AdminController adminController = fxmlLoader.getController();
-        adminController.setUserName(this.txtUsername.getText());
-
-        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-        stage.setTitle("Belman");
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
+        if(loader != null) {
+            AdminController adminController = loader.getController();
+            adminController.setUserName(this.txtUsername.getText());
+            adminController.setStage(this.stage);
+        }
     }
 
-    private void opratorPage() throws IOException {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+    private void opratorPage() {
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
 
-        OperatorController operatorController = fxmlLoader.getController();
-        operatorController.setUserName(this.txtUsername.getText());
-
-        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-
-        stage.setTitle("Belman");
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
-
+        if (loader != null) {
+            OperatorSearchController controller = loader.getController();
+            controller.setUserName(this.txtUsername.getText());
+        }
     }
 
     private void qcPage() throws IOException {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/QC.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/QC.fxml");
 
-        QcController qcController = fxmlLoader.getController();
-        qcController.setUserName(this.txtUsername.getText());
-
-        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-
-        stage.setTitle("Belman");
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
+        if (loader != null) {
+            QcController qcController = loader.getController();
+            qcController.setUserName(this.txtUsername.getText());
+        }
     }
 
     public void btnLoginKey(KeyEvent keyEvent) {
