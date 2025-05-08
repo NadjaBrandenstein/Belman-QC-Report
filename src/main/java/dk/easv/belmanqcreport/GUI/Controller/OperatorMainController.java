@@ -382,7 +382,7 @@ public class OperatorMainController {
     }
 
     public void setOrderNumber(String orderNumber) {
-        lblOrderNumber.setText("Order Number: " + orderNumber);
+        lblOrderNumber.setText(orderNumber);
     }
 
     @FXML

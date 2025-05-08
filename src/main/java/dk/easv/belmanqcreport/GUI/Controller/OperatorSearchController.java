@@ -50,6 +50,8 @@ public class OperatorSearchController implements Initializable {
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png");
+        btnSearch.setText("");
+        setButtonIcon(btnSearch, "/dk/easv/belmanqcreport/Icons/search.png");
 
 
         txtSearch.selectableProperty().addListener((observable, oldValue, newValue) -> {
