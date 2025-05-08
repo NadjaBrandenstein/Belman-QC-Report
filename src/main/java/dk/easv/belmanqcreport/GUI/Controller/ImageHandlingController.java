@@ -11,32 +11,25 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.*;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
+
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import static javafx.scene.layout.BackgroundPosition.CENTER;
-import static javafx.scene.layout.BackgroundRepeat.NO_REPEAT;
-import static javafx.scene.layout.BackgroundSize.AUTO;
 
 public class ImageHandlingController {
 
@@ -63,7 +56,7 @@ public class ImageHandlingController {
     @FXML
     private ImageView imageView;
 
-    private OperatorController operatorController;
+    private OperatorMainController operatorController;
 
     private ImageHandlingModel model;
     private ImageModel imageModel;
@@ -90,7 +83,7 @@ public class ImageHandlingController {
         setButtonIcon(btnSaveId, "/dk/easv/belmanqcreport/Icons/save.png");
 
        this.model = new ImageHandlingModel();
-       this.operatorController = new OperatorController();
+       this.operatorController = new OperatorMainController();
        this.imageModel = new ImageModel();
 
 
@@ -199,7 +192,7 @@ public class ImageHandlingController {
         /*try {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/OperatorMain.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
             stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
             stage.setTitle("Belman");

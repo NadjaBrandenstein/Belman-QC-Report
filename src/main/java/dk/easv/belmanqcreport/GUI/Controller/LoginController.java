@@ -2,33 +2,24 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Other Imports
 import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.BE.User;
-import dk.easv.belmanqcreport.BLL.Manager.LoginManager;
 import dk.easv.belmanqcreport.BLL.UTIL.AuthService;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
-import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 // JavaFX Imports
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -152,10 +143,10 @@ public class LoginController implements Initializable {
     }
 
     private void opratorPage() {
-        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Operator.fxml");
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
 
         if (loader != null) {
-            OperatorController controller = loader.getController();
+            OperatorSearchController controller = loader.getController();
             controller.setUserName(this.txtUsername.getText());
         }
     }
