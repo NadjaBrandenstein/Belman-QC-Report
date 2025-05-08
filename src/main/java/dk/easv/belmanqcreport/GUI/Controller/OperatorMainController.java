@@ -110,7 +110,7 @@ public class OperatorMainController {
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderNumber());
+                    return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override

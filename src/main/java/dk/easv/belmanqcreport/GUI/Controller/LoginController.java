@@ -54,8 +54,7 @@ public class LoginController implements Initializable {
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
-        btnLogin.setText("");
-        setButtonIcon(btnLogin, "/dk/easv/belmanqcreport/Icons/login.png");
+
 
 
         lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;"); // Make it look like a link
