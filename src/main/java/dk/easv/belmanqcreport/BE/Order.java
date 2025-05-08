@@ -7,14 +7,24 @@ public class Order {
     private int orderID;
     private int userID;
     private String orderNumber;
+    private String orderItem;
+    private String log;
 
     private List<MyImage> images = new ArrayList<>();
 
-    public Order(int orderID, int userID, String orderNumber) {
+    public Order(int orderID, int userID, String orderNumber, String orderItem, String log) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderNumber = orderNumber;
+        this.orderItem = orderItem;
+        this.log = log;
+    }
 
+    public Order(int orderID, int userID, String orderNumber, String orderItem) {
+        this.orderID = orderID;
+        this.userID = userID;
+        this.orderNumber = orderNumber;
+        this.orderItem = orderItem;
     }
 
     public int getUserID() {
@@ -45,6 +55,21 @@ public class Order {
 
     public String getOrderNumber() {return orderNumber;}
 
+    public String getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(String orderItem) {
+        this.orderItem = orderItem;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
 
     public void add(Order order) {
         setOrderID(order.getOrderID());

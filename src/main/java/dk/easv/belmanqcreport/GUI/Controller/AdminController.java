@@ -2,6 +2,7 @@
         // Project Imports
         import dk.easv.belmanqcreport.BE.User;
         // Other Imports
+        import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
         import dk.easv.belmanqcreport.BLL.UTIL.Search;
         import dk.easv.belmanqcreport.GUI.Model.UserModel;
         import dk.easv.belmanqcreport.Main;
@@ -64,10 +65,7 @@
             @FXML
             private ImageView logoImage;
             private CreateEditUserController createEditUserController;
-
-            private ObservableList<User> users = FXCollections.observableArrayList();
-            private List<User> allUsers;
-            private Search searchEngine = new Search();
+            private Stage stage;
 
             public AdminController() throws IOException {
                 userModel = new UserModel();
@@ -358,42 +356,24 @@
             }
 
             private void createUser() throws Exception {
-                FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
-                Scene scene = new Scene(fxmlLoader.load());
+                FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
 
-                Stage stage = new Stage();
-                stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-                stage.setTitle("Create User");
-                stage.setScene(scene);
-                stage.initModality(Modality.APPLICATION_MODAL);
-
-                CreateEditUserController controller = fxmlLoader.getController();
-                controller.setStage(stage);
-
-                stage.showAndWait();
                 tblEmployee.setItems(userModel.getAllUsers()); // Refresh after creation
             }
 
 
             private void editUser() throws Exception {
                 User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
-                if (selectedUser == null) return;
+                if(selectedUser != null) {
+                    FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
 
-                FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/CreateEditUser.fxml"));
-                Scene scene = new Scene(fxmlLoader.load());
-
-                Stage stage = new Stage();
-                stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-                stage.setTitle("Edit User");
-                stage.setScene(scene);
-                stage.initModality(Modality.APPLICATION_MODAL);
-
-                CreateEditUserController controller = fxmlLoader.getController();
-                controller.setStage(stage);
-                controller.setUserForEdit(selectedUser);
-
-                stage.showAndWait();
-                tblEmployee.setItems(userModel.getAllUsers()); // Refresh after edit
+                    if (loader != null) {
+                        CreateEditUserController controller = loader.getController();
+                        controller.setStage(stage);
+                        controller.setUserForEdit(selectedUser);
+                    }
+                    tblEmployee.setItems(userModel.getAllUsers());
+                }
             }
 
 
@@ -416,6 +396,10 @@
 
             public void setUserName(String userName) {
                 lblEmployee.setText(userName);
+            }
+
+            public void setStage(Stage stage) {
+                this.stage = stage;
             }
 
         }

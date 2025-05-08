@@ -116,7 +116,7 @@ public class QcController implements Initializable {
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderNumber());
+                    return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override
