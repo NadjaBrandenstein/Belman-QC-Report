@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.Manager.LoginManager;
 import dk.easv.belmanqcreport.BLL.UTIL.AuthService;
+import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
@@ -46,11 +47,13 @@ public class LoginController implements Initializable {
     private AuthService authService;
 
 
+
     public LoginController() throws IOException {
         authService = new AuthService();
         login = new Login();
         user = new User();
         authService.setLoginController(this);
+
     }
 
     @Override
@@ -68,17 +71,9 @@ public class LoginController implements Initializable {
         lblForgotPassword.setCursor(Cursor.HAND); // Change cursor to hand on hover
 
         lblForgotPassword.setOnMouseClicked(event -> {
-            try {
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/ForgotPassword.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
-                stage.setTitle("Belman");
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLNavigator.navigateTo(currentStage, "dk/easv/belmanqcreport/FXML/ForgotPassword.fxml");
+
         });
     }
 
@@ -147,51 +142,31 @@ public class LoginController implements Initializable {
 
 
     private void adminpage() throws IOException {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Admin.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Admin.fxml");
 
-        AdminController adminController = fxmlLoader.getController();
-        adminController.setUserName(this.txtUsername.getText());
-
-        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-        stage.setTitle("Belman");
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
+        if(loader != null) {
+            AdminController adminController = loader.getController();
+            adminController.setUserName(this.txtUsername.getText());
+            adminController.setStage(this.stage);
+        }
     }
 
-    private void opratorPage() throws IOException {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/Operator.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+    private void opratorPage() {
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Operator.fxml");
 
-        OperatorController operatorController = fxmlLoader.getController();
-        operatorController.setUserName(this.txtUsername.getText());
-
-        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-
-        stage.setTitle("Belman");
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
-
+        if (loader != null) {
+            OperatorController controller = loader.getController();
+            controller.setUserName(this.txtUsername.getText());
+        }
     }
 
     private void qcPage() throws IOException {
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/dk/easv/belmanqcreport/FXML/QC.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/QC.fxml");
 
-        QcController qcController = fxmlLoader.getController();
-        qcController.setUserName(this.txtUsername.getText());
-
-        stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
-
-        stage.setTitle("Belman");
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
+        if (loader != null) {
+            QcController qcController = loader.getController();
+            qcController.setUserName(this.txtUsername.getText());
+        }
     }
 
     public void btnLoginKey(KeyEvent keyEvent) {

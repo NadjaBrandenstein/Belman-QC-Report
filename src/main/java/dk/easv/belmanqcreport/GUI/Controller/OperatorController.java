@@ -372,6 +372,7 @@ public class OperatorController {
     }
 
     public void setUserName(String userName) {
+
         lblEmployee.setText(userName);
     }
 
