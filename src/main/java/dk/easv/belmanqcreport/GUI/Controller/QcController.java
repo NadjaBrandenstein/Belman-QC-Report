@@ -4,6 +4,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -14,7 +15,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.WritableImage;
 import javafx.util.StringConverter;
 import javafx.scene.Parent;
@@ -27,8 +28,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -78,6 +77,9 @@ public class QcController implements Initializable {
     @FXML
     private MFXComboBox<Order> cbOrderNumber;
 
+    @FXML
+    private ListView<Order> orderColumn;
+
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
     private Order currentOrder;
@@ -94,8 +96,8 @@ public class QcController implements Initializable {
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
-        btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
+        /*btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);*/
         btnPrevious.setText("");
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
@@ -141,6 +143,17 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
+        populateLists();
+
+    }
+
+    private void populateLists(){
+        try {
+            List<Order> orders = imageHandlingModel.getAllOrders();
+            orderColumn.getItems().addAll(orders);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnBack(ActionEvent actionEvent) {
@@ -335,36 +348,47 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
-        try{
-            for (MyImage myImage : capturedImages) {
-                if(myImage.getImageID() <= 0) {
-                    MyImage saved = imageModel.saveNewImage(myImage);
-                    myImage.setImageID(saved.getImageID());
-                    currentOrder.getImages().add(myImage);
-                } else {
-                    imageModel.updateImage(myImage);
+        try {
+            ImageDataFetcher fetcher = new ImageDataFetcher();
+
+
+            List<String> imagePaths = new ArrayList<>();
+
+            for (MyImage img : capturedImages) {
+                imagePaths.add(img.getImagePath()); // Or wherever you save them
+            }
+            File pdfFile = new File("report.pdf");
+            PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
+
+            int[] imageIDs = {1, 2, 3};
+            for (int imageID : imageIDs) {
+                BufferedImage img = fetcher.getImageFromDatabase(imageID); // Or getImageByPathFromDatabase
+
+                if (img != null) {
+                    String tempPath = "temp_image_" + imageID + ".png";
+                    File tempFile = new File(tempPath);
+                    ImageIO.write(img, "png", tempFile);
+
+                    imagePaths.add(tempFile.getAbsolutePath());
                 }
             }
-
-            WritableImage image = imageHboxCenter.snapshot(null, null);
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-            File outputImageFile = new File("saved_image.png");
-            ImageIO.write(bufferedImage, "png", outputImageFile);
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
             fileChooser.setInitialFileName("Report.pdf");
-            File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene(). getWindow());
-            if (pdfFile != null){
-                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath());
+            pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
+
+            if (pdfFile != null) {
+                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
-            }else{
+            } else {
                 System.out.println("Save operation was canceled");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public void setUserName(String userName) {
         lblEmployee.setText(userName);
@@ -424,7 +448,7 @@ public class QcController implements Initializable {
         }
     }
 
-    public void onDeleteBtn(ActionEvent actionEvent) {
+    /*public void onDeleteBtn(ActionEvent actionEvent) {
         if(currentImageIndex < 0 || currentImageIndex >= capturedImages.size()) return;
 
         MyImage imageToDelete = capturedImages.get(currentImageIndex);
@@ -448,5 +472,5 @@ public class QcController implements Initializable {
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
         }
-    }
+    }*/
 }
