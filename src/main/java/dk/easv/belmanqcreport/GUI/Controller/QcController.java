@@ -103,7 +103,7 @@ public class QcController implements Initializable {
         btnCamera.setText("");
         setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
         btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();

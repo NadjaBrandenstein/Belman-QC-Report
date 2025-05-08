@@ -18,8 +18,13 @@ public class OrderDAO_DB implements IOrder {
         DBConnection dbConnection = new DBConnection();
 
 
-        String sql = "SELECT o.orderID, o.userID, o.orderNumber, o.orderItem , i.imageID, i.imagePath, i.comment from dbo.[Order] as o " +
-                    "LEFT JOIN dbo.Image as i on o.orderID = i.orderID ORDER BY o.orderID";
+        String sql = "SELECT o.orderID, o.userID, o.orderNumber, " +
+                "t.orderItem, i.imageID, i.imagePath, i.comment " +
+                "FROM dbo.[Order] AS o " +
+                "LEFT JOIN dbo.Item AS t ON o.orderID = t.orderID " +
+                "LEFT JOIN dbo.Image AS i ON t.orderItemID = i.orderItemID " +
+                "ORDER BY o.orderID";
+
 
         Map<Integer,Order> orderMap = new HashMap<>();
 
@@ -34,18 +39,23 @@ public class OrderDAO_DB implements IOrder {
                 String orderItem = rs.getString("orderItem");
 
                 Order order = orderMap.computeIfAbsent(orderID,
-                        id -> new Order(id, userID, orderNumber,orderItem));
+                        id -> new Order(id, userID, orderNumber, orderItem));
+
+
+                if (order.getOrderItem() == null && orderItem != null) {
+                    order.setOrderItem(orderItem);
+                }
 
                 int imageID = rs.getInt("imageID");
                 String imagePath = rs.getString("imagePath");
                 String comment = rs.getString("comment");
 
-                if(imagePath != null) {
+                if (imagePath != null) {
                     MyImage image = new MyImage(imageID, imagePath, comment);
                     order.getImages().add(image);
                 }
+            }
         }
-    }
         return new ArrayList<>(orderMap.values());
     }
 
