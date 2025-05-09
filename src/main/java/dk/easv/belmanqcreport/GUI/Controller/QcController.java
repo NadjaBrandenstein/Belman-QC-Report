@@ -12,6 +12,7 @@ import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
@@ -75,10 +76,14 @@ public class QcController implements Initializable {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<Order> cbOrderNumber;
+    private MFXComboBox<Order> cbOrderLastDigit;
+    @FXML
+    private MFXCheckbox checkApproved;
+    @FXML
+    private MFXCheckbox checkDenied;
 
     @FXML
-    private ListView<Order> orderColumn;
+    private ListView<Order> lstOrder;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
@@ -112,9 +117,9 @@ public class QcController implements Initializable {
 
         try {
             List<Order> orders = imageHandlingModel.getAllOrders();
-            cbOrderNumber.getItems().addAll(orders);
+            cbOrderLastDigit.getItems().addAll(orders);
 
-            cbOrderNumber.setConverter(new StringConverter<>() {
+            cbOrderLastDigit.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(Order order) {
                     return order == null ? "" : String.valueOf(order.getOrderItem());
@@ -126,15 +131,15 @@ public class QcController implements Initializable {
                 }
             });
 
-            cbOrderNumber.setOnAction(event -> {
-                currentOrder = cbOrderNumber.getSelectedItem();
+            cbOrderLastDigit.setOnAction(event -> {
+                currentOrder = cbOrderLastDigit.getSelectedItem();
                 capturedImages = new ArrayList<>(currentOrder.getImages());
                 displayImages(capturedImages);
             });
 
             if (!orders.isEmpty()) {
-                cbOrderNumber.getSelectionModel().selectFirst();
-                currentOrder = cbOrderNumber.getSelectedItem();
+                cbOrderLastDigit.getSelectionModel().selectFirst();
+                currentOrder = cbOrderLastDigit.getSelectedItem();
                 capturedImages = new ArrayList<>(currentOrder.getImages());
                 displayImages(capturedImages);
             }
@@ -150,7 +155,7 @@ public class QcController implements Initializable {
     private void populateLists(){
         try {
             List<Order> orders = imageHandlingModel.getAllOrders();
-            orderColumn.getItems().addAll(orders);
+            lstOrder.getItems().addAll(orders);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -417,7 +422,7 @@ public class QcController implements Initializable {
     @FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
 
-        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        Order selectedOrder = cbOrderLastDigit.getSelectedItem();
         if (selectedOrder != null) {
             currentOrder = selectedOrder;
             capturedImages = new ArrayList<>(currentOrder.getImages());
@@ -447,6 +452,18 @@ public class QcController implements Initializable {
 
             imageHboxCenter.getChildren().add(imageView);
         }
+    }
+
+    @FXML
+    private void cbOrderLastDigit(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void checkApproved(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void checkDenied(ActionEvent actionEvent) {
     }
 
     /*public void onDeleteBtn(ActionEvent actionEvent) {
