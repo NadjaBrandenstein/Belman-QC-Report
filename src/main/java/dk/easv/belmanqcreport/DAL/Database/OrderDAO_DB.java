@@ -2,6 +2,7 @@ package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IOrder;
 
@@ -113,5 +114,32 @@ public class OrderDAO_DB implements IOrder {
         }
     }
 
-    
+    @Override
+    public List<OrderItem> getItemsByOrderID(int orderID) throws Exception {
+        DBConnection dbConnection = new DBConnection();
+        String sql =
+                "SELECT orderItemID, orderID, orderItem " +
+                        "  FROM dbo.Item " +
+                        " WHERE orderID = ?";           // ← a simple question-mark
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // bind the one and only parameter
+            stmt.setInt(1, orderID);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<OrderItem> items = new ArrayList<>();
+                while (rs.next()) {
+                    items.add(new OrderItem(
+                            rs.getInt("orderItemID"),
+                            rs.getInt("orderID"),
+                            rs.getString("orderItem")
+                    ));
+                }
+                return items;
+            }
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package dk.easv.belmanqcreport.BLL.Manager;
 
 import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.Database.OrderDAO_DB;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public class OrderManager {
     }
     public void deleteOrders(Order order) throws Exception {
         orderDAO.deleteOrder(order);
+    }
+    public List<OrderItem> getItemsByOrderID(int orderID) throws Exception {
+       return orderDAO.getItemsByOrderID(orderID);
     }
 
 }

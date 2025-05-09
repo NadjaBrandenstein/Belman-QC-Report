@@ -3,9 +3,9 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
-import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
@@ -13,12 +13,8 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.WritableImage;
-import javafx.util.StringConverter;
 import javafx.scene.Parent;
 import javafx.stage.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -37,13 +33,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.util.StringConverter;
 // Java Imports
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -75,8 +68,7 @@ public class QcController implements Initializable {
     private MFXButton btnPDFSave;
     @FXML
     private ImageView logoImage;
-    @FXML
-    private MFXComboBox<Order> cbOrderLastDigit;
+
     @FXML
     private MFXCheckbox checkApproved;
     @FXML
@@ -84,6 +76,8 @@ public class QcController implements Initializable {
 
     @FXML
     private ListView<Order> lstOrder;
+    @FXML
+    private ListView<OrderItem> lstItem;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
@@ -97,56 +91,58 @@ public class QcController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        setIcons();
-        populateLists();
-
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
 
+        setIcons();
+
+
         try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
-            cbOrderLastDigit.getItems().addAll(orders);
-
-            cbOrderLastDigit.setConverter(new StringConverter<>() {
-                @Override
-                public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderItem());
-                }
-
-                @Override
-                public Order fromString(String string) {
-                    return null;
-                }
-            });
-
-            cbOrderLastDigit.setOnAction(event -> {
-                currentOrder = cbOrderLastDigit.getSelectedItem();
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-                displayImages(capturedImages);
-            });
-
-            if (!orders.isEmpty()) {
-                cbOrderLastDigit.getSelectionModel().selectFirst();
-                currentOrder = cbOrderLastDigit.getSelectedItem();
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-                displayImages(capturedImages);
-            }
-
+            populateLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
 
 
     }
 
-    private void populateLists(){
-        try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
-            lstOrder.getItems().addAll(orders);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void populateLists() throws Exception {
+
+        List<Order> orders;
+
+            orders = imageHandlingModel.getAllOrders();
+
+        lstOrder.getItems().setAll(orders);
+
+        lstOrder.setCellFactory(lv -> new ListCell<>() {
+            @Override protected void updateItem(Order o, boolean empty) {
+                super.updateItem(o, empty);
+                setText(empty||o==null ? null : o.getOrderNumber());
+            }
+        });
+
+        lstOrder.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> {
+            if(sel != null) {
+                try {
+
+                    List<OrderItem> items = imageHandlingModel.getItemsByOrderID(sel.getOrderID());
+                    lstItem.getItems().setAll(items);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                lstItem.getItems().clear();
+            }
+        });
+
+        if(!orders.isEmpty()) {
+            lstOrder.getSelectionModel().selectFirst();
         }
+
     }
 
     private void setIcons(){
@@ -429,24 +425,6 @@ public class QcController implements Initializable {
         logoImage.setPreserveRatio(true);
     }
 
-    @FXML
-    private void cbOrderNumber(ActionEvent actionEvent) {
-
-        Order selectedOrder = cbOrderLastDigit.getSelectedItem();
-        if (selectedOrder != null) {
-            currentOrder = selectedOrder;
-            capturedImages = new ArrayList<>(currentOrder.getImages());
-            currentImageIndex = 0;
-            if (!capturedImages.isEmpty()) {
-                showImageAtIndex(currentImageIndex);
-                updateImageCountLabel();
-            } else {
-                imageHboxCenter.getChildren().clear();
-                lblImageCount.setText("0 / 0");
-            }
-        }
-
-    }
 
     private void displayImages(List<MyImage> capturedImages) {
         imageHboxCenter.getChildren().clear();
