@@ -85,7 +85,7 @@ public class OperatorSearchController implements Initializable {
                 FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorMain.fxml");
 
                 if (loader != null) {
-                    OperatorMainController controller = loader.getController();
+                    OperatorMainControllerv2 controller = loader.getController();
                     controller.setUserName(this.lblEmployee.getText());
                     controller.setStage(this.stage);
                     controller.setOrderNumber(inputOrderNumber); // <-- Send order number

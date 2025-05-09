@@ -1,6 +1,5 @@
 package dk.easv.belmanqcreport.DAL.Interface;
 
-import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.User;
 
 import java.util.List;

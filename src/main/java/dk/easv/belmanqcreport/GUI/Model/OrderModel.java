@@ -1,7 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Model;
 
 
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.Orderv2;
 import dk.easv.belmanqcreport.BLL.Manager.OrderManager;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class OrderModel {
         orderManager = new OrderManager();
     }
 
-    public List<Order> getAllOrders() throws Exception {
+    public List<Orderv2> getAllOrders() throws Exception {
         return orderManager.getAllOrders();
     }
 

@@ -2,9 +2,9 @@ package dk.easv.belmanqcreport.GUI.Controller;
 
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.Orderv2;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
-import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
+import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
@@ -12,10 +12,8 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.image.WritableImage;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import javafx.scene.Parent;
 import javafx.stage.*;
@@ -27,8 +25,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -37,13 +33,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.util.StringConverter;
 // Java Imports
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -76,11 +69,14 @@ public class QcController implements Initializable {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<Order> cbOrderNumber;
+    private MFXComboBox<Orderv2> cbOrderNumber;
+
+    @FXML
+    private ListView<Orderv2> orderColumn;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
-    private Order currentOrder;
+    private Orderv2 currentOrder;
     private Window primaryStage;
 
     private final CameraHandling cameraHandler = new CameraHandling();
@@ -94,8 +90,8 @@ public class QcController implements Initializable {
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
-        btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
+        /*btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);*/
         btnPrevious.setText("");
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
@@ -109,17 +105,17 @@ public class QcController implements Initializable {
         imageModel = new ImageModel();
 
         try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
+            List<Orderv2> orders = imageHandlingModel.getAllOrders();
             cbOrderNumber.getItems().addAll(orders);
 
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
-                public String toString(Order order) {
+                public String toString(Orderv2 order) {
                     return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override
-                public Order fromString(String string) {
+                public Orderv2 fromString(String string) {
                     return null;
                 }
             });
@@ -141,6 +137,17 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
+        populateLists();
+
+    }
+
+    private void populateLists(){
+        try {
+            List<Orderv2> orders = imageHandlingModel.getAllOrders();
+            orderColumn.getItems().addAll(orders);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnBack(ActionEvent actionEvent) {
@@ -335,36 +342,47 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
-        try{
-            for (MyImage myImage : capturedImages) {
-                if(myImage.getImageID() <= 0) {
-                    MyImage saved = imageModel.saveNewImage(myImage);
-                    myImage.setImageID(saved.getImageID());
-                    currentOrder.getImages().add(myImage);
-                } else {
-                    imageModel.updateImage(myImage);
+        try {
+            ImageDataFetcher fetcher = new ImageDataFetcher();
+
+
+            List<String> imagePaths = new ArrayList<>();
+
+            for (MyImage img : capturedImages) {
+                imagePaths.add(img.getImagePath()); // Or wherever you save them
+            }
+            File pdfFile = new File("report.pdf");
+            PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
+
+            int[] imageIDs = {1, 2, 3};
+            for (int imageID : imageIDs) {
+                BufferedImage img = fetcher.getImageFromDatabase(imageID); // Or getImageByPathFromDatabase
+
+                if (img != null) {
+                    String tempPath = "temp_image_" + imageID + ".png";
+                    File tempFile = new File(tempPath);
+                    ImageIO.write(img, "png", tempFile);
+
+                    imagePaths.add(tempFile.getAbsolutePath());
                 }
             }
-
-            WritableImage image = imageHboxCenter.snapshot(null, null);
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-            File outputImageFile = new File("saved_image.png");
-            ImageIO.write(bufferedImage, "png", outputImageFile);
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
             fileChooser.setInitialFileName("Report.pdf");
-            File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene(). getWindow());
-            if (pdfFile != null){
-                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath());
+            pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
+
+            if (pdfFile != null) {
+                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
-            }else{
+            } else {
                 System.out.println("Save operation was canceled");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public void setUserName(String userName) {
         lblEmployee.setText(userName);
@@ -392,7 +410,7 @@ public class QcController implements Initializable {
     @FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
 
-        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        Orderv2 selectedOrder = cbOrderNumber.getSelectedItem();
         if (selectedOrder != null) {
             currentOrder = selectedOrder;
             capturedImages = new ArrayList<>(currentOrder.getImages());
@@ -424,7 +442,7 @@ public class QcController implements Initializable {
         }
     }
 
-    public void onDeleteBtn(ActionEvent actionEvent) {
+    /*public void onDeleteBtn(ActionEvent actionEvent) {
         if(currentImageIndex < 0 || currentImageIndex >= capturedImages.size()) return;
 
         MyImage imageToDelete = capturedImages.get(currentImageIndex);
@@ -448,5 +466,5 @@ public class QcController implements Initializable {
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
         }
-    }
+    }*/
 }

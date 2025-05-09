@@ -1,7 +1,7 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.Orderv2;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IOrder;
 
@@ -14,7 +14,7 @@ import java.util.*;
 public class OrderDAO_DB implements IOrder {
 
     @Override
-    public List<Order> getAllOrder() throws Exception {
+    public List<Orderv2> getAllOrder() throws Exception {
         DBConnection dbConnection = new DBConnection();
 
 
@@ -26,7 +26,7 @@ public class OrderDAO_DB implements IOrder {
                 "ORDER BY o.orderID";
 
 
-        Map<Integer,Order> orderMap = new HashMap<>();
+        Map<Integer, Orderv2> orderMap = new HashMap<>();
 
         try (Connection conn = dbConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -38,8 +38,8 @@ public class OrderDAO_DB implements IOrder {
                 String orderNumber = rs.getString("orderNumber");
                 String orderItem = rs.getString("orderItem");
 
-                Order order = orderMap.computeIfAbsent(orderID,
-                        id -> new Order(id, userID, orderNumber, orderItem));
+                Orderv2 order = orderMap.computeIfAbsent(orderID,
+                        id -> new Orderv2(id, userID, orderNumber, orderItem));
 
 
                 if (order.getOrderItem() == null && orderItem != null) {
@@ -61,7 +61,7 @@ public class OrderDAO_DB implements IOrder {
 
 
     @Override
-    public Order createOrder(Order order) throws Exception {
+    public Orderv2 createOrder(Orderv2 order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "INSERT INTO Order (orderID) VALUES (?,?,?)";
 
@@ -80,7 +80,7 @@ public class OrderDAO_DB implements IOrder {
     }
 
     @Override
-    public Order updateOrder(Order order) throws Exception {
+    public Orderv2 updateOrder(Orderv2 order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "UPDATE [Order] SET orderID = ?";
 
@@ -97,7 +97,7 @@ public class OrderDAO_DB implements IOrder {
     }
 
     @Override
-    public void deleteOrder(Order order) throws Exception {
+    public void deleteOrder(Orderv2 order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "DELETE FROM Order WHERE orderID = ?";
 

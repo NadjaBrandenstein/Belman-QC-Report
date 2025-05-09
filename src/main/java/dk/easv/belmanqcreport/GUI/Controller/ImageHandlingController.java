@@ -1,7 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 // Other Import
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.Orderv2;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
@@ -56,12 +56,12 @@ public class ImageHandlingController {
     @FXML
     private ImageView imageView;
 
-    private OperatorMainController operatorController;
+    private OperatorMainControllerv2 operatorController;
 
     private ImageHandlingModel model;
     private ImageModel imageModel;
 
-    private Order currentOrder;
+    private Orderv2 currentOrder;
     private MyImage currentImage;
     private Consumer<MyImage> onSaveCallBack;
 
@@ -83,14 +83,14 @@ public class ImageHandlingController {
         setButtonIcon(btnSaveId, "/dk/easv/belmanqcreport/Icons/save.png");
 
        this.model = new ImageHandlingModel();
-       this.operatorController = new OperatorMainController();
+       this.operatorController = new OperatorMainControllerv2();
        this.imageModel = new ImageModel();
 
 
 
     }
 
-    public void setOrderDetails(Order order, MyImage image, Consumer<MyImage> onSave) {
+    public void setOrderDetails(Orderv2 order, MyImage image, Consumer<MyImage> onSave) {
         this.currentOrder = order;
         this.currentImage = image;
         this.onSaveCallBack = onSave;
