@@ -2,10 +2,9 @@ package dk.easv.belmanqcreport.GUI.Controller;
 
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.Orderv2;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
-import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
@@ -13,10 +12,8 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.WritableImage;
 import javafx.util.StringConverter;
 import javafx.scene.Parent;
 import javafx.stage.*;
@@ -36,13 +33,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.util.StringConverter;
 // Java Imports
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -75,14 +69,14 @@ public class QcController implements Initializable {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<Order> cbOrderNumber;
+    private MFXComboBox<Orderv2> cbOrderNumber;
 
     @FXML
-    private ListView<Order> orderColumn;
+    private ListView<Orderv2> orderColumn;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
-    private Order currentOrder;
+    private Orderv2 currentOrder;
     private Window primaryStage;
 
     private final CameraHandling cameraHandler = new CameraHandling();
@@ -111,17 +105,17 @@ public class QcController implements Initializable {
         imageModel = new ImageModel();
 
         try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
+            List<Orderv2> orders = imageHandlingModel.getAllOrders();
             cbOrderNumber.getItems().addAll(orders);
 
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
-                public String toString(Order order) {
+                public String toString(Orderv2 order) {
                     return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override
-                public Order fromString(String string) {
+                public Orderv2 fromString(String string) {
                     return null;
                 }
             });
@@ -149,7 +143,7 @@ public class QcController implements Initializable {
 
     private void populateLists(){
         try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
+            List<Orderv2> orders = imageHandlingModel.getAllOrders();
             orderColumn.getItems().addAll(orders);
         } catch (Exception e) {
             e.printStackTrace();
@@ -416,7 +410,7 @@ public class QcController implements Initializable {
     @FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
 
-        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        Orderv2 selectedOrder = cbOrderNumber.getSelectedItem();
         if (selectedOrder != null) {
             currentOrder = selectedOrder;
             capturedImages = new ArrayList<>(currentOrder.getImages());

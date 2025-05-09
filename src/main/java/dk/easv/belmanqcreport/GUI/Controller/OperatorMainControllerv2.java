@@ -1,12 +1,11 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.Orderv2;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
-import dk.easv.belmanqcreport.Main;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -16,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -38,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OperatorMainController {
+public class OperatorMainControllerv2 {
 
     @FXML
     private Label lblOrderNumber;
@@ -67,12 +65,12 @@ public class OperatorMainController {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<Order> cbOrderNumber;
+    private MFXComboBox<Orderv2> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
 
-    private Order currentOrder;
+    private Orderv2 currentOrder;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
@@ -103,18 +101,18 @@ public class OperatorMainController {
         imageModel = new ImageModel();
 
         try{
-            List<Order> orders = imageHandlingModel.getAllOrders();
+            List<Orderv2> orders = imageHandlingModel.getAllOrders();
             cbOrderNumber.getItems().addAll(orders);
 
 
             cbOrderNumber.setConverter(new StringConverter<>() {
                 @Override
-                public String toString(Order order) {
+                public String toString(Orderv2 order) {
                     return order == null ? "" : String.valueOf(order.getOrderItem());
                 }
 
                 @Override
-                public Order fromString(String string) {
+                public Orderv2 fromString(String string) {
                     return null;
                 }
             });
@@ -388,7 +386,7 @@ public class OperatorMainController {
     @FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
 
-        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        Orderv2 selectedOrder = cbOrderNumber.getSelectedItem();
         if (selectedOrder != null) {
             currentOrder = selectedOrder;
             capturedImages = new ArrayList<>(currentOrder.getImages());

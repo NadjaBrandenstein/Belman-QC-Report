@@ -3,7 +3,7 @@ package dk.easv.belmanqcreport.BE;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+public class Orderv2 {
     private int orderID;
     private int userID;
     private String orderNumber;
@@ -12,7 +12,7 @@ public class Order {
 
     private List<MyImage> images = new ArrayList<>();
 
-    public Order(int orderID, int userID, String orderNumber, String orderItem, String log) {
+    public Orderv2(int orderID, int userID, String orderNumber, String orderItem, String log) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderNumber = orderNumber;
@@ -20,7 +20,7 @@ public class Order {
         this.log = log;
     }
 
-    public Order(int orderID, int userID, String orderNumber, String orderItem) {
+    public Orderv2(int orderID, int userID, String orderNumber, String orderItem) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderNumber = orderNumber;
@@ -71,7 +71,7 @@ public class Order {
         this.log = log;
     }
 
-    public void add(Order order) {
+    public void add(Orderv2 order) {
         setOrderID(order.getOrderID());
 
     }

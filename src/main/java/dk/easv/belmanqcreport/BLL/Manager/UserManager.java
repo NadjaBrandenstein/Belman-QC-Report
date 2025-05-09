@@ -1,6 +1,5 @@
 package dk.easv.belmanqcreport.BLL.Manager;
 
-import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.UTIL.Search;
 import dk.easv.belmanqcreport.DAL.Database.UserDAO_DB;

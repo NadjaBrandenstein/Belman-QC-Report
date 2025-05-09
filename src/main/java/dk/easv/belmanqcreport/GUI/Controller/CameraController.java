@@ -23,13 +23,13 @@ public class CameraController {
     private HBox imageHboxCamera;
 
     private final CameraHandling cameraHandler = new CameraHandling();
-    private OperatorMainController parentController;
+    private OperatorMainControllerv2 parentController;
     private QcController qcController;
     private Thread previewThread;
     @FXML
     private MFXButton captureBtn;
 
-    public void setParentController(OperatorMainController controller) {
+    public void setParentController(OperatorMainControllerv2 controller) {
         this.parentController = controller;
     }
 

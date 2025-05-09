@@ -1,24 +1,23 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
 import dk.easv.belmanqcreport.BE.Login;
-import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.Database.LoginDAO_DB;
 import dk.easv.belmanqcreport.DAL.Database.UserDAO_DB;
-import dk.easv.belmanqcreport.GUI.Controller.LoginController;
+import dk.easv.belmanqcreport.GUI.Controller.LoginControllerv2;
 
 import java.io.IOException;
 
 public class AuthService {
     private final LoginDAO_DB loginDAO;
     private final UserDAO_DB userDAO;
-    private LoginController loginController;
+    private LoginControllerv2 loginController;
 
     public AuthService() throws IOException {
         this.loginDAO = new LoginDAO_DB();
         this.userDAO = new UserDAO_DB();
     }
 
-    public void setLoginController(LoginController controller) {
+    public void setLoginController(LoginControllerv2 controller) {
         this.loginController = controller;
     }
 

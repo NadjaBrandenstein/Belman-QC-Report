@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginControllerv2 implements Initializable {
     public MFXTextField txtUsername;
     public MFXPasswordField txtPassword;
     public ImageView logoImage;
@@ -39,7 +39,7 @@ public class LoginController implements Initializable {
 
 
 
-    public LoginController() throws IOException {
+    public LoginControllerv2() throws IOException {
         authService = new AuthService();
         login = new Login();
         user = new User();
