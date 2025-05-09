@@ -1,11 +1,16 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
+import dk.easv.belmanqcreport.BE.MyImage;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,19 +49,21 @@ public class PDFGeneratorImp implements PDFGenerator {
         }
     }
 
-    public void generatePDF(String fileName, List<String> imagePaths) {
+    public void generatePDF(String fileName, List<MyImage> images) {
         try (PDDocument document = new PDDocument()) {
-            for (String imagePath : imagePaths) {
-                File imgFile = new File(imagePath);
+            for (MyImage myImage : images) {
+                File imgFile = new File(myImage.getImagePath());
                 if (!imgFile.exists()) {
-                    System.out.println("Skipping missing image: " + imagePath);
+                    System.out.println("Skipping missing image: " + myImage.getImagePath());
                     continue;
                 }
+
+                BufferedImage bufferedImage = ImageIO.read(imgFile);
 
                 PDPage page = new PDPage(PDRectangle.A4);
                 document.addPage(page);
 
-                PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, document);
+                PDImageXObject pdImage = LosslessFactory.createFromImage(document, bufferedImage);
 
                 PDRectangle mediaBox = page.getMediaBox();
                 float pageWidth = mediaBox.getWidth();
@@ -70,13 +77,25 @@ public class PDFGeneratorImp implements PDFGenerator {
                 float drawHeight = imageHeight * scale;
 
                 float x = (pageWidth - drawWidth) / 2;
-                float y = (pageHeight - drawHeight) / 2;
+                float y = (pageHeight - drawHeight) / 2 + 100;
 
                 try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                     contentStream.drawImage(pdImage, x, y, drawWidth, drawHeight);
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.setLeading(14.5f);
+                    contentStream.newLineAtOffset(50, y - 20);
+
+                    contentStream.showText("Image ID: " + myImage.getImagePath());
+                    contentStream.newLine();
+                    contentStream.showText("Order ID: " + myImage.getOrderID());
+                    contentStream.newLine();
+                    contentStream.showText("Comment: " + myImage.getImagePath());
+
+                    contentStream.endText();
                 }
 
-                System.out.println("Added image to PDF: " + imagePath);
             }
 
             document.save(fileName);
@@ -84,7 +103,13 @@ public class PDFGeneratorImp implements PDFGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
+
+
     }
 
+           
 }
 

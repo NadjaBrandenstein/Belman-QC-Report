@@ -357,15 +357,12 @@ public class QcController implements Initializable {
             ImageDataFetcher fetcher = new ImageDataFetcher();
 
 
-            List<String> imagePaths = new ArrayList<>();
+            List<MyImage> allImages = new ArrayList<>();
 
-            for (MyImage img : capturedImages) {
-                imagePaths.add(img.getImagePath()); // Or wherever you save them
-            }
-            File pdfFile = new File("report.pdf");
-            PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
+            allImages.addAll(capturedImages);
 
             int[] imageIDs = {1, 2, 3};
+
             for (int imageID : imageIDs) {
                 BufferedImage img = fetcher.getImageFromDatabase(imageID); // Or getImageByPathFromDatabase
 
@@ -374,17 +371,22 @@ public class QcController implements Initializable {
                     File tempFile = new File(tempPath);
                     ImageIO.write(img, "png", tempFile);
 
-                    imagePaths.add(tempFile.getAbsolutePath());
+                    String comment = fetcher.getCommentByImageID(imageID);
+                    int orderID = fetcher.getOrderIDByImageID(imageID);
+
+                    MyImage myImage = new MyImage(imageID, tempPath, comment);
+                    myImage.setOrderID(orderID);
+                    allImages.add(myImage);
                 }
             }
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
             fileChooser.setInitialFileName("Report.pdf");
-            pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
+            File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
 
             if (pdfFile != null) {
-                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), imagePaths);
+                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), allImages);
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
             } else {
                 System.out.println("Save operation was canceled");
