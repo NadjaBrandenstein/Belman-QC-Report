@@ -112,4 +112,8 @@ public class OrderDAO_DB implements IOrder {
             e.printStackTrace();
         }
     }
+
+    public List<Order> getItemsByOrderNumber(String orderNumber) throws Exception {
+        String sql
+    }
 }

@@ -96,21 +96,9 @@ public class QcController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
-        btnBack.setText("");
-        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
-        btnLogout.setText("");
-        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
-        /*btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);*/
-        btnPrevious.setText("");
-        setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
-        btnNext.setText("");
-        setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
-        btnCamera.setText("");
-        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
-        btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+
+        setIcons();
+        populateLists();
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
@@ -148,7 +136,7 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
-        populateLists();
+
 
     }
 
@@ -159,6 +147,26 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setIcons(){
+
+        setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
+        btnBack.setText("");
+        setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
+        btnLogout.setText("");
+        setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
+        /*btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);*/
+        btnPrevious.setText("");
+        setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
+        btnNext.setText("");
+        setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
+        btnCamera.setText("");
+        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
+        btnPDFSave.setText("");
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+
     }
 
     public void btnBack(ActionEvent actionEvent) {
