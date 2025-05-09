@@ -94,6 +94,26 @@ public class QcController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        setIcons();
+        populateLists();
+
+        imageHandlingModel = new ImageHandlingModel();
+        imageModel = new ImageModel();
+
+    }
+
+    private void populateLists(){
+        try {
+            List<Order> orders = imageHandlingModel.getAllOrders();
+            lstOrder.getItems().addAll(orders);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setIcons(){
+
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
@@ -110,20 +130,6 @@ public class QcController implements Initializable {
         btnPDFSave.setText("");
         setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
 
-        imageHandlingModel = new ImageHandlingModel();
-        imageModel = new ImageModel();
-
-        populateLists();
-
-    }
-
-    private void populateLists(){
-        try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
-            lstOrder.getItems().addAll(orders);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void btnBack(ActionEvent actionEvent) {
