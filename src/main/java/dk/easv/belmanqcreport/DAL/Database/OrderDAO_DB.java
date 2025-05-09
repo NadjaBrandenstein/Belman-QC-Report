@@ -113,7 +113,5 @@ public class OrderDAO_DB implements IOrder {
         }
     }
 
-    public List<Order> getItemsByOrderNumber(String orderNumber) throws Exception {
-        String sql
-    }
+    
 }
