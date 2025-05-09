@@ -393,6 +393,7 @@ public class QcController implements Initializable {
     public void setUserName(String userName) {
         lblEmployee.setText(userName);
     }
+    
 
     private void setImageViewIcon(ImageView logoImage, String iconPath) {
         if (logoImage == null) {
