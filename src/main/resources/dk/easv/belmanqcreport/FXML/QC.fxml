@@ -24,8 +24,8 @@
             <left>
                 <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
                     <ImageView fx:id="logoImage" fitHeight="30" fitWidth="45.0">
-                  </ImageView>
-               <MFXButton fx:id="btnBack" onAction="#btnBack" text="Back" />
+                    </ImageView>
+                    <MFXButton fx:id="btnBack" onAction="#btnBack" text="Back" />
                 </HBox>
             </left>
 
@@ -40,121 +40,121 @@
             <right>
                 <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
                     <Label fx:id="lblEmployee" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="148.0" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
-               <MFXButton fx:id="btnLogout" onAction="#btnLogout" text="Logout" />
+                    <MFXButton fx:id="btnLogout" onAction="#btnLogout" text="Logout" />
                 </HBox>
             </right>
-         <top>
-            <HBox prefHeight="12.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
-         </top>
-         <bottom>
-            <HBox prefHeight="10.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
-         </bottom>
+            <top>
+                <HBox prefHeight="12.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
+            </top>
+            <bottom>
+                <HBox prefHeight="10.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
+            </bottom>
 
         </BorderPane>
     </top>
-   <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <right>
-            <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <MFXCheckbox fx:id="checkApprove" text="Approved">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </MFXCheckbox>
-                        <MFXCheckbox fx:id="checkDeny" layoutX="10.0" layoutY="10.0" text="Denied">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </MFXCheckbox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </right>
-         <left>
-            <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER" />
-         </left>
-         <top>
-            <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-         </top>
-         <center>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <left>
-                  <BorderPane prefHeight="440.0" prefWidth="437.0" BorderPane.alignment="CENTER">
-                     <center>
-                        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <ListView fx:id="orderColumn" prefHeight="440.0" prefWidth="125.0" />
-                              <ListView fx:id="itemColumn" prefHeight="440.0" prefWidth="125.0" />
-                              <ListView fx:id="logColumn" prefHeight="440.0" prefWidth="125.0" />
-                           </children>
+    <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <right>
+                <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <MFXCheckbox fx:id="checkApprove" text="Approved">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </MFXCheckbox>
+                                <MFXCheckbox fx:id="checkDeny" layoutX="10.0" layoutY="10.0" text="Denied">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </MFXCheckbox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </right>
+            <left>
+                <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER" />
+            </left>
+            <top>
+                <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+            </top>
+            <center>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <left>
+                        <BorderPane prefHeight="440.0" prefWidth="437.0" BorderPane.alignment="CENTER">
+                            <center>
+                                <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <ListView fx:id="orderColumn" prefHeight="440.0" prefWidth="125.0" />
+                                        <ListView fx:id="itemColumn" prefHeight="440.0" prefWidth="125.0" />
+                                        <ListView fx:id="logColumn" prefHeight="440.0" prefWidth="125.0" />
+                                    </children>
+                                </HBox>
+                            </center>
+                            <left>
+                                <HBox prefHeight="440.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+                            </left>
+                            <right>
+                                <HBox prefHeight="440.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+                            </right>
+                        </BorderPane>
+                    </left>
+                    <right>
+                        <HBox fx:id="imageHboxCenter" prefHeight="440.0" prefWidth="221.0" BorderPane.alignment="CENTER" />
+                    </right>
+                </BorderPane>
+            </center>
+        </BorderPane>
+    </center>
+    <bottom>
+        <BorderPane prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <center>
+                <HBox prefHeight="84.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <MFXButton fx:id="btnPrevious" onAction="#btnPrevious" prefHeight="25.6" prefWidth="60.0" text="&lt;-" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets right="20.0" />
+                                    </HBox.margin>
+                                </MFXButton>
+                                <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
+                                <MFXButton fx:id="btnNext" onAction="#btnNext" prefHeight="25.6" prefWidth="60.0" text="-&gt;" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="10.0" />
+                                    </HBox.margin>
+                                </MFXButton>
+                            </children>
                         </HBox>
-                     </center>
-                     <left>
-                        <HBox prefHeight="440.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
-                     </left>
-                     <right>
-                        <HBox prefHeight="440.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
-                     </right>
-                  </BorderPane>
-               </left>
-               <right>
-                  <HBox fx:id="imageHboxCenter" prefHeight="440.0" prefWidth="221.0" BorderPane.alignment="CENTER" />
-               </right>
-            </BorderPane>
-         </center>
-      </BorderPane>
-   </center>
-   <bottom>
-      <BorderPane prefHeight="84.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <center>
-            <HBox prefHeight="84.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <MFXButton fx:id="btnPrevious" onAction="#btnPrevious" prefHeight="25.6" prefWidth="60.0" text="&lt;-" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin>
+                    </children>
+                </HBox>
+            </center>
+            <left>
+                <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <MFXButton fx:id="btnCamera" alignment="CENTER" onAction="#btnCamera" prefHeight="62.0" prefWidth="100.0" text="Camera" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
                         </MFXButton>
-                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
-                        <MFXButton fx:id="btnNext" onAction="#btnNext" prefHeight="25.6" prefWidth="60.0" text="-&gt;" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </MFXButton>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-         </center>
-         <left>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">
-               <children>
-                  <MFXButton fx:id="btnCamera" alignment="CENTER" onAction="#btnCamera" prefHeight="62.0" prefWidth="100.0" text="Camera" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-            </HBox>
-         </left>
-         <right>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">
-               <children>
-                  <MFXButton fx:id="btnPDFSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
-               </children>
-            </HBox>
-         </right>
-          <bottom>
-              <HBox prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
-          </bottom>
-          <top>
-              <HBox prefHeight="10.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
-          </top></BorderPane>
-   </bottom>
+                    </children>
+                </HBox>
+            </left>
+            <right>
+                <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <MFXButton fx:id="btnPDFSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
+                    </children>
+                </HBox>
+            </right>
+            <bottom>
+                <HBox prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+            </bottom>
+            <top>
+                <HBox prefHeight="10.0" prefWidth="900.0" BorderPane.alignment="CENTER" />
+            </top></BorderPane>
+    </bottom>
 
 </BorderPane>
