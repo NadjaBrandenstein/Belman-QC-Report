@@ -70,4 +70,32 @@ public class ImageDataFetcher {
         return null;
     }
 
+    public String getCommentByImageID(int imageID) {
+        String sql = "SELECT comment FROM [Image] WHERE imageID = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            stmt.setInt(1, imageID);
+            if (rs.next()) {
+                return rs.getString("comment");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+    public int getOrderIDByImageID(int imageID) {
+        String sql = "SELECT orderID FROM [Image] WHERE imageID = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            stmt.setInt(1, imageID);
+            if (rs.next()) {
+                return rs.getInt("orderID");
+            }
+        } catch (SQLException e) {
+        }
+        return -1;
+    }
+}
