@@ -76,8 +76,6 @@ public class QcController implements Initializable {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<Order> cbOrderLastDigit;
-    @FXML
     private MFXCheckbox checkApproved;
     @FXML
     private MFXCheckbox checkDenied;
@@ -87,7 +85,7 @@ public class QcController implements Initializable {
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
-    private Order currentOrder;
+    private Order order;
     private Window primaryStage;
 
     private final CameraHandling cameraHandler = new CameraHandling();
@@ -114,39 +112,6 @@ public class QcController implements Initializable {
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
-
-        try {
-            List<Order> orders = imageHandlingModel.getAllOrders();
-            cbOrderLastDigit.getItems().addAll(orders);
-
-            cbOrderLastDigit.setConverter(new StringConverter<>() {
-                @Override
-                public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderItem());
-                }
-
-                @Override
-                public Order fromString(String string) {
-                    return null;
-                }
-            });
-
-            cbOrderLastDigit.setOnAction(event -> {
-                currentOrder = cbOrderLastDigit.getSelectedItem();
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-                displayImages(capturedImages);
-            });
-
-            if (!orders.isEmpty()) {
-                cbOrderLastDigit.getSelectionModel().selectFirst();
-                currentOrder = cbOrderLastDigit.getSelectedItem();
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-                displayImages(capturedImages);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         populateLists();
 
@@ -233,7 +198,7 @@ public class QcController implements Initializable {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
-            myImg.setOrderID(currentOrder.getOrderID());
+            myImg.setOrderID(2); // Temporarily ID
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
@@ -266,7 +231,7 @@ public class QcController implements Initializable {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
-            controller.setOrderDetails(currentOrder,
+            controller.setOrderDetails(order,
                     image, updatedImage -> {
                         capturedImages.set(currentImageIndex, updatedImage);
                         showImageAtIndex(currentImageIndex);
@@ -374,9 +339,6 @@ public class QcController implements Initializable {
                     String comment = fetcher.getCommentByImageID(imageID);
                     int orderID = fetcher.getOrderIDByImageID(imageID);
 
-                    MyImage myImage = new MyImage(imageID, tempPath, comment);
-                    myImage.setOrderID(orderID);
-                    allImages.add(myImage);
                 }
             }
 
@@ -419,25 +381,6 @@ public class QcController implements Initializable {
         logoImage.setFitWidth(100);  // Set your desired width
         logoImage.setFitHeight(100); // Set your desired height
         logoImage.setPreserveRatio(true);
-    }
-
-    @FXML
-    private void cbOrderNumber(ActionEvent actionEvent) {
-
-        Order selectedOrder = cbOrderLastDigit.getSelectedItem();
-        if (selectedOrder != null) {
-            currentOrder = selectedOrder;
-            capturedImages = new ArrayList<>(currentOrder.getImages());
-            currentImageIndex = 0;
-            if (!capturedImages.isEmpty()) {
-                showImageAtIndex(currentImageIndex);
-                updateImageCountLabel();
-            } else {
-                imageHboxCenter.getChildren().clear();
-                lblImageCount.setText("0 / 0");
-            }
-        }
-
     }
 
     private void displayImages(List<MyImage> capturedImages) {
