@@ -68,7 +68,8 @@ public class QcController implements Initializable {
     private MFXButton btnPDFSave;
     @FXML
     private ImageView logoImage;
-
+    @FXML
+    private MFXComboBox<Order> cbOrderLastDigit;
     @FXML
     private MFXCheckbox checkApproved;
     @FXML
@@ -81,7 +82,7 @@ public class QcController implements Initializable {
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
-    private Order currentOrder;
+    private Order order;
     private Window primaryStage;
 
     private final CameraHandling cameraHandler = new CameraHandling();
@@ -90,6 +91,7 @@ public class QcController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
@@ -237,7 +239,7 @@ public class QcController implements Initializable {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
-            myImg.setOrderID(currentOrder.getOrderID());
+            myImg.setOrderID(2); // Temporarily ID
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
@@ -270,7 +272,7 @@ public class QcController implements Initializable {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
-            controller.setOrderDetails(currentOrder,
+            controller.setOrderDetails(order,
                     image, updatedImage -> {
                         capturedImages.set(currentImageIndex, updatedImage);
                         showImageAtIndex(currentImageIndex);
@@ -378,9 +380,6 @@ public class QcController implements Initializable {
                     String comment = fetcher.getCommentByImageID(imageID);
                     int orderID = fetcher.getOrderIDByImageID(imageID);
 
-                    MyImage myImage = new MyImage(imageID, tempPath, comment);
-                    myImage.setOrderID(orderID);
-                    allImages.add(myImage);
                 }
             }
 
