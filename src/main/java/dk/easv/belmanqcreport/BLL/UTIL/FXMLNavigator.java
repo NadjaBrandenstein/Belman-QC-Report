@@ -14,7 +14,7 @@ public class FXMLNavigator {
 
     public static FXMLLoader navigateTo(Stage stage, String fxmlRelativePath) {
         try {
-            
+
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/" + fxmlRelativePath));
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
