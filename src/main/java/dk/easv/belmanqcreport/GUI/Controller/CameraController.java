@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class CameraController {
 
     @FXML
@@ -47,10 +48,6 @@ public class CameraController {
 
     public void setParentController(OperatorMainController controller) {
         this.parentController = controller;
-    }
-
-    public void setQcController(QcController controller) {
-        this.qcController = controller;
     }
 
     public void initialize() {
@@ -128,12 +125,8 @@ public class CameraController {
         }
     }
 
-
     private Image mat2Image(Mat mat) {
         try {
-            /*Mat converted = new Mat();
-            Imgproc.cvtColor(mat, converted, Imgproc.COLOR_BGR2RGB);*/
-
             int width = mat.width();
             int height = mat.height();
             int channels = mat.channels();
@@ -151,7 +144,6 @@ public class CameraController {
             return null;
         }
     }
-
 
     private void setButtonIcon(Button button, String iconPath) {
         URL iconUrl = getClass().getResource(iconPath);
