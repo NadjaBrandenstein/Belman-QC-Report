@@ -2,8 +2,10 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
-// JavaFX Imports
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
+// JavaFX Imports
+import io.github.palexdev.materialfx.utils.SwingFXUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,22 +14,35 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
+import org.w3c.dom.ls.LSOutput;
+// Java Imports
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CameraController {
 
     @FXML
     ImageView preview;
     @FXML
+    private MFXButton captureBtn;
+    @FXML
     private HBox imageHboxCamera;
+
+    private VideoCapture capture;
+    private Timer timer;
+    private Mat frame = new Mat();
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private OperatorMainController parentController;
     private QcController qcController;
-    private Thread previewThread;
-    @FXML
-    private MFXButton captureBtn;
 
     public void setParentController(OperatorMainController controller) {
         this.parentController = controller;
@@ -41,40 +56,52 @@ public class CameraController {
         captureBtn.setText("");
         setButtonIcon(captureBtn, "/dk/easv/belmanqcreport/Icons/camera.png");
 
-        cameraHandler.startCamera();
+        startCamera();
 
-        Thread previewThread = new Thread (() -> {
-            while (cameraHandler.isCameraActive()) {
-                Image img = cameraHandler.getCurrentFrame();
-                if (img != null) {
-                    Platform.runLater(() -> {
-                        imageHboxCamera.getChildren().clear();
-                        ImageView imageView = new ImageView(img);
-                        imageView.setPreserveRatio(true);
-                        imageView.fitWidthProperty().bind(imageHboxCamera.widthProperty());
-                        imageView.fitHeightProperty().bind(imageHboxCamera.heightProperty());
-                        imageHboxCamera.getChildren().add(imageView);
-                    });
+    }
+
+    private void startCamera() {
+        capture = new VideoCapture(0, Videoio.CAP_DSHOW);
+
+        if(capture.isOpened()) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    if(capture.read(frame)) {
+                        Image imageToShow = mat2Image(frame);
+                        Platform.runLater(() -> preview.setImage(imageToShow));
+                    }
                 }
-                try {
-                    Thread.sleep(33);
-                }
-                catch(InterruptedException ignored) { }
-            }
-        });
-        previewThread.setDaemon(true);
-        previewThread.start();
+            }, 0, 33);
+        }
+        else {
+            System.out.println("Failed to open camera");
+        }
+
     }
 
     @FXML
     private void captureBtn(ActionEvent actionEvent) {
 
-        MyImage myImg = cameraHandler.captureImage();
-        if(myImg != null && parentController != null) {
-            parentController.displayCapturedImage(myImg);
-        }
-        else if (qcController != null ) {
-            qcController.displayCapturedImage(myImg);
+        if (!frame.empty()) {
+            // Create output directory inside user home
+            String outputDir = "C:\\EASV\\Exam Project Belman\\Belman-QC-Report\\src\\main\\resources\\dk\\easv\\belmanqcreport\\Images";
+            new File(outputDir).mkdirs();
+
+            // Full path for the image
+            String filename = "captured_" + System.currentTimeMillis() + ".png";
+            String fullPath = outputDir + File.separator + filename;
+
+            // Save image to disk
+            Imgcodecs.imwrite(fullPath, frame);
+            System.out.println("Image saved to: " + fullPath);
+
+            File imageFile = new File(fullPath);
+            MyImage image = new MyImage(imageFile);
+
+            if (parentController != null) {
+                parentController.displayCapturedImage(image);
+            }
         }
 
         cleanup();
@@ -84,11 +111,32 @@ public class CameraController {
     }
 
     public void cleanup() {
-        cameraHandler.stopCamera();
-        if(previewThread != null && previewThread.isAlive()) {
-            previewThread.interrupt();
+        if(timer != null) {
+            timer.cancel();
+        }
+        if(capture != null && capture.isOpened()) {
+            capture.release();
         }
     }
+
+
+    private Image mat2Image(Mat mat) {
+        Mat converted = new Mat();
+        Imgproc.cvtColor(frame, converted, Imgproc.COLOR_BGR2RGB);
+
+        int width = converted.width();
+        int height = converted.height();
+        int channels = converted.channels();
+
+        byte[] bytes = new byte[width * height * channels];
+        converted.get(0, 0, bytes);
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        image.getRaster().getDataElements(0, 0, width, height, bytes);
+
+        return SwingFXUtils.toFXImage(image, null);
+    }
+
 
     private void setButtonIcon(Button button, String iconPath) {
         URL iconUrl = getClass().getResource(iconPath);

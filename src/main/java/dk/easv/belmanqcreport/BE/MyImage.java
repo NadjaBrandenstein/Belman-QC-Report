@@ -30,6 +30,11 @@ public class MyImage {
         this.comment = "";
     }
 
+    public MyImage() {
+        this.imageFile = imageFile;
+    }
+
+
     public File getImageFile() {
         return imageFile;
     }

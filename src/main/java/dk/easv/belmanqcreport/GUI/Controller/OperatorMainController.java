@@ -10,6 +10,7 @@ import dk.easv.belmanqcreport.Main;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import org.opencv.core.Core;
 // JavaFx Imports
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -103,6 +104,8 @@ public class OperatorMainController {
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
 
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
         try{
             List<Order> orders = imageHandlingModel.getAllOrders();
             cbOrderNumber.getItems().addAll(orders);
@@ -123,15 +126,32 @@ public class OperatorMainController {
             cbOrderNumber.setOnAction(event -> {
                 currentOrder = cbOrderNumber.getSelectedItem();
                 capturedImages = new ArrayList<>(currentOrder.getImages());
-                displayImages(capturedImages);
+                currentImageIndex = 0;
+                if (!capturedImages.isEmpty()) {
+                    showImageAtIndex(currentImageIndex);
+                    updateImageCountLabel();
+                } else {
+                    imageHboxCenter.getChildren().clear();
+                    lblImageCount.setText("0 / 0");
+                }
             });
-            
+
             if (!orders.isEmpty()) {
                 cbOrderNumber.getSelectionModel().selectFirst();
                 currentOrder = cbOrderNumber.getSelectedItem();
                 capturedImages = new ArrayList<>(currentOrder.getImages());
-                showImageAtIndex(0);
-                updateImageCountLabel();
+
+                currentImageIndex = 0;
+                if (!capturedImages.isEmpty()) {
+                    showImageAtIndex(currentImageIndex);
+                    updateImageCountLabel();
+                } else {
+                    imageHboxCenter.getChildren().clear();
+                    lblImageCount.setText("0 / 0");
+                }
+            }
+
+            if (!orders.isEmpty()) {
                 currentOrder = imageHandlingModel.getAllOrders().get(0);
                 capturedImages = new ArrayList<>(currentOrder.getImages());
                 //setOrderImage(currentOrder.getImagePath());

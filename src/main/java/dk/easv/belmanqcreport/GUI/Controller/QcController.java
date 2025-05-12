@@ -34,6 +34,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import org.opencv.core.Core;
 // Java Imports
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -57,8 +58,6 @@ public class QcController implements Initializable {
     @FXML
     private MFXButton btnLogout;
     @FXML
-    private MFXButton btnDelete;
-    @FXML
     private MFXButton btnPrevious;
     @FXML
     private MFXButton btnNext;
@@ -68,8 +67,6 @@ public class QcController implements Initializable {
     private MFXButton btnPDFSave;
     @FXML
     private ImageView logoImage;
-    @FXML
-    private MFXComboBox<Order> cbOrderLastDigit;
     @FXML
     private MFXCheckbox checkApproved;
     @FXML
@@ -92,12 +89,13 @@ public class QcController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
 
-        setIcons();
 
+        setIcons();
 
         try {
             populateLists();
@@ -105,17 +103,13 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
 
-
-
-
-
     }
 
     private void populateLists() throws Exception {
 
         List<Order> orders;
 
-            orders = imageHandlingModel.getAllOrders();
+        orders = imageHandlingModel.getAllOrders();
 
         lstOrder.getItems().setAll(orders);
 
@@ -129,7 +123,6 @@ public class QcController implements Initializable {
         lstOrder.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> {
             if(sel != null) {
                 try {
-
                     List<OrderItem> items = imageHandlingModel.getItemsByOrderID(sel.getOrderID());
                     lstItem.getItems().setAll(items);
 
@@ -154,8 +147,6 @@ public class QcController implements Initializable {
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
-        /*btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);*/
         btnPrevious.setText("");
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
@@ -239,22 +230,24 @@ public class QcController implements Initializable {
 
     public void displayCapturedImage (MyImage myImg) {
         Platform.runLater(() -> {
-            myImg.setOrderID(2); // Temporarily ID
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
-            showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
+            showImageAtIndex(currentImageIndex);
 
         });
     }
 
     public void showImageAtIndex(int index) {
+
+
         if (index >= 0 && index < capturedImages.size()) {
+
             MyImage img = capturedImages.get(index);
             Image fxImage = new Image(img.toURI());
-
             ImageView imageView = new ImageView(fxImage);
+
             imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
             imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
             imageHboxCenter.getChildren().clear();
@@ -399,11 +392,9 @@ public class QcController implements Initializable {
         }
     }
 
-
     public void setUserName(String userName) {
         lblEmployee.setText(userName);
     }
-    
 
     private void setImageViewIcon(ImageView logoImage, String iconPath) {
         if (logoImage == null) {
@@ -442,10 +433,6 @@ public class QcController implements Initializable {
     }
 
     @FXML
-    private void cbOrderLastDigit(ActionEvent actionEvent) {
-    }
-
-    @FXML
     private void checkApproved(ActionEvent actionEvent) {
     }
 
@@ -453,29 +440,4 @@ public class QcController implements Initializable {
     private void checkDenied(ActionEvent actionEvent) {
     }
 
-    /*public void onDeleteBtn(ActionEvent actionEvent) {
-        if(currentImageIndex < 0 || currentImageIndex >= capturedImages.size()) return;
-
-        MyImage imageToDelete = capturedImages.get(currentImageIndex);
-
-        try{
-            imageModel.deleteImage(imageToDelete);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        capturedImages.remove(currentImageIndex);
-
-        if (currentImageIndex >= capturedImages.size()) {
-            currentImageIndex = capturedImages.size() - 1;
-        }
-
-        imageHboxCenter.getChildren().clear();
-        if(capturedImages.isEmpty()) {
-            lblImageCount.setText("0 / 0");
-        } else {
-            showImageAtIndex(currentImageIndex);
-            updateImageCountLabel();
-        }
-    }*/
 }
