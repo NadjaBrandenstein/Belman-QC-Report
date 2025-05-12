@@ -131,18 +131,18 @@ public class CameraController {
 
     private Image mat2Image(Mat mat) {
         try {
-            Mat converted = new Mat();
-            Imgproc.cvtColor(mat, converted, Imgproc.COLOR_BGR2RGB);
+            /*Mat converted = new Mat();
+            Imgproc.cvtColor(mat, converted, Imgproc.COLOR_BGR2RGB);*/
 
-            int width = converted.width();
-            int height = converted.height();
-            int channels = converted.channels();
+            int width = mat.width();
+            int height = mat.height();
+            int channels = mat.channels();
 
             byte[] bytes = new byte[width * height * channels];
-            converted.get(0, 0, bytes);
+            mat.get(0, 0, bytes);
 
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-            image.getRaster().getDataElements(0, 0, width, height, bytes);
+            image.getRaster().setDataElements(0, 0, width, height, bytes);
 
             return SwingFXUtils.toFXImage(image, null);
         }
