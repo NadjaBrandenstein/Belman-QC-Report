@@ -331,8 +331,21 @@ public class QcController implements Initializable {
 
                     String comment = fetcher.getCommentByImageID(imageID);
                     int orderID = fetcher.getOrderIDByImageID(imageID);
+                    
 
+                    String fileName = tempFile.getName();
+                    String[] parts = fileName.split("_");
+                    int extractedID = -1;
+                    try{
+                        extractedID = Integer.parseInt(parts[parts.length-1].replace(".png", ""));
+                    }catch (NumberFormatException e){
+                        System.out.println("Failed to extract image ID from file name: " + fileName);
+                    }
+                    MyImage myImage = new MyImage(extractedID, tempPath, comment);
+                    myImage.setOrderID(orderID);
+                    allImages.add(myImage);
                 }
+
             }
 
             FileChooser fileChooser = new FileChooser();
