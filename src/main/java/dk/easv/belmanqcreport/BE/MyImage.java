@@ -39,11 +39,11 @@ public class MyImage {
         return imageFile;
     }
 
-    public int getOrderID() {
+    public int getOrderItemID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderItemID(int orderID) {
         this.orderID = orderID;
     }
 
@@ -62,7 +62,6 @@ public class MyImage {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-
 
     public String getComment() {
         return comment;
@@ -92,4 +91,8 @@ public class MyImage {
     private Node imageView() {
         return new ImageView(imageFile.toURI().toString());
     }
+
+    public int getUserID() { return 0; }
+
+    public int setUserID() { return 0; }
 }

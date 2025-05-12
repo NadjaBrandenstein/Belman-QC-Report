@@ -13,10 +13,10 @@ public class ImageDAO_DB implements IImage {
 
     @Override
     public MyImage createImage(MyImage img) throws Exception {
-        String sql = "INSERT INTO Image (orderID, imagePath, comment) VALUES (?,?,?);";
+        String sql = "INSERT INTO Image (orderItemID, imagePath, comment) VALUES (?,?,?);";
         try (Connection conn = new DBConnection().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, img.getOrderID());
+            stmt.setInt(1, img.getOrderItemID());
             stmt.setString(2, img.getImagePath());
             stmt.setString(3, img.getComment());
             stmt.executeUpdate();
@@ -64,7 +64,7 @@ public class ImageDAO_DB implements IImage {
 
     @Override
     public List<MyImage> getImagesForOrder(int orderID) throws Exception {
-        String sql = "SELECT imageID, imagePath, comment FROM Image WHERE orderID = ?;";
+        String sql = "SELECT imageID, imagePath, comment FROM Image WHERE orderItemID = ?;";
         List<MyImage> list = new ArrayList<>();
         try (Connection conn = new DBConnection().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -76,13 +76,27 @@ public class ImageDAO_DB implements IImage {
                             rs.getString("imagePath"),
                             rs.getString("comment")
                     );
-                    img.setOrderID(orderID);
+                    img.setOrderItemID(orderID);
                     list.add(img);
                 }
             }
         }
         return list;
     }
+
+    /*public void insertImage(MyImage image) throws SQLException {
+        String sql = "INSERT INTO Images (order_id, image_path, comment) VALUES (?, ?, ?)";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, image.getOrderID());
+            stmt.setString(2, image.getImagePath());
+            stmt.setString(3, image.getComment());
+            stmt.executeUpdate();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
 
 
 }

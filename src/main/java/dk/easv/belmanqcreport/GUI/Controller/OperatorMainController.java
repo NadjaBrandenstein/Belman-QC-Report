@@ -6,7 +6,6 @@ import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
-import dk.easv.belmanqcreport.Main;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -17,7 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -307,7 +305,7 @@ public class OperatorMainController {
         Platform.runLater(() -> {
 
 
-            myImg.setOrderID(currentOrder.getOrderID());
+            myImg.setOrderItemID(currentOrder.getOrderID());
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
@@ -349,6 +347,11 @@ public class OperatorMainController {
                 } else {
                     imageModel.updateImage(myImage);
                 }
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Save Successful");
+                alert.setHeaderText(null);
+                alert.setContentText("Images have been saved successfully.");
+                alert.showAndWait();
             }
 
         } catch (Exception e) {
@@ -444,5 +447,7 @@ public class OperatorMainController {
         this.stage = stage;
     }
 
-
+    public Order getCurrentOrder() {
+        return currentOrder;
+    }
 }

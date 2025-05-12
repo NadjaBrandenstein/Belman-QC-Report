@@ -51,9 +51,13 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public void setOrderNumber(String orderNumber) {this.orderNumber = orderNumber;}
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 
-    public String getOrderNumber() {return orderNumber;}
+    public String getOrderNumber() {
+        return orderNumber;
+    }
 
     public String getOrderItem() {
         return orderItem;
@@ -80,4 +84,9 @@ public class Order {
     public String toString() {
         return orderNumber;
     }
+
+    public int getOrderItemID() {
+        return 0;
+    }
+
 }
