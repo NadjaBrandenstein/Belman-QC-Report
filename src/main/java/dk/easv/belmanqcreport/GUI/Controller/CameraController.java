@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -56,20 +57,28 @@ public class CameraController {
         captureBtn.setText("");
         setButtonIcon(captureBtn, "/dk/easv/belmanqcreport/Icons/camera.png");
 
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         startCamera();
 
     }
 
     private void startCamera() {
         capture = new VideoCapture(0, Videoio.CAP_DSHOW);
+        capture.set(Videoio.CAP_PROP_FRAME_WIDTH, 640);
+        capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 480);
+        capture.set(Videoio.CAP_PROP_BRIGHTNESS, 150);
 
         if(capture.isOpened()) {
             timer = new Timer();
             timer.schedule(new TimerTask() {
                 public void run() {
-                    if(capture.read(frame)) {
+                    if (capture.read(frame)) {
                         Image imageToShow = mat2Image(frame);
-                        Platform.runLater(() -> preview.setImage(imageToShow));
+                        Platform.runLater(() -> {
+                            if (imageToShow != null) {
+                                preview.setImage(imageToShow);
+                            }
+                        });
                     }
                 }
             }, 0, 33);
@@ -121,20 +130,26 @@ public class CameraController {
 
 
     private Image mat2Image(Mat mat) {
-        Mat converted = new Mat();
-        Imgproc.cvtColor(frame, converted, Imgproc.COLOR_BGR2RGB);
+        try {
+            Mat converted = new Mat();
+            Imgproc.cvtColor(mat, converted, Imgproc.COLOR_BGR2RGB);
 
-        int width = converted.width();
-        int height = converted.height();
-        int channels = converted.channels();
+            int width = converted.width();
+            int height = converted.height();
+            int channels = converted.channels();
 
-        byte[] bytes = new byte[width * height * channels];
-        converted.get(0, 0, bytes);
+            byte[] bytes = new byte[width * height * channels];
+            converted.get(0, 0, bytes);
 
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-        image.getRaster().getDataElements(0, 0, width, height, bytes);
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+            image.getRaster().getDataElements(0, 0, width, height, bytes);
 
-        return SwingFXUtils.toFXImage(image, null);
+            return SwingFXUtils.toFXImage(image, null);
+        }
+        catch (Exception e) {
+            System.out.println("Error converting mat to image" + e.getMessage());
+            return null;
+        }
     }
 
 

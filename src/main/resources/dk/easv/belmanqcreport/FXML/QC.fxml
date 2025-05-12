@@ -120,15 +120,7 @@
                 </HBox>
             </center>
             <left>
-                <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <MFXButton fx:id="btnCamera" alignment="CENTER" onAction="#btnCamera" prefHeight="62.0" prefWidth="100.0" text="Camera" HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                        </MFXButton>
-                    </children>
-                </HBox>
+                <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER" />
             </left>
             <right>
                 <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">

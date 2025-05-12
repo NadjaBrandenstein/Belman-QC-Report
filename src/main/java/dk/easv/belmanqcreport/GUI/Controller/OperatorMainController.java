@@ -291,7 +291,7 @@ public class OperatorMainController {
             CameraController controller = loader.getController();
             controller.setParentController(this);
 
-            controller.initialize();
+            //controller.initialize();
 
             stage.setOnCloseRequest(event -> controller.cleanup());
             stage.show();

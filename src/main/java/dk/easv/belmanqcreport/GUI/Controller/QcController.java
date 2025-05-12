@@ -62,8 +62,6 @@ public class QcController implements Initializable {
     @FXML
     private MFXButton btnNext;
     @FXML
-    private MFXButton btnCamera;
-    @FXML
     private MFXButton btnPDFSave;
     @FXML
     private ImageView logoImage;
@@ -88,8 +86,6 @@ public class QcController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
@@ -151,8 +147,7 @@ public class QcController implements Initializable {
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
         setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
-        btnCamera.setText("");
-        setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
+
         btnPDFSave.setText("");
         setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
 
@@ -201,42 +196,6 @@ public class QcController implements Initializable {
             showImageAtIndex(currentImageIndex);
             updateImageCountLabel();
         }
-    }
-
-    @FXML
-    private void btnCamera(ActionEvent actionEvent) {
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setTitle("Live Camera Preview");
-            stage.setScene(scene);
-
-            stage.setResizable(true);
-            stage.setMaximized(true);
-
-            CameraController controller = loader.getController();
-            controller.setQcController(this);
-
-            stage.setOnCloseRequest(event -> controller.cleanup());
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open camera.");
-            alert.showAndWait();
-        }
-    }
-
-    public void displayCapturedImage (MyImage myImg) {
-        Platform.runLater(() -> {
-
-            capturedImages.add(myImg);
-            currentImageIndex = capturedImages.size() -1;
-            updateImageCountLabel();
-            showImageAtIndex(currentImageIndex);
-
-        });
     }
 
     public void showImageAtIndex(int index) {
