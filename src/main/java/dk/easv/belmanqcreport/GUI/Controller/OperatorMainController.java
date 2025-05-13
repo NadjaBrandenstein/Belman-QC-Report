@@ -185,7 +185,7 @@ public class OperatorMainController {
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
-        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
+        FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
         if (loader != null) {
             OperatorSearchController controller = loader.getController();
             controller.setUserName(this.lblEmployee.getText());
@@ -195,7 +195,7 @@ public class OperatorMainController {
 
     @FXML
     private void btnLogout(ActionEvent actionEvent) {
-        FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
+        FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
     }
 
     @FXML

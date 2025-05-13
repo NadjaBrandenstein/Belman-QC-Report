@@ -82,7 +82,7 @@ public class OperatorSearchController implements Initializable {
                     stage = (Stage) btnSearch.getScene().getWindow();
                 }
 
-                FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorMain.fxml");
+                FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorMain.fxml");
 
                 if (loader != null) {
                     OperatorMainController controller = loader.getController();
@@ -104,14 +104,14 @@ public class OperatorSearchController implements Initializable {
         if (stage == null) {
             stage = (Stage) btnBack.getScene().getWindow();
         }
-        FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
+        FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
     }
 
     public void btnBack(ActionEvent actionEvent) {
         if (stage == null) {
             stage = (Stage) btnBack.getScene().getWindow();
         }
-        FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
+        FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
     }
 
     private void setImageViewIcon(ImageView logoImage, String iconPath) {

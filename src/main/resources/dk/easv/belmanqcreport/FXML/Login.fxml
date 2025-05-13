@@ -5,7 +5,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -71,12 +70,12 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="210.0" prefWidth="206.0">
                            <children>
-                              <MFXTextField fx:id="txtUsername" onKeyPressed="#btnLoginKey" prefHeight="51.0" prefWidth="170.0" promptText="Username">
+                              <MFXTextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#btnLoginKey" prefHeight="30.0" prefWidth="170.0" promptText="Username">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
                               </MFXTextField>
-                              <MFXPasswordField fx:id="txtPassword" onKeyPressed="#btnLoginKey" prefHeight="51.0" prefWidth="169.0" promptText="Password">
+                              <MFXPasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#btnLoginKey" prefHeight="30.0" prefWidth="170.0" promptText="Password">
                                  <VBox.margin>
                                     <Insets top="25.0" />
                                  </VBox.margin>

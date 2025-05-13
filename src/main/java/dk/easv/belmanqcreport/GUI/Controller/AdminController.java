@@ -344,7 +344,7 @@
 
 
             private void createUser() throws Exception {
-                FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
+                FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
 
                 tblEmployee.setItems(userModel.getAllUsers()); // Refresh after creation
             }
@@ -353,7 +353,7 @@
             private void editUser() throws Exception {
                 User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
                 if(selectedUser != null) {
-                    FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
+                    FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
 
                     if (loader != null) {
                         CreateEditUserController controller = loader.getController();

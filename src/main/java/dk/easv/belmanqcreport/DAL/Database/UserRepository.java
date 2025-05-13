@@ -84,7 +84,7 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public MyImage add(User user) {
+    public User add(User user) {
         String sql = "INSERT INTO [User] (fname, lname, userTypeID) VALUES (?, ?, ?)";
 
         try (Connection conn = dbConnection.getConnection();
@@ -109,7 +109,7 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public MyImage update(User user) {
+    public User update(User user) {
         String sql = "UPDATE [User] SET fname = ?, lname = ?, userTypeID = ? WHERE userID = ?";
 
         try (Connection conn = dbConnection.getConnection();
@@ -141,27 +141,6 @@ public class UserRepository implements IRepository<User> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    // Optional: helper method if you still need it
-    public int getUserTypeIDByName(String userTypeName) {
-        String sql = "SELECT userTypeID FROM UserType WHERE userType = ?";
-
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, userTypeName);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("userTypeID");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return -1;
     }
 }
 

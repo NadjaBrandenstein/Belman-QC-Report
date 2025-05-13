@@ -2,35 +2,35 @@ package dk.easv.belmanqcreport.BLL.Manager;
 
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
-import dk.easv.belmanqcreport.DAL.Database.OrderDAO_DB;
+import dk.easv.belmanqcreport.DAL.Database.OrderRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class OrderManager {
 
-    private OrderDAO_DB orderDAO;
+    private OrderRepository orderRepository;
 
     public OrderManager() {
 
-        orderDAO = new OrderDAO_DB();
+        orderRepository = new OrderRepository();
 
     }
 
     public List<Order> getAllOrders() throws Exception {
-        return orderDAO.getAllOrder();
+        return orderRepository.getAll();
     }
     public Order createOrders(Order order) throws Exception {
-        return orderDAO.createOrder(order);
+        return orderRepository.add(order);
     }
     public Order updateOrders(Order order) throws Exception {
-        return orderDAO.updateOrder(order);
+        return orderRepository.update(order);
     }
     public void deleteOrders(Order order) throws Exception {
-        orderDAO.deleteOrder(order);
+        orderRepository.delete(order);
     }
     public List<OrderItem> getItemsByOrderID(int orderID) throws Exception {
-       return orderDAO.getItemsByOrderID(orderID);
+       return orderRepository.getItemsByOrderID(orderID);
     }
     public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
         return orderDAO.getOrderByNumber(orderNumber);

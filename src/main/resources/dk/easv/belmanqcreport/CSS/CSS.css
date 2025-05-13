@@ -18,8 +18,22 @@ Label{
     -fx-text-fill: black;
 }
 
+.orderLabel {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
 .whiteLabel {
     -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-content-display: right;
+}
+
+.right-aligned-label {
+    -fx-alignment: CENTER_RIGHT;
+    -fx-text-alignment: RIGHT;
 }
 
 .ContextMenu{
@@ -29,6 +43,7 @@ Label{
 
 MFXTextField {
     -fx-border-color: #004b88;
+    -fx-font-size: 16px;
 }
 
 MFXPasswordField {
@@ -54,11 +69,11 @@ MFXPasswordField {
 }
 
 MFXComboBox {
-    -fx-border-color: #004b88;
-}
-
-.mfx-combo-box:focused .arrow-button .mfx-font-icon {
-    -fx-fill: #004b88 !important;
+    -fx-border-color: white;
+    -fx-font-weight: bold;
+    -fx-background-color: #004b88;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
 }
 
 .mfx-combo-box .virtual-flow .mfx-combo-box-cell:selected {
@@ -73,10 +88,38 @@ MFXComboBox {
     -fx-text-fill: white;
 }
 
-.mfx-combo-box .arrow-button:hover {
-    -fx-background-color: #004b88;
+ListView {
+    -fx-font-size: 16px;
 }
 
-.mfx-combo-box .arrow-button:pressed {
+ListView:focused {
+    -fx-border-color: #004b88;
+}
+
+ListView .list-cell:hover {
+    -fx-background-color: #e3e3e3;
+    -fx-text-fill: black;
+}
+
+ListView .list-cell:selected {
+    -fx-background-color: #7fa8c5;
+    -fx-text-fill: white;
+}
+
+ListView .list-cell:selected:hover {
+    -fx-background-color: #e3e3e3;
+    -fx-text-fill: black;
+}
+
+.mfx-checkbox .mfx-ripple-generator {
+    -mfx-ripple-color: #004b88;
+}
+
+.mfx-checkbox:selected .box {
     -fx-background-color: #004b88;
+    -fx-border-color: #004b88;
+}
+
+.mfx-radio-button .mfx-ripple-generator {
+    -mfx-ripple-color: #004b88;
 }
