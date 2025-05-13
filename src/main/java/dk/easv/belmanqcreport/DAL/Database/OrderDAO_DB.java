@@ -20,7 +20,7 @@ public class OrderDAO_DB implements IOrder {
 
 
         String sql = "SELECT o.orderID, o.userID, o.orderNumber, " +
-                "t.orderItem, i.imageID, i.imagePath, i.comment " +
+                "t.orderItem, t.orderItemID, i.imageID, i.imagePath, i.comment " +
                 "FROM dbo.[Order] AS o " +
                 "LEFT JOIN dbo.Item AS t ON o.orderID = t.orderID " +
                 "LEFT JOIN dbo.Image AS i ON t.orderItemID = i.orderItemID " +
@@ -59,6 +59,8 @@ public class OrderDAO_DB implements IOrder {
         }
         return new ArrayList<>(orderMap.values());
     }
+
+
 
 
     @Override
