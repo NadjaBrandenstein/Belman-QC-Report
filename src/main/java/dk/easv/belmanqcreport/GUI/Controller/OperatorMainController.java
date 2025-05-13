@@ -80,7 +80,7 @@ public class OperatorMainController {
     private Stage stage;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws Exception {
 
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
