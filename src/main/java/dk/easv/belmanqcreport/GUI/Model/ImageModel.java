@@ -6,16 +6,19 @@ import dk.easv.belmanqcreport.BLL.Manager.ImageManager;
 import java.util.List;
 
 public class ImageModel {
-    private ImageManager imageManager = new ImageManager();
+    private final ImageManager imageManager = new ImageManager();
+
+    public ImageModel() throws Exception {
+    }
 
     public MyImage saveNewImage(MyImage img) throws Exception {
         return imageManager.createImage(img);
     }
 
-    public void updateImage(MyImage img) throws Exception {
+    public void updateImage(MyImage img) {
         imageManager.updateImage(img);
     }
-    public void deleteImage(MyImage img) throws Exception {
+    public void deleteImage(MyImage img) {
         imageManager.deleteImage(img);
     }
     public List<MyImage> getImageForOrder(int orderID) throws Exception {

@@ -1,5 +1,6 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
+import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
@@ -83,7 +84,7 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public void add(User user) {
+    public MyImage add(User user) {
         String sql = "INSERT INTO [User] (fname, lname, userTypeID) VALUES (?, ?, ?)";
 
         try (Connection conn = dbConnection.getConnection();
@@ -104,10 +105,11 @@ public class UserRepository implements IRepository<User> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public void update(User user) {
+    public MyImage update(User user) {
         String sql = "UPDATE [User] SET fname = ?, lname = ?, userTypeID = ? WHERE userID = ?";
 
         try (Connection conn = dbConnection.getConnection();
@@ -123,6 +125,7 @@ public class UserRepository implements IRepository<User> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override

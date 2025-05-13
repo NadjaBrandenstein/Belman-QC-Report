@@ -1,6 +1,7 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.MyImage;
+import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
 
 import java.sql.*;
@@ -9,13 +10,19 @@ import java.util.List;
 
 public class ImageRepository implements IRepository<MyImage> {
 
+    private final DBConnection dbConnection;
+
+    public ImageRepository() throws Exception {
+        this.dbConnection = new DBConnection();
+    }
+
     @Override
-    public MyImage add(MyImage img) throws Exception {
+    public MyImage add(MyImage img) throws SQLException {
         String sql = "INSERT INTO Image (orderID, imagePath, comment) VALUES (?,?,?);";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, img.getOrderID());
+            stmt.setInt(1, img.getOrderItemID());
             stmt.setString(2, img.getImagePath());
             stmt.setString(3, img.getComment());
             stmt.executeUpdate();
@@ -23,16 +30,18 @@ public class ImageRepository implements IRepository<MyImage> {
             try (ResultSet keys = stmt.getGeneratedKeys()) {
                 if (keys.next()) {
                     img.setImageID(keys.getInt(1));
-                    return img;
                 } else {
                     throw new Exception("No ID returned after insert.");
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
+        return img;
     }
 
     @Override
-    public MyImage update(MyImage img) throws Exception {
+    public MyImage update(MyImage img)  {
         String sql = "UPDATE Image SET imagePath = ?, comment = ? WHERE imageID = ?;";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -41,23 +50,27 @@ public class ImageRepository implements IRepository<MyImage> {
             stmt.setString(2, img.getComment());
             stmt.setInt(3, img.getImageID());
             stmt.executeUpdate();
-            return img;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+        return img;
     }
 
     @Override
-    public void delete(MyImage img) throws Exception {
+    public void delete(MyImage img) {
         String sql = "DELETE FROM Image WHERE imageID = ?;";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, img.getImageID());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<MyImage> getAll() throws Exception {
+    public List<MyImage> getAll() {
         // Return all images, regardless of orderID
         String sql = "SELECT imageID, orderID, imagePath, comment FROM Image;";
         List<MyImage> list = new ArrayList<>();
@@ -72,15 +85,17 @@ public class ImageRepository implements IRepository<MyImage> {
                         rs.getString("imagePath"),
                         rs.getString("comment")
                 );
-                img.setOrderID(rs.getInt("orderID"));
+                img.setOrderItemID(rs.getInt("orderID"));
                 list.add(img);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return list;
     }
 
     @Override
-    public MyImage getById(int id) throws Exception {
+    public MyImage getById(int id) throws SQLException {
         String sql = "SELECT imageID, orderID, imagePath, comment FROM Image WHERE imageID = ?;";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -93,11 +108,13 @@ public class ImageRepository implements IRepository<MyImage> {
                             rs.getString("imagePath"),
                             rs.getString("comment")
                     );
-                    img.setOrderID(rs.getInt("orderID"));
+                    img.setOrderItemID(rs.getInt("orderID"));
                     return img;
                 } else {
                     throw new Exception("Image not found with ID: " + id);
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -117,7 +134,7 @@ public class ImageRepository implements IRepository<MyImage> {
                             rs.getString("imagePath"),
                             rs.getString("comment")
                     );
-                    img.setOrderID(orderID);
+                    img.setOrderItemID(orderID);
                     list.add(img);
                 }
             }

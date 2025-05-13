@@ -86,7 +86,11 @@ public class QcController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
-        imageModel = new ImageModel();
+        try {
+            imageModel = new ImageModel();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 
         setIcons();
