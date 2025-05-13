@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IOrder {
     List<Order> getAllOrder() throws Exception;
@@ -12,4 +13,8 @@ public interface IOrder {
     void deleteOrder(Order order) throws Exception;
 
     List<OrderItem> getItemsByOrderID(int orderID) throws Exception;
+
+    Optional<Order> getOrderByNumber(String orderNumber) throws Exception;
+
+    List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception;
 }

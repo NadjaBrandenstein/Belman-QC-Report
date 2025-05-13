@@ -144,4 +144,45 @@ public class OrderDAO_DB implements IOrder {
         }
     }
 
+    @Override
+    public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
+        String sql = "SELECT orderID, userID, orderNumber " +
+                "FROM dbo.[Order] " +
+                "WHERE orderNumber = ?";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, orderNumber);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if(!rs.next()) return Optional.empty();
+                int orderID = rs.getInt("orderID");
+                int userID = rs.getInt("userID");
+                return Optional.of(new Order(orderID, userID, orderNumber, null));
+            }
+        }
+
+    }
+
+    @Override
+    public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
+        String sql = "SELECT item.orderItemID, item.orderID, item.orderItem " +
+                "FROM dbo.Item AS item " +
+                "JOIN dbo.[Order] AS ord ON ord.orderID = item.orderID " +
+                "WHERE ord.orderNumber = ?";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, orderNumber);
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<OrderItem> items = new ArrayList<>();
+                while (rs.next()) {
+                    items.add(new OrderItem(
+                            rs.getInt("orderItemID"),
+                            rs.getInt("orderID"),
+                            rs.getString("orderItem")));
+                }
+                return items;
+            }
+        }
+    }
+
+
 }

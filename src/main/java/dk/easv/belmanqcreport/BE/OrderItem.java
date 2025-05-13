@@ -1,37 +1,50 @@
 package dk.easv.belmanqcreport.BE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrderItem {
     private int orderId;
     private int orderItemId;
     private String orderItem;
 
-    public OrderItem(int orderId, int orderItemId, String orderIte) {
-        this.orderId = orderId;
+    private List<MyImage> images = new ArrayList<>();
+
+    public OrderItem(int orderItemId, int orderId, String orderItem) {
         this.orderItemId = orderItemId;
-        this.orderItem = orderIte;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
         this.orderId = orderId;
+        this.orderItem = orderItem;
+    }
+
+    public List<MyImage> getImages() {
+        return images;
     }
 
     public int getOrderItemId() {
         return orderItemId;
     }
 
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public String getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+
+
     public void setOrderItemId(int orderItemId) {
         this.orderItemId = orderItemId;
     }
 
-    public String getOrderIte() {
-        return orderItem;
-    }
 
-    public void setOrderIte(String orderIte) {
+
+    public void setOrderItem(String orderIte) {
         this.orderItem = orderIte;
     }
 

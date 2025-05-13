@@ -30,8 +30,8 @@
             <!-- CENTER -->
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
-               <Label fx:id="lblOrderNumber" text="Label" style="-fx-text-fill: white;"/>
-               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" onAction="#cbOrderNumber" />
+               <Label fx:id="lblOrderNumber" style="-fx-text-fill: white;" text="Label" />
+               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" />
                 </HBox>
             </center>
 

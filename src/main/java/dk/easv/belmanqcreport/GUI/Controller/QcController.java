@@ -118,10 +118,11 @@ public class QcController implements Initializable {
             }
         });
 
-        lstOrder.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> {
-            if(sel != null) {
+        lstOrder.getSelectionModel().selectedItemProperty().addListener((obs, oldOrder, selOrder) -> {
+            if(selOrder != null) {
+                this.order = selOrder;
                 try {
-                    List<OrderItem> items = imageHandlingModel.getItemsByOrderID(sel.getOrderID());
+                    List<OrderItem> items = imageHandlingModel.getItemsByOrderID(selOrder.getOrderID());
                     lstItem.getItems().setAll(items);
 
                 } catch (Exception e) {
@@ -132,32 +133,34 @@ public class QcController implements Initializable {
             }
         });
 
-        if(!orders.isEmpty()) {
-            lstOrder.getSelectionModel().selectFirst();
-        }
-
-        lstItem.getSelectionModel().selectedItemProperty().addListener((obs, old, newItem) -> {
+        lstItem.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
             if(newItem != null){
                 try{
-                    List<MyImage> images = imageModel.getImageForOrder(order.getOrderID());
+                    List<MyImage> imgs = imageModel.getImageForOrder(newItem.getOrderItemId());
 
-                    capturedImages = new ArrayList<>(images);
-                    currentImageIndex = images.isEmpty() ? -1 : 0;
+                    System.out.println("DEBUG: loadImagesForItem(" + newItem.getOrderItemId() + ") → " + imgs.size() + " images");
 
-                    if(currentImageIndex >= 0){
+                    capturedImages = new ArrayList<>(imgs);
+                    currentImageIndex = imgs.isEmpty() ? -1 : 0;
+                    clearImages();
+
+                    if(currentImageIndex >= 0) {
                         showImageAtIndex(currentImageIndex);
                         updateImageCountLabel();
-                    }else {
-                        imageHboxCenter.getChildren().clear();
+                    } else {
+                        //imageHboxCenter.getChildren().clear();
                         lblImageCount.setText("0 / 0");
                     }
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
+    }
+
+    private void clearImages() {
+        imageHboxCenter.getChildren().clear();
     }
 
     private void setIcons(){

@@ -2,6 +2,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -67,12 +68,13 @@ public class OperatorMainController {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<Order> cbOrderNumber;
+    private MFXComboBox<OrderItem> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
 
     private Order currentOrder;
+    private OrderItem currentOrderItem;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
@@ -81,6 +83,8 @@ public class OperatorMainController {
 
     @FXML
     private void initialize() throws Exception {
+
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
@@ -102,65 +106,39 @@ public class OperatorMainController {
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
 
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        try{
-            List<Order> orders = imageHandlingModel.getAllOrders();
-            cbOrderNumber.getItems().addAll(orders);
-
-
-            cbOrderNumber.setConverter(new StringConverter<>() {
-                @Override
-                public String toString(Order order) {
-                    return order == null ? "" : String.valueOf(order.getOrderItem());
-                }
-
-                @Override
-                public Order fromString(String string) {
-                    return null;
-                }
-            });
-
-            cbOrderNumber.setOnAction(event -> {
-                currentOrder = cbOrderNumber.getSelectedItem();
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-                currentImageIndex = 0;
-                if (!capturedImages.isEmpty()) {
-                    showImageAtIndex(currentImageIndex);
-                    updateImageCountLabel();
-                } else {
-                    imageHboxCenter.getChildren().clear();
-                    lblImageCount.setText("0 / 0");
-                }
-            });
-
-            if (!orders.isEmpty()) {
-                cbOrderNumber.getSelectionModel().selectFirst();
-                currentOrder = cbOrderNumber.getSelectedItem();
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-
-                currentImageIndex = 0;
-                if (!capturedImages.isEmpty()) {
-                    showImageAtIndex(currentImageIndex);
-                    updateImageCountLabel();
-                } else {
-                    imageHboxCenter.getChildren().clear();
-                    lblImageCount.setText("0 / 0");
-                }
+        cbOrderNumber.setConverter(new StringConverter<>() {
+            @Override public String toString(OrderItem item) {
+                return item == null ? "" : item.getOrderItem();
             }
+            @Override public OrderItem fromString(String s) { return null; }
+        });
 
-            if (!orders.isEmpty()) {
-                currentOrder = imageHandlingModel.getAllOrders().get(0);
-                capturedImages = new ArrayList<>(currentOrder.getImages());
-                //setOrderImage(currentOrder.getImagePath());
-                //showOrderDetails(currentOrder);
+        cbOrderNumber.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldItem, newItem) -> {
+                    if (newItem != null) {
+                        System.out.println("DEBUG: selected OrderItemID=" + newItem.getOrderItemId());
+                        currentOrderItem = newItem;
+                        loadImagesForItem(newItem.getOrderItemId());
+                    }
+                });
+
+
+        /*cbOrderNumber.setOnAction(event -> {
+            currentOrderItem = cbOrderNumber.getSelectionModel().getSelectedItem();
+
+            if (currentOrderItem != null) {
+                loadImagesForItem(currentOrderItem.getOrderItemId());
+
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });*/
         //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
     }
+
+
+
+
 
 
 
@@ -288,6 +266,7 @@ public class OperatorMainController {
 
             CameraController controller = loader.getController();
             controller.setParentController(this);
+            controller.setOrderItem(currentOrderItem);
 
             //controller.initialize();
 
@@ -305,7 +284,7 @@ public class OperatorMainController {
         Platform.runLater(() -> {
 
 
-            myImg.setOrderItemID(currentOrder.getOrderID());
+            myImg.setOrderItemID(currentOrderItem.getOrderId());
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
@@ -343,7 +322,7 @@ public class OperatorMainController {
                 if(myImage.getImageID() <= 0) {
                     MyImage saved = imageModel.saveNewImage(myImage);
                     myImage.setImageID(saved.getImageID());
-                    currentOrder.getImages().add(myImage);
+                    currentOrderItem.getImages().add(myImage);
                 } else {
                     imageModel.updateImage(myImage);
                 }
@@ -405,17 +384,84 @@ public class OperatorMainController {
         logoImage.setPreserveRatio(true);
     }
 
-    public void setOrderNumber(String orderNumber) {
+    public void setOrderNumber(String orderNumber) throws Exception {
         lblOrderNumber.setText(orderNumber);
+
+        Optional<Order> opt = imageHandlingModel.findOrderByNumber(orderNumber);
+        if (opt.isPresent()) {
+            currentOrder = opt.get();
+            //showOrderDetails(currentOrder);
+        } else {
+            new Alert(Alert.AlertType.ERROR, "Could not find order “" + orderNumber + "”")
+                    .showAndWait();
+            return;
+        }
+
+
+        try {
+            // fetch only the items for this one order!
+            List<OrderItem> items = imageHandlingModel.getItemsByOrderNumber(orderNumber);
+
+            System.out.println("DEBUG: setOrderNumber("+orderNumber+") → "+items.size()+" items:");
+            for (OrderItem oi : items) {
+                System.out.printf("    – id=%d, text=%s%n",
+                        oi.getOrderItemId(),
+                        oi.getOrderItem());
+            }
+
+            cbOrderNumber.getItems().setAll(items);
+
+            if (!items.isEmpty()) {
+                cbOrderNumber.getSelectionModel().selectFirst();
+                loadImagesForItem(items.get(0).getOrderItemId());
+            } else {
+                // no items → clear images
+                clearImages();
+                /*imageHboxCenter.getChildren().clear();
+                lblImageCount.setText("0 / 0");*/
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not load items for order “" + orderNumber + "”: " + ex.getMessage())
+                    .showAndWait();
+        }
     }
 
-    @FXML
+    private void loadImagesForItem(int orderItemID) {
+        try{
+            List<MyImage> imgs = imageModel.getImageForOrder(orderItemID);
+
+            System.out.println("DEBUG: loadImagesForItem(" + orderItemID + ") → " + imgs.size() + " images");
+
+            capturedImages = new ArrayList<>(imgs);
+            currentImageIndex = imgs.isEmpty() ? -1 : 0;
+            clearImages();
+
+            if(currentImageIndex >= 0) {
+                showImageAtIndex(currentImageIndex);
+                updateImageCountLabel();
+            } else {
+                //imageHboxCenter.getChildren().clear();
+                lblImageCount.setText("0 / 0");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void clearImages() {
+        imageHboxCenter.getChildren().clear();
+    }
+
+
+    /*@FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
 
-        Order selectedOrder = cbOrderNumber.getSelectedItem();
+        OrderItem selectedOrder = cbOrderNumber.getSelectedItem();
         if (selectedOrder != null) {
-            currentOrder = selectedOrder;
-            capturedImages = new ArrayList<>(currentOrder.getImages());
+            currentOrderItem = selectedOrder;
+            capturedImages = new ArrayList<>(currentOrderItem.getImages());
             currentImageIndex = 0;
             if (!capturedImages.isEmpty()) {
                 showImageAtIndex(currentImageIndex);
@@ -426,7 +472,7 @@ public class OperatorMainController {
             }
         }
 
-    }
+    }*/
 
     private void displayImages(List<MyImage> capturedImages) {
         imageHboxCenter.getChildren().clear();
