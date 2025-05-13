@@ -1,16 +1,16 @@
 package dk.easv.belmanqcreport.BLL.Manager;
 
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.DAL.Database.ImageDAO_DB;
+import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
 
 import java.util.List;
 
 public class ImageManager {
 
-    private ImageDAO_DB imageDAO_DB;
+    private ImageRepository imageDAO_DB;
 
     public ImageManager() {
-        imageDAO_DB = new ImageDAO_DB();
+        imageDAO_DB = new ImageRepository();
     }
 
     public MyImage createImage(MyImage img) throws Exception { return imageDAO_DB.createImage(img); }
