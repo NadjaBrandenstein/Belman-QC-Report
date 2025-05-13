@@ -67,7 +67,7 @@
             private CreateEditUserController createEditUserController;
             private Stage stage;
 
-            public AdminController() throws IOException {
+            public AdminController() throws Exception {
                 userModel = new UserModel();
                 createEditUserController = new CreateEditUserController();
             }
@@ -295,8 +295,6 @@
             }
 
             private void setUserRole(User user, String newRole) {
-                if (user == null) return;
-
                 if (!Objects.equals(user.getUserType(), newRole)) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Change Role");
@@ -308,7 +306,7 @@
                         try {
                             // Set new role string and corresponding role ID
                             user.setUserType(newRole);
-                            user.setUserTypeID(RoleConverter.roleToInt(newRole));
+                            user.setUserTypeID(roleToInt(newRole));
 
                             // Update user via UserModel
                             userModel.updateUser(user);
@@ -335,25 +333,15 @@
             }
 
 
-            public class RoleConverter {
-                public static int roleToInt(String role) {
-                    return switch (role.toLowerCase()) {
-                        case "admin" -> 1;
-                        case "operator" -> 2;
-                        case "qc" -> 3;
-                        default -> 0; // or throw exception
-                    };
-                }
-
-                public static String intToRole(int roleId) {
-                    return switch (roleId) {
-                        case 1 -> "admin";
-                        case 2 -> "operator";
-                        case 3 -> "qc";
-                        default -> "Unknown";
-                    };
-                }
+            public int roleToInt(String role) {
+                return switch (role.toLowerCase()) {
+                    case "admin" -> 1;
+                    case "operator" -> 2;
+                    case "qc" -> 3;
+                    default -> 0; // or throw exception
+                };
             }
+
 
             private void createUser() throws Exception {
                 FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
