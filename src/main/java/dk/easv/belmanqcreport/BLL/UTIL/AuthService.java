@@ -1,20 +1,20 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
 import dk.easv.belmanqcreport.BE.Login;
-import dk.easv.belmanqcreport.DAL.Database.LoginDAO_DB;
+import dk.easv.belmanqcreport.DAL.Database.LoginRepository;
 import dk.easv.belmanqcreport.DAL.Database.UserRepository;
 import dk.easv.belmanqcreport.GUI.Controller.LoginController;
 
 import java.io.IOException;
 
 public class AuthService {
-    private final LoginDAO_DB loginDAO;
-    private final UserRepository userDAO;
+    private final LoginRepository loginRepository;
+    private final UserRepository userRepository;
     private LoginController loginController;
 
     public AuthService() throws IOException {
-        this.loginDAO = new LoginDAO_DB();
-        this.userDAO = new UserRepository();
+        this.loginRepository = new LoginRepository();
+        this.userRepository = new UserRepository();
     }
 
     public void setLoginController(LoginController controller) {
@@ -30,7 +30,7 @@ public class AuthService {
         }
 
         try {
-            Login login = loginDAO.getLoginByUsername(username);
+            Login login = loginRepository.getLoginByUsername(username);
             if (login == null) {
                 System.out.println("User not found.");
                 loginController.lblLoginStatus.setText("Incorrect username or password");
@@ -48,6 +48,7 @@ public class AuthService {
 
         } catch (Exception e) {
             System.out.println("Login error: " + e.getMessage());
+            loginController.lblLoginStatus.setText("Unexpected error contact system admin");
             return null;
         }
     }

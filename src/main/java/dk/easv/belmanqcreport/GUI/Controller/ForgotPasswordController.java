@@ -1,7 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 
 import dk.easv.belmanqcreport.BE.Login;
-import dk.easv.belmanqcreport.DAL.Database.LoginDAO_DB;
+import dk.easv.belmanqcreport.DAL.Database.LoginRepository;
 import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
@@ -83,8 +83,8 @@ public class ForgotPasswordController implements Initializable {
         }
 
         try {
-            LoginDAO_DB loginDAO = new LoginDAO_DB();
-            Login user = loginDAO.getLoginByUsername(username);
+            LoginRepository loginRepository = new LoginRepository();
+            Login user = loginRepository.getLoginByUsername(username);
 
             if (user == null) {
                 lblLoginStatus.setText("User not found.");
@@ -92,7 +92,7 @@ public class ForgotPasswordController implements Initializable {
             }
             user.setPassword(newPassword);
 
-            loginDAO.updateLogin(user);
+            loginRepository.update(user);
 
             lblLoginStatus.setText("Password changed successfully.");
         }catch (Exception e){
