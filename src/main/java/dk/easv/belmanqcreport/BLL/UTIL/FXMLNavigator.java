@@ -12,9 +12,20 @@ import java.io.IOException;
 
 public class FXMLNavigator {
 
-    public static FXMLLoader navigateTo(Stage stage, String fxmlRelativePath) {
-        try {
+    // 1. Private static instance (eager initialization is fine here)
+    private static final FXMLNavigator instance = new FXMLNavigator();
 
+    // 2. Private constructor to prevent external instantiation
+    private FXMLNavigator() {}
+
+    // 3. Public method to access the singleton instance
+    public static FXMLNavigator getInstance() {
+        return instance;
+    }
+
+    // 4. Instance method instead of static
+    public FXMLLoader navigateTo(Stage stage, String fxmlRelativePath) {
+        try {
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/" + fxmlRelativePath));
             Scene scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
@@ -32,5 +43,4 @@ public class FXMLNavigator {
             return null;
         }
     }
-
 }

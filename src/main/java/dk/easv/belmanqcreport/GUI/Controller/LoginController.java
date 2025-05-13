@@ -62,7 +62,7 @@ public class LoginController implements Initializable {
 
         lblForgotPassword.setOnMouseClicked(event -> {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            FXMLNavigator.navigateTo(currentStage, "dk/easv/belmanqcreport/FXML/ForgotPassword.fxml");
+            FXMLNavigator.getInstance().navigateTo(currentStage, "dk/easv/belmanqcreport/FXML/ForgotPassword.fxml");
 
         });
     }
@@ -132,7 +132,7 @@ public class LoginController implements Initializable {
 
 
     private void adminpage() throws IOException {
-        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/Admin.fxml");
+        FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Admin.fxml");
 
         if(loader != null) {
             AdminController adminController = loader.getController();
@@ -142,7 +142,7 @@ public class LoginController implements Initializable {
     }
 
     private void opratorPage() {
-        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
+        FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
 
         if (loader != null) {
             OperatorSearchController controller = loader.getController();
@@ -151,7 +151,7 @@ public class LoginController implements Initializable {
     }
 
     private void qcPage() throws IOException {
-        FXMLLoader loader = FXMLNavigator.navigateTo(stage, "dk/easv/belmanqcreport/FXML/QC.fxml");
+        FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/QC.fxml");
 
         if (loader != null) {
             QcController qcController = loader.getController();
