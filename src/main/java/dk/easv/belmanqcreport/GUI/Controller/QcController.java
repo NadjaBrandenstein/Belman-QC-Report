@@ -13,17 +13,16 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.Parent;
-import javafx.stage.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
-import javafx.application.Platform;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.Parent;
+import javafx.stage.*;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,7 +33,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import org.opencv.core.Core;
 // Java Imports
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -342,7 +340,7 @@ public class QcController implements Initializable {
                         System.out.println("Failed to extract image ID from file name: " + fileName);
                     }
                     MyImage myImage = new MyImage(extractedID, tempPath, comment);
-                    myImage.setOrderID(orderID);
+                    myImage.setOrderItemID(orderID);
                     allImages.add(myImage);
                 }
 

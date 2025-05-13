@@ -4,8 +4,13 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
-// JavaFX Imports
 import io.github.palexdev.materialfx.utils.SwingFXUtils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
+// JavaFX Imports
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,20 +19,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.videoio.Videoio;
-import org.w3c.dom.ls.LSOutput;
 // Java Imports
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 public class CameraController {
 
@@ -106,6 +103,7 @@ public class CameraController {
             MyImage image = new MyImage(imageFile);
 
             if (parentController != null) {
+                image.setOrderItemID(parentController.getCurrentOrder().getOrderItemID());
                 parentController.displayCapturedImage(image);
             }
         }
