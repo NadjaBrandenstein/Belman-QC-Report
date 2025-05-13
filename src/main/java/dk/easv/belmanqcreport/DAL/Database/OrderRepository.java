@@ -4,7 +4,7 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.DBConnection;
-import dk.easv.belmanqcreport.DAL.Interface.IOrder;
+import dk.easv.belmanqcreport.DAL.Interface.IRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,15 +12,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
-public class OrderDAO_DB implements IOrder {
+public class OrderRepository implements IRepository<Order> {
 
     @Override
-    public List<Order> getAllOrder() throws Exception {
+    public List<Order> getAll() throws Exception {
         DBConnection dbConnection = new DBConnection();
 
 
         String sql = "SELECT o.orderID, o.userID, o.orderNumber, " +
-                "t.orderItem, i.imageID, i.imagePath, i.comment " +
+                "t.orderItem, t.orderItemID, i.imageID, i.imagePath, i.comment " +
                 "FROM dbo.[Order] AS o " +
                 "LEFT JOIN dbo.Item AS t ON o.orderID = t.orderID " +
                 "LEFT JOIN dbo.Image AS i ON t.orderItemID = i.orderItemID " +
@@ -62,7 +62,7 @@ public class OrderDAO_DB implements IOrder {
 
 
     @Override
-    public Order createOrder(Order order) throws Exception {
+    public Order add(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "INSERT INTO Order (orderID) VALUES (?,?,?)";
 
@@ -81,7 +81,7 @@ public class OrderDAO_DB implements IOrder {
     }
 
     @Override
-    public Order updateOrder(Order order) throws Exception {
+    public Order update(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "UPDATE [Order] SET orderID = ?";
 
@@ -98,7 +98,7 @@ public class OrderDAO_DB implements IOrder {
     }
 
     @Override
-    public void deleteOrder(Order order) throws Exception {
+    public void delete(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "DELETE FROM Order WHERE orderID = ?";
 
@@ -114,7 +114,6 @@ public class OrderDAO_DB implements IOrder {
         }
     }
 
-    @Override
     public List<OrderItem> getItemsByOrderID(int orderID) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql =
@@ -142,4 +141,8 @@ public class OrderDAO_DB implements IOrder {
         }
     }
 
+    @Override
+    public Order getById(int id) throws Exception {
+        return null;
+    }
 }

@@ -86,7 +86,12 @@ public class QcController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
-        imageModel = new ImageModel();
+        try {
+            imageModel = new ImageModel();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
 
 
         setIcons();
@@ -131,6 +136,28 @@ public class QcController implements Initializable {
         if(!orders.isEmpty()) {
             lstOrder.getSelectionModel().selectFirst();
         }
+
+        lstItem.getSelectionModel().selectedItemProperty().addListener((obs, old, newItem) -> {
+            if(newItem != null){
+                try{
+                    List<MyImage> images = imageModel.getImageForOrder(order.getOrderID());
+
+                    capturedImages = new ArrayList<>(images);
+                    currentImageIndex = images.isEmpty() ? -1 : 0;
+
+                    if(currentImageIndex >= 0){
+                        showImageAtIndex(currentImageIndex);
+                        updateImageCountLabel();
+                    }else {
+                        imageHboxCenter.getChildren().clear();
+                        lblImageCount.setText("0 / 0");
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 

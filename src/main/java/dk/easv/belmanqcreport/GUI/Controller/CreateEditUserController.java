@@ -43,9 +43,8 @@ public class CreateEditUserController implements Initializable {
 
 
 
-    public CreateEditUserController() throws IOException {
+    public CreateEditUserController() throws Exception {
         userModel = new UserModel();
-
     }
 
     public void setStage(Stage stage) {

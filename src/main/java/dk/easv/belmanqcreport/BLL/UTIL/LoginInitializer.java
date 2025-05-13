@@ -1,29 +1,29 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
 import dk.easv.belmanqcreport.BE.Login;
-import dk.easv.belmanqcreport.DAL.Database.LoginDAO_DB;
+import dk.easv.belmanqcreport.DAL.Database.LoginRepository;
 
 public class LoginInitializer {
 
-    private final LoginDAO_DB loginDAO;
+    private final LoginRepository loginRepository;
 
     public LoginInitializer() throws Exception {
-        loginDAO = new LoginDAO_DB();
+        loginRepository = new LoginRepository();
     }
 
     public void createDefaultLogins() {
         try {
             // QC login
             Login qcLogin = new Login("qc", "qc", "qc");
-            loginDAO.createLogin(qcLogin);
+            loginRepository.add(qcLogin);
 
             // Operator login
             Login operatorLogin = new Login("operator", "operator", "operator");
-            loginDAO.createLogin(operatorLogin);
+            loginRepository.add(operatorLogin);
 
             // Admin login
             Login adminLogin = new Login("admin", "admin", "admin");
-            loginDAO.createLogin(adminLogin);
+            loginRepository.add(adminLogin);
 
             System.out.println("Default logins created successfully.");
 

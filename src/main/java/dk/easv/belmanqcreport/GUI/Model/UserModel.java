@@ -24,13 +24,13 @@ public class UserModel {
         tblEmployee.addAll(searchResult);
     }
 
-    public UserModel() throws IOException {
+    public UserModel() throws Exception {
         userManager = new UserManager();
         tblEmployee = FXCollections.observableArrayList();
     }
 
     public ObservableList<User> getAllUsers () throws Exception {
-        List<User> users = userManager.getAllUser();
+        List<User> users = userManager.getAllUsers();
         tblEmployee.clear();
         tblEmployee.addAll(users);
         return tblEmployee;
