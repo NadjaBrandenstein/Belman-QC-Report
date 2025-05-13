@@ -110,7 +110,9 @@ public class PDFGeneratorImp implements PDFGenerator {
                     contentStream.newLine();
                     contentStream.showText("Order ID: " + myImage.getOrderItemID());
                     contentStream.newLine();
-                    contentStream.showText("Comment: " + myImage.getImagePath());
+                    contentStream.showText("Comment: " + myImage.getComment());
+                    contentStream.newLine();
+                    contentStream.showText("User:" + myImage.getUserID());
 
                     contentStream.endText();
 
