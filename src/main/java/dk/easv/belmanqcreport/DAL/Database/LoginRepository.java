@@ -1,11 +1,14 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.Login;
+import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -22,6 +25,16 @@ public class LoginRepository implements IRepository<Login> {
 
     @Override
     public List<Login> getAll() throws Exception {
+        return List.of();
+    }
+
+    @Override
+    public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
         return List.of();
     }
 

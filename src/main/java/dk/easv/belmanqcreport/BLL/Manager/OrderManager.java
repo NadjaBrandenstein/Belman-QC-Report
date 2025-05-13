@@ -33,10 +33,10 @@ public class OrderManager {
        return orderRepository.getItemsByOrderID(orderID);
     }
     public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
-        return orderDAO.getOrderByNumber(orderNumber);
+        return orderRepository.getOrderByNumber(orderNumber);
     }
     public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
-        return orderDAO.getItemsByOrderNumber(orderNumber);
+        return orderRepository.getItemsByOrderNumber(orderNumber);
     }
 
 }

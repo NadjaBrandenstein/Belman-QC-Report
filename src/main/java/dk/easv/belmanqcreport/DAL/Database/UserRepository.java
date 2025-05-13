@@ -1,6 +1,8 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.MyImage;
+import dk.easv.belmanqcreport.BE.Order;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
@@ -12,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserRepository implements IRepository<User> {
 
@@ -50,6 +53,16 @@ public class UserRepository implements IRepository<User> {
         }
 
         return users;
+    }
+
+    @Override
+    public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
+        return List.of();
     }
 
     @Override
