@@ -136,6 +136,28 @@ public class QcController implements Initializable {
             lstOrder.getSelectionModel().selectFirst();
         }
 
+        lstItem.getSelectionModel().selectedItemProperty().addListener((obs, old, newItem) -> {
+            if(newItem != null){
+                try{
+                    List<MyImage> images = imageModel.getImageForOrder(order.getOrderID());
+
+                    capturedImages = new ArrayList<>(images);
+                    currentImageIndex = images.isEmpty() ? -1 : 0;
+
+                    if(currentImageIndex >= 0){
+                        showImageAtIndex(currentImageIndex);
+                        updateImageCountLabel();
+                    }else {
+                        imageHboxCenter.getChildren().clear();
+                        lblImageCount.setText("0 / 0");
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private void setIcons(){
