@@ -13,6 +13,7 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import javafx.beans.binding.Bindings;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -39,9 +40,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.prefs.Preferences;
 
 public class QcController implements Initializable {
 
@@ -64,9 +64,9 @@ public class QcController implements Initializable {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXCheckbox checkApproved;
+    private MFXCheckbox idApproved;
     @FXML
-    private MFXCheckbox checkDenied;
+    private MFXCheckbox idDenied;
 
     @FXML
     private ListView<Order> lstOrder;
@@ -81,6 +81,9 @@ public class QcController implements Initializable {
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
+
+    private final Set<OrderItem> deniedItems = new HashSet<>();
+    private final Set<OrderItem> approvedItems = new HashSet<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -101,6 +104,46 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        idApproved.selectedProperty().addListener((obs, oldId, newId) -> {
+            if (newId) {
+                idDenied.setSelected(false);
+            }
+        });
+        idDenied.selectedProperty().addListener((obs, oldId, newId) -> {
+            if (newId) {
+                idApproved.setSelected(false);
+            }
+        });
+
+        btnPDFSave.textProperty().bind(
+                Bindings.when(idDenied.selectedProperty())
+                        .then("Deny")
+                        .otherwise("Approve")
+        );
+
+        lstItem.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(OrderItem item, boolean empty){
+                super.updateItem(item, empty);
+                if(empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.getOrderItem());
+                    if(deniedItems.contains(item)) {
+                        setStyle("-fx-background-color: red;");
+                    } else if(approvedItems.contains(item)){
+                            setStyle("-fx-background-color: green;");
+                        } else {
+                            setStyle("");
+                        }
+                    }
+                }
+        });
+
+
+
 
     }
 
@@ -176,8 +219,8 @@ public class QcController implements Initializable {
         btnNext.setText("");
         setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
 
-        btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+        /*btnPDFSave.setText("");
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);*/
 
     }
 
@@ -339,6 +382,57 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+
+        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+
+            new Alert(Alert.AlertType.WARNING, "No order item selected.").showAndWait();
+            return;
+        }
+
+
+
+        boolean isDeny = idDenied.isSelected();
+        boolean isApprove = idApproved.isSelected();
+
+        if ((isDeny && isApprove) || (!isDeny && !isApprove)) {
+            new Alert(Alert.AlertType.WARNING, "Please select either Approve or Deny.").showAndWait();
+            return;
+        }
+
+        String verb = isDeny ? "Deny" : "Approve";
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirm " + verb);
+        confirm.setHeaderText(null);
+        confirm.setContentText("Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+
+            idDenied.setSelected(false);
+            idApproved.setSelected(false);
+            return;
+        }
+
+        if(isDeny) {
+            deniedItems.add(selected);
+            approvedItems.remove(selected);
+            lstItem.refresh();
+
+            new Alert(Alert.AlertType.INFORMATION,
+                    "Item “" + selected.getOrderItem() + "” has been denied.")
+                    .showAndWait();
+
+            idDenied.setSelected(false);
+            return;
+
+        }
+            approvedItems.add(selected);
+            deniedItems.remove(selected);  
+            lstItem.refresh();
+            idApproved.setSelected(false);
+
+
         try {
             ImageDataFetcher fetcher = new ImageDataFetcher();
 

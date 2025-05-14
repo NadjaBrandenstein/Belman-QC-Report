@@ -17,6 +17,11 @@ public class OrderItem {
         this.orderItem = orderItem;
     }
 
+    public OrderItem(int orderItemId, String orderItem) {
+        this.orderItemId = orderItemId;
+        this.orderItem = orderItem;
+    }
+
     public List<MyImage> getImages() {
         return images;
     }

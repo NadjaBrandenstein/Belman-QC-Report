@@ -64,12 +64,12 @@
                     <children>
                         <VBox prefHeight="450.0" prefWidth="123.0">
                             <children>
-                                <MFXCheckbox onAction="#checkApproved" text="Approved">
+                                <MFXCheckbox fx:id="idApproved" onAction="#checkApproved" text="Approved">
                                     <VBox.margin>
                                         <Insets bottom="10.0" />
                                     </VBox.margin>
                                 </MFXCheckbox>
-                                <MFXCheckbox onAction="#checkDenied" text="Denied" />
+                                <MFXCheckbox fx:id="idDenied" onAction="#checkDenied" text="Denied" />
                             </children>
                      <HBox.margin>
                         <Insets left="10.0" />
