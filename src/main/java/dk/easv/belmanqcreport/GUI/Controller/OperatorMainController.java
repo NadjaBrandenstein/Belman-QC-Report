@@ -194,8 +194,23 @@ public class OperatorMainController {
 
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
-        if(currentImageIndex >= 0 && currentImageIndex < capturedImages.size()) {
-            capturedImages.remove(currentImageIndex);
+        if (currentImageIndex < 0 || currentImageIndex >= capturedImages.size())
+            return;
+
+        MyImage imageToDelete = capturedImages.get(currentImageIndex);
+
+        if(imageToDelete.getImageID() <= 0) {
+            File file = imageToDelete.getImageFile();
+            if (file != null && file.exists()) {
+                try{
+                    if(!file.delete()) {
+                        System.out.println("Failed to delete image file: " + file.getAbsolutePath());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Image");
@@ -205,8 +220,8 @@ public class OperatorMainController {
             if (result.isEmpty() || result.get() != ButtonType.OK) {
                 return;
             }
-            alert.showAndWait();
-
+            //alert.showAndWait();
+            capturedImages.remove(currentImageIndex);
             if(currentImageIndex >= capturedImages.size()) {
                 currentImageIndex = capturedImages.size() -1;
             }
@@ -219,7 +234,7 @@ public class OperatorMainController {
                 showImageAtIndex(currentImageIndex);
                 updateImageCountLabel();
             }
-        }
+
 
     }
 
