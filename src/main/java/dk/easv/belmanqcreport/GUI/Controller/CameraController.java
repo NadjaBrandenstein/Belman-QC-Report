@@ -99,7 +99,7 @@ public class CameraController {
 
         if (!frame.empty()) {
             // Create output directory inside user home
-            String outputDir = "C:\\EASV\\Exam Project Belman\\Belman-QC-Report\\src\\main\\resources\\dk\\easv\\belmanqcreport\\Images";
+            String outputDir = "src/main/resources/dk/easv/belmanqcreport/Images";
             new File(outputDir).mkdirs();
 
             // Full path for the image
