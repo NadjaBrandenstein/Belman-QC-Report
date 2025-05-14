@@ -87,7 +87,7 @@ public class PDFGeneratorImp implements PDFGenerator {
 
                 try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                     File logoFile = new File("dk/easv/belmanqcreport/Icons/Belman.png");
-                    if (!logoFile.exists()) {
+                    if (logoFile.exists()) {//
                         BufferedImage logoImage = ImageIO.read(logoFile);
                         PDImageXObject logoImageObj = LosslessFactory.createFromImage(document, logoImage);
 

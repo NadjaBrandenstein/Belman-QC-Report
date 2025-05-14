@@ -21,17 +21,24 @@ public class ImageDataFetcher {
     public ImageDataFetcher() throws IOException{
         this.dbConnection = new DBConnection();
         }
-    public BufferedImage getImageFromDatabase(int imageID) {
-        String sql = "SELECT image FROM [Image] WHERE imageID = ?";
 
+    public BufferedImage getImageFromDatabase(int imageID) {
+        String sql = "SELECT imagePath FROM [Image] WHERE imageID = ?";
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // 1) bind the parameter
             stmt.setInt(1, imageID);
-            if (rs.next()) {
-                InputStream binaryStream = rs.getBinaryStream("image");
-                return ImageIO.read(binaryStream);
+
+            // 2) then execute
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    try (InputStream bin = rs.getBinaryStream("imagePath")) {
+                        return ImageIO.read(bin);
+                    }
+                }
             }
+
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -39,23 +46,22 @@ public class ImageDataFetcher {
     }
 
     public BufferedImage getImageByPathFromDatabase(int imageID) throws SQLException {
-        String sql = "SELECT image FROM [Image] WHERE imageID = ?";
+        String sql = "SELECT imagePath FROM [Image] WHERE imageID = ?";
 
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ){
+             PreparedStatement stmt = conn.prepareStatement(sql)){
 
             stmt.setInt(1, imageID);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    String imagePath = rs.getString("image_path");
+                    String imagePath = rs.getString("imagePath");
                     File imageFile = new File(imagePath);
 
                     if (imageFile.exists()) {
                         return ImageIO.read(imageFile);
                     }
                 }
-                String imagePath = rs.getString("image_path");
+                String imagePath = rs.getString("imagePath");
                 File imageFile = new File(imagePath);
 
                 if (imageFile.exists()) {
