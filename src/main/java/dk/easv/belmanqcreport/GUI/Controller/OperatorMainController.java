@@ -136,12 +136,6 @@ public class OperatorMainController {
         //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
     }
 
-
-
-
-
-
-
     private void openImageHandlingScene(MyImage image) {
         try{
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();

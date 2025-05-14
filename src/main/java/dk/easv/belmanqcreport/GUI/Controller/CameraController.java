@@ -66,8 +66,8 @@ public class CameraController {
 
     private void startCamera() {
         capture = new VideoCapture(0, Videoio.CAP_DSHOW);
-        capture.set(Videoio.CAP_PROP_FRAME_WIDTH, 640);
-        capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 480);
+        capture.set(Videoio.CAP_PROP_FRAME_WIDTH, 1280);
+        capture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 720);
         capture.set(Videoio.CAP_PROP_BRIGHTNESS, 150);
 
         if(capture.isOpened()) {
@@ -83,6 +83,9 @@ public class CameraController {
                             if (imageToShow != null) {
                                 preview.setImage(imageToShow);
                             }
+                            preview.fitWidthProperty().bind(imageHboxCamera.widthProperty());
+                            preview.fitHeightProperty().bind(imageHboxCamera.heightProperty());
+                            preview.setPreserveRatio(true);
                         });
                     }
                 }
@@ -144,7 +147,7 @@ public class CameraController {
             int channels = mat.channels();
 
             byte[] bytes = new byte[width * height * channels];
-            mat.get(0, 0, bytes);
+            converted.get(0, 0, bytes);
 
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
             image.getRaster().setDataElements(0, 0, width, height, bytes);
