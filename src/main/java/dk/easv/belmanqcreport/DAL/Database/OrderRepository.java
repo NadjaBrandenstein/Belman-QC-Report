@@ -137,7 +137,7 @@ public class OrderRepository implements IRepository<Order> {
         }
     }
 
-    @Override
+
     public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
         String sql = "SELECT orderID, userID, orderNumber " +
                 "FROM dbo.[Order] " +
@@ -153,10 +153,9 @@ public class OrderRepository implements IRepository<Order> {
             }
         }
 
-
     }
 
-    @Override
+
     public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
         String sql = "SELECT item.orderItemID, item.orderID, item.orderItem " +
                 "FROM dbo.Item AS item " +
@@ -165,21 +164,16 @@ public class OrderRepository implements IRepository<Order> {
         try (Connection conn = new DBConnection().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1, orderNumber);
-
             try (ResultSet rs = stmt.executeQuery()) {
                 List<OrderItem> items = new ArrayList<>();
                 while (rs.next()) {
                     items.add(new OrderItem(
                             rs.getInt("orderItemID"),
                             rs.getInt("orderID"),
-                            rs.getString("orderItem")
-                    ));
+                            rs.getString("orderItem")));
                 }
                 return items;
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-
     }
 }

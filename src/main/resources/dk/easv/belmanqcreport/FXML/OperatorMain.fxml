@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorMainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorMainController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -35,9 +35,7 @@
                      <Insets left="20.0" />
                   </HBox.margin></Label>
                <Label styleClass="whiteLabel" text="-" />
-               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" floatMode="DISABLED" floatingTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#cbOrderNumber" prefHeight="25.0" prefWidth="95.0" />
-               <Label fx:id="lblOrderNumber" style="-fx-text-fill: white;" text="Label" />
-               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" />
+               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" floatMode="DISABLED" floatingTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" />
                 </HBox>
             </center>
 

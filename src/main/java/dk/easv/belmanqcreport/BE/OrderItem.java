@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderItem {
-    private int orderId;
+
     private int orderItemId;
+    private int orderId;
     private String orderItem;
 
     private List<MyImage> images = new ArrayList<>();
