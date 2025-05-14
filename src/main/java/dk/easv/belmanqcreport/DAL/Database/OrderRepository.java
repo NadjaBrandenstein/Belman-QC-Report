@@ -140,9 +140,4 @@ public class OrderRepository implements IRepository<Order> {
             }
         }
     }
-
-    @Override
-    public Order getById(int id) throws Exception {
-        return null;
-    }
 }

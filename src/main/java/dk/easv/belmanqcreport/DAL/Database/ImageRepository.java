@@ -94,31 +94,6 @@ public class ImageRepository implements IRepository<MyImage> {
         return list;
     }
 
-    @Override
-    public MyImage getById(int id) throws SQLException {
-        String sql = "SELECT imageID, orderID, imagePath, comment FROM Image WHERE imageID = ?;";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    MyImage img = new MyImage(
-                            rs.getInt("imageID"),
-                            rs.getString("imagePath"),
-                            rs.getString("comment")
-                    );
-                    img.setOrderItemID(rs.getInt("orderID"));
-                    return img;
-                } else {
-                    throw new Exception("Image not found with ID: " + id);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     public List<MyImage> getImagesByOrderId(int orderID) throws Exception {
         String sql = "SELECT imageID, imagePath, comment FROM Image WHERE orderID = ?;";
         List<MyImage> list = new ArrayList<>();

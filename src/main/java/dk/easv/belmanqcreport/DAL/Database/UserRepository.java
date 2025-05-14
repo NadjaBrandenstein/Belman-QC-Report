@@ -52,36 +52,6 @@ public class UserRepository implements IRepository<User> {
         return users;
     }
 
-    @Override
-    public User getById(int id) {
-        String sql = """
-            SELECT u.userID, u.fname, u.lname, ut.userType
-            FROM [User] u
-            JOIN UserType ut ON u.userTypeID = ut.userTypeID
-            WHERE u.userID = ?
-        """;
-
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new User(
-                            rs.getInt("userID"),
-                            rs.getString("fname"),
-                            rs.getString("lname"),
-                            rs.getString("userType")
-                    );
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     @Override
     public User add(User user) {

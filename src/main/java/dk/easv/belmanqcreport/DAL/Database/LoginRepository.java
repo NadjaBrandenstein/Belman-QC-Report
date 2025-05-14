@@ -25,10 +25,6 @@ public class LoginRepository implements IRepository<Login> {
         return List.of();
     }
 
-    @Override
-    public Login getById(int id) throws Exception {
-        return null;
-    }
 
     @Override
     public Login add(Login login)throws Exception {
