@@ -5,6 +5,7 @@ import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.Database.OrderRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class OrderManager {
 
@@ -30,6 +31,12 @@ public class OrderManager {
     }
     public List<OrderItem> getItemsByOrderID(int orderID) throws Exception {
        return orderRepository.getItemsByOrderID(orderID);
+    }
+    public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
+        return orderRepository.getOrderByNumber(orderNumber);
+    }
+    public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
+        return orderRepository.getItemsByOrderNumber(orderNumber);
     }
 
 }

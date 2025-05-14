@@ -1,6 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
+import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -39,6 +40,8 @@ public class CameraController {
     private Timer timer;
     private Mat frame = new Mat();
 
+    private OrderItem orderItem;
+
     private final CameraHandling cameraHandler = new CameraHandling();
     private OperatorMainController parentController;
     private QcController qcController;
@@ -54,6 +57,10 @@ public class CameraController {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         startCamera();
 
+    }
+
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
     }
 
     private void startCamera() {
@@ -103,7 +110,7 @@ public class CameraController {
             MyImage image = new MyImage(imageFile);
 
             if (parentController != null) {
-                image.setOrderItemID(parentController.getCurrentOrder().getOrderItemID());
+                image.setOrderItemID(orderItem.getOrderItemId());
                 parentController.displayCapturedImage(image);
             }
         }

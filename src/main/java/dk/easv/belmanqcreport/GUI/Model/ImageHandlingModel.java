@@ -6,6 +6,7 @@ import dk.easv.belmanqcreport.BLL.Manager.OrderManager;
 import javafx.fxml.FXML;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ImageHandlingModel {
 
@@ -27,6 +28,14 @@ public class ImageHandlingModel {
 
     public void updateOrder(Order order) throws Exception {
         orderManager.updateOrders(order);
+    }
+
+    public Optional<Order> findOrderByNumber(String orderNumber) throws Exception {
+        return orderManager.getOrderByNumber(orderNumber);
+    }
+
+    public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
+        return orderManager.getItemsByOrderNumber(orderNumber);
     }
 
 

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorMainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorMainController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -30,16 +30,25 @@
             <!-- CENTER -->
             <center>
                 <HBox alignment="CENTER" prefHeight="30.0" prefWidth="561.0" spacing="10.0" style="-fx-background-color: #004b88;">
-               <Label fx:id="lblOrderNumber" text="Label" style="-fx-text-fill: white;"/>
-               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" onAction="#cbOrderNumber" />
+               <Label fx:id="lblOrderNumber" styleClass="whiteLabel" text="Label">
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin></Label>
+               <Label styleClass="whiteLabel" text="-" />
+               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" floatMode="DISABLED" floatingTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#cbOrderNumber" prefHeight="25.0" prefWidth="95.0" />
+               <Label fx:id="lblOrderNumber" style="-fx-text-fill: white;" text="Label" />
+               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" />
                 </HBox>
             </center>
 
             <!-- RIGHT SIDE -->
             <right>
                 <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #004b88;">
-                    <Label fx:id="lblEmployee" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="148.0" style="-fx-font-size: 14px;" styleClass="whiteLabel" text="Logged in as: User" />
-               <MFXButton fx:id="btnLogout" onAction="#btnLogout" text="Logout" />
+                    <Label fx:id="lblEmployee" prefHeight="20.0" prefWidth="148.0" styleClass="whiteLabel, right-aligned-label" text="Logged in as: User" />
+               <MFXButton fx:id="btnLogout" onAction="#btnLogout" text="Logout">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin></MFXButton>
                 </HBox>
             </right>
          <top>
@@ -74,7 +83,7 @@
                <children>
                   <MFXButton fx:id="btnDelete" onAction="#btnDelete" prefHeight="25.6" prefWidth="50.0" text="X">
                      <HBox.margin>
-                        <Insets left="5.0" />
+                        <Insets left="30.0" />
                      </HBox.margin></MFXButton>
                </children>
             </HBox>

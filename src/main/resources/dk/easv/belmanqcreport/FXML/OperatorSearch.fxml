@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorSearchController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorSearchController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -55,10 +55,10 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="440.0" prefWidth="270.0">
                      <children>
-                        <Label text="Order number " />
+                        <Label styleClass="orderLabel" text="Enter order number " />
                         <HBox alignment="CENTER" prefHeight="82.0" prefWidth="270.0">
                            <children>
-                              <MFXTextField fx:id="txtSearch" />
+                              <MFXTextField fx:id="txtSearch" maxHeight="30.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="100.0" />
                               <MFXButton fx:id="btnSearch" onAction="#btnSearch" text="Search">
                                  <HBox.margin>
                                     <Insets left="10.0" />

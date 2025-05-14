@@ -90,10 +90,10 @@ public class ImageHandlingController {
 
     }
 
-    public void setOrderDetails(Order order, MyImage image, Consumer<MyImage> onSave) {
+    public void setOrderDetails(Order order, MyImage image, Consumer<MyImage> onUpdate) {
         this.currentOrder = order;
         this.currentImage = image;
-        this.onSaveCallBack = onSave;
+        this.onSaveCallBack = onUpdate;
 
         lblOrderNumber.setText(String.valueOf(order.getOrderID()));
         txtComment.setText(image.getComment());
