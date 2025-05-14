@@ -98,6 +98,11 @@ public class QcController implements Initializable {
 
 
         setIcons();
+        //btnPDFSave.setText("");
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+        Node pdfIcon = btnPDFSave.getGraphic();
+        btnPDFSave.setGraphic(null);
+        btnPDFSave.setText("");
 
         try {
             populateLists();
@@ -116,10 +121,16 @@ public class QcController implements Initializable {
             }
         });
 
+        btnPDFSave.graphicProperty().bind(
+                Bindings.when(idApproved.selectedProperty())
+                        .then(pdfIcon)
+                        .otherwise((Node) null)
+        );
+
         btnPDFSave.textProperty().bind(
                 Bindings.when(idDenied.selectedProperty())
                         .then("Deny")
-                        .otherwise("Approve")
+                        .otherwise("")
         );
 
         lstItem.setCellFactory(lv -> new ListCell<>() {
@@ -219,8 +230,6 @@ public class QcController implements Initializable {
         btnNext.setText("");
         setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
 
-        /*btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);*/
 
     }
 
@@ -428,7 +437,7 @@ public class QcController implements Initializable {
 
         }
             approvedItems.add(selected);
-            deniedItems.remove(selected);  
+            deniedItems.remove(selected);
             lstItem.refresh();
             idApproved.setSelected(false);
 
