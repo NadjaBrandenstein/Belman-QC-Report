@@ -284,7 +284,7 @@ public class OperatorMainController {
         Platform.runLater(() -> {
 
 
-            myImg.setOrderItemID(currentOrderItem.getOrderId());
+            myImg.setOrderItemID(currentOrderItem.getOrderItemId());
 
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() -1;
