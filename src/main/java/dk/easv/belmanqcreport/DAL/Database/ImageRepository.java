@@ -1,15 +1,12 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
-import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ImageRepository implements IRepository<MyImage> {
 
@@ -21,7 +18,7 @@ public class ImageRepository implements IRepository<MyImage> {
 
     @Override
     public MyImage add(MyImage img) throws SQLException {
-        String sql = "INSERT INTO Image (orderItemID, imagePath, comment) VALUES (?,?,?);";
+        String sql = "INSERT INTO Image (orderID, imagePath, comment) VALUES (?,?,?);";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -75,7 +72,7 @@ public class ImageRepository implements IRepository<MyImage> {
     @Override
     public List<MyImage> getAll() {
         // Return all images, regardless of orderID
-        String sql = "SELECT imageID, orderItemID, imagePath, comment FROM Image;";
+        String sql = "SELECT imageID, orderID, imagePath, comment FROM Image;";
         List<MyImage> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection();
@@ -88,7 +85,7 @@ public class ImageRepository implements IRepository<MyImage> {
                         rs.getString("imagePath"),
                         rs.getString("comment")
                 );
-                img.setOrderItemID(rs.getInt("orderItemID"));
+                img.setOrderItemID(rs.getInt("orderID"));
                 list.add(img);
             }
         } catch (SQLException e) {
@@ -97,49 +94,14 @@ public class ImageRepository implements IRepository<MyImage> {
         return list;
     }
 
-    @Override
-    public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
-        return List.of();
-    }
-
-    @Override
-    public MyImage getById(int id) throws SQLException {
-        String sql = "SELECT imageID, orderItemID, imagePath, comment FROM Image WHERE imageID = ?;";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    MyImage img = new MyImage(
-                            rs.getInt("imageID"),
-                            rs.getString("imagePath"),
-                            rs.getString("comment")
-                    );
-                    img.setOrderItemID(rs.getInt("orderItemID"));
-                    return img;
-                } else {
-                    throw new Exception("Image not found with ID: " + id);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    public List<MyImage> getImagesByOrderId(int orderItemID) throws Exception {
-        String sql = "SELECT imageID, imagePath, comment FROM Image WHERE orderItemID = ?;";
+    public List<MyImage> getImagesByOrderId(int orderID) throws Exception {
+        String sql = "SELECT imageID, imagePath, comment FROM Image WHERE orderID = ?;";
         List<MyImage> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, orderItemID);
+            stmt.setInt(1, orderID);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     MyImage img = new MyImage(
@@ -147,7 +109,7 @@ public class ImageRepository implements IRepository<MyImage> {
                             rs.getString("imagePath"),
                             rs.getString("comment")
                     );
-                    img.setOrderItemID(orderItemID);
+                    img.setOrderItemID(orderID);
                     list.add(img);
                 }
             }
