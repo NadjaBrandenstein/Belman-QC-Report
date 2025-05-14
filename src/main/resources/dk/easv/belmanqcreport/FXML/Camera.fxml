@@ -12,7 +12,7 @@
    <center>
       <HBox fx:id="imageHboxCamera" alignment="CENTER" spacing="10">
          <StackPane maxHeight="Infinity" maxWidth="Infinity">
-            <ImageView fx:id="preview" fitHeight="690.0" fitWidth="900" preserveRatio="true" smooth="true">
+            <ImageView fx:id="preview" preserveRatio="true" smooth="true">
                <StackPane.margin>
                   <Insets />
                </StackPane.margin></ImageView>
