@@ -6,10 +6,8 @@ import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.IOException;
+import java.sql.*;
 import java.util.*;
 
 public class OrderRepository implements IRepository<Order> {
@@ -119,12 +117,11 @@ public class OrderRepository implements IRepository<Order> {
         String sql =
                 "SELECT orderItemID, orderID, orderItem " +
                         "  FROM dbo.Item " +
-                        " WHERE orderID = ?";           // ← a simple question-mark
+                        " WHERE orderID = ?";
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // bind the one and only parameter
             stmt.setInt(1, orderID);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -138,6 +135,34 @@ public class OrderRepository implements IRepository<Order> {
                 }
                 return items;
             }
+        }
+    }
+
+    public List<OrderItem> getOrderByNumber(String orderNumber) throws IOException {
+        DBConnection dbConnection = new DBConnection();
+        String sql =
+                "SELECT orderItemID, orderID, orderItem " +
+                        "  FROM dbo.Item " +
+                        " WHERE orderID = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, orderNumber);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<OrderItem> items = new ArrayList<>();
+                while (rs.next()) {
+                    items.add(new OrderItem(
+                            rs.getInt("orderItemID"),
+                            rs.getInt("orderID"),
+                            rs.getString("orderItem")
+                    ));
+                }
+                return items;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

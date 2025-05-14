@@ -36,7 +36,7 @@ public class OrderManager {
         return orderRepository.getOrderByNumber(orderNumber);
     }
     public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
-        return orderRepository.getItemsByOrderNumber(orderNumber);
+        return orderRepository.getItemsByOrderID(Integer.parseInt(orderNumber));
     }
 
 }
