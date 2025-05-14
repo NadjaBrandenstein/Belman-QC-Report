@@ -79,7 +79,7 @@ public class ImageDataFetcher {
     public String getCommentByImageID(int imageID) {
         String sql = "SELECT comment FROM [Image] WHERE imageID = ?";
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Images WHERE item_id = ?");
              ResultSet rs = stmt.executeQuery()) {
             stmt.setInt(1, imageID);
             if (rs.next()) {
@@ -104,4 +104,5 @@ public class ImageDataFetcher {
         }
         return -1;
     }
+    
 }

@@ -27,6 +27,10 @@ public class Order {
         this.orderItem = orderItem;
     }
 
+    public Order() {
+
+    }
+
     public int getUserID() {
         return userID;
     }

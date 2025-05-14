@@ -353,9 +353,12 @@ public class QcController implements Initializable {
                 BufferedImage img = fetcher.getImageFromDatabase(imageID); // Or getImageByPathFromDatabase
 
                 if (img != null) {
-                    String tempPath = "temp_image_" + imageID + ".png";
+                    String tempPath = new File(System.getProperty("java.io.tmpdir"), "temp_" + imageID + ".png").getAbsolutePath();
                     File tempFile = new File(tempPath);
                     ImageIO.write(img, "png", tempFile);
+                    if (!tempFile.exists()) {
+                        System.out.println("Failed to create temp image file:" + tempFile.getAbsolutePath());
+                    }
 
                     String comment = fetcher.getCommentByImageID(imageID);
                     int orderID = fetcher.getOrderIDByImageID(imageID);
@@ -382,6 +385,9 @@ public class QcController implements Initializable {
             File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
 
             if (pdfFile != null) {
+                PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
+                pdfGen.setEmployeeName(lblEmployee.getText());
+                pdfGen.generatePDF(pdfFile.getAbsolutePath(), capturedImages);
                 PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), allImages);
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
             } else {
@@ -395,6 +401,8 @@ public class QcController implements Initializable {
     public void setUserName(String userName) {
         lblEmployee.setText(userName);
     }
+
+
 
     private void setImageViewIcon(ImageView logoImage, String iconPath) {
         if (logoImage == null) {
