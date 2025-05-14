@@ -43,12 +43,12 @@ Label{
 
 MFXTextField {
     -fx-border-color: #004b88;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
 }
 
 MFXPasswordField {
     -fx-border-color: #004b88;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
 }
 
 .table-view {

@@ -1,10 +1,6 @@
 package dk.easv.belmanqcreport.DAL.Interface;
-
-import dk.easv.belmanqcreport.BE.Order;
-import dk.easv.belmanqcreport.BE.OrderItem;
-
+// Java Import
 import java.util.List;
-import java.util.Optional;
 
 public interface IRepository<T> {
     List<T> getAll() throws Exception;

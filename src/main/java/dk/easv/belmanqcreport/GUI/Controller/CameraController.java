@@ -9,6 +9,7 @@ import io.github.palexdev.materialfx.utils.SwingFXUtils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 // JavaFX Imports
@@ -74,6 +75,9 @@ public class CameraController {
             timer.schedule(new TimerTask() {
                 public void run() {
                     if (capture.read(frame)) {
+                        Mat flippedFrame = new Mat();
+                        Core.flip(frame, flippedFrame, +1);
+
                         Image imageToShow = mat2Image(frame);
                         Platform.runLater(() -> {
                             if (imageToShow != null) {
@@ -132,6 +136,9 @@ public class CameraController {
 
     private Image mat2Image(Mat mat) {
         try {
+            Mat converted = new Mat();
+            Imgproc.cvtColor(mat, converted, Imgproc.COLOR_BGR2RGB);
+
             int width = mat.width();
             int height = mat.height();
             int channels = mat.channels();
