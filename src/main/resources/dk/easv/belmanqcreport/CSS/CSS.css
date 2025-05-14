@@ -48,6 +48,7 @@ MFXTextField {
 
 MFXPasswordField {
     -fx-border-color: #004b88;
+    -fx-font-size: 16px;
 }
 
 .table-view {
