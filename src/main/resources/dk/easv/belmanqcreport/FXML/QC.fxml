@@ -79,7 +79,7 @@
                 </HBox>
             </right>
             <left>
-                <HBox prefHeight="450.0" prefWidth="466.0" BorderPane.alignment="CENTER">
+                <HBox prefHeight="450.0" prefWidth="463.0" BorderPane.alignment="CENTER">
                     <children>
                         <ListView fx:id="lstOrder" prefHeight="450.0" prefWidth="105.0">
                      <HBox.margin>
