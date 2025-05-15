@@ -5,6 +5,7 @@ import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
+import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 // Other Imports
@@ -199,8 +200,17 @@ public class OperatorMainController {
 
         MyImage imageToDelete = capturedImages.get(currentImageIndex);
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Image");
+        alert.setHeaderText("Are you sure you want to delete this image?");
+        alert.setContentText("This action cannot be undone.");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+            return;
+        }
+
+        File file = imageToDelete.getImageFile();
         if(imageToDelete.getImageID() <= 0) {
-            File file = imageToDelete.getImageFile();
             if (file != null && file.exists()) {
                 try{
                     if(!file.delete()) {
@@ -212,14 +222,16 @@ public class OperatorMainController {
             }
         }
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete Image");
-            alert.setHeaderText("Are you sure you want to delete this image?");
-            alert.setContentText("This action cannot be undone.");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isEmpty() || result.get() != ButtonType.OK) {
-                return;
+
+        if(imageToDelete.getImageID() > 0) {
+            try {
+                ImageRepository repo =new ImageRepository();
+                repo.delete(imageToDelete);
             }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
             //alert.showAndWait();
             capturedImages.remove(currentImageIndex);
             if(currentImageIndex >= capturedImages.size()) {
@@ -234,7 +246,6 @@ public class OperatorMainController {
                 showImageAtIndex(currentImageIndex);
                 updateImageCountLabel();
             }
-
 
     }
 
