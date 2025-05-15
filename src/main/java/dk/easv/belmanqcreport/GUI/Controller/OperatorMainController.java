@@ -354,6 +354,8 @@ public class OperatorMainController {
             alert.setContentText("Images have been saved successfully.");
             alert.showAndWait();
 
+            FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorSearch.fxml");
+
         } catch (Exception e) {
             e.printStackTrace();
 
