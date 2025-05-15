@@ -346,12 +346,13 @@ public class OperatorMainController {
                 } else {
                     imageModel.updateImage(myImage);
                 }
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Save Successful");
-                alert.setHeaderText(null);
-                alert.setContentText("Images have been saved successfully.");
-                alert.showAndWait();
+
             }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Save Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Images have been saved successfully.");
+            alert.showAndWait();
 
         } catch (Exception e) {
             e.printStackTrace();
