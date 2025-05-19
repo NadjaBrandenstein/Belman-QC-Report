@@ -4,7 +4,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
-import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -14,6 +14,7 @@ import dk.easv.belmanqcreport.Main;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import javafx.beans.binding.Bindings;
+import javafx.scene.layout.AnchorPane;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -41,7 +42,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.prefs.Preferences;
 
 public class QcController implements Initializable {
 
@@ -50,7 +50,7 @@ public class QcController implements Initializable {
     @FXML
     private Label lblImageCount;
     @FXML
-    private HBox imageHboxCenter;
+    private AnchorPane imageHboxCenter;
     @FXML
     private MFXButton btnBack;
     @FXML

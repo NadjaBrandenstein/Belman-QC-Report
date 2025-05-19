@@ -1,4 +1,4 @@
-package dk.easv.belmanqcreport.BLL;
+package dk.easv.belmanqcreport.BLL.UTIL;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 // Other Imports

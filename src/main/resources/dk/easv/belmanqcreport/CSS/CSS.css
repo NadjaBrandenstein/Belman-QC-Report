@@ -69,26 +69,6 @@ MFXPasswordField {
     -fx-text-fill: white;
 }
 
-MFXComboBox {
-    -fx-border-color: white;
-    -fx-font-weight: bold;
-    -fx-background-color: #004b88;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-}
-
-.mfx-combo-box .virtual-flow .mfx-combo-box-cell:selected {
-    -fx-background-color: #7fa8c5;
-}
-
-.mfx-combo-box .virtual-flow .mfx-combo-box-cell:hover {
-    -fx-background-color: #e3e3e3;
-}
-
-.mfx-combo-box .mfx-combo-box-cell:selected .label {
-    -fx-text-fill: white;
-}
-
 ListView {
     -fx-font-size: 16px;
 }
@@ -124,3 +104,33 @@ ListView .list-cell:selected:hover {
 .mfx-radio-button .mfx-ripple-generator {
     -mfx-ripple-color: #004b88;
 }
+
+
+ComboBox {
+    -fx-border-color: white;
+    -fx-font-weight: bold;
+    -fx-background-color: #004b88;
+    -fx-font-size: 16px;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+/*.combo-box .list-cell {
+    -fx-text-fill: white;
+}*/
+
+
+.mfx-combo-box .virtual-flow .mfx-combo-box-cell:selected {
+    -fx-background-color: #7fa8c5;
+}
+
+.mfx-combo-box .virtual-flow .mfx-combo-box-cell:hover {
+    -fx-background-color: #e3e3e3;
+}
+
+.mfx-combo-box .mfx-combo-box-cell:selected .label {
+    -fx-text-fill: white;
+}
+

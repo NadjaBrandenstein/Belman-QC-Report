@@ -3,7 +3,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
-import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -11,6 +11,8 @@ import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import org.opencv.core.Core;
 // JavaFx Imports
 import javafx.application.Platform;
@@ -20,10 +22,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
@@ -49,7 +47,7 @@ public class OperatorMainController {
     @FXML
     private Label lblImageCount;
     @FXML
-    private HBox imageHboxCenter;
+    private AnchorPane imageHboxCenter;
     @FXML
     private MFXButton btnBack;
     @FXML
@@ -69,7 +67,7 @@ public class OperatorMainController {
     @FXML
     private ImageView logoImage;
     @FXML
-    private MFXComboBox<OrderItem> cbOrderNumber;
+    private ComboBox<OrderItem> cbOrderNumber;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;

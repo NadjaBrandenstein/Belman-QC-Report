@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorMainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="900" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.OperatorMainController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -35,7 +39,7 @@
                      <Insets left="20.0" />
                   </HBox.margin></Label>
                <Label styleClass="whiteLabel" text="-" />
-               <MFXComboBox fx:id="cbOrderNumber" alignment="TOP_LEFT" floatMode="DISABLED" floatingTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" />
+               <ComboBox fx:id="cbOrderNumber" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="105.0" />
                 </HBox>
             </center>
 
@@ -60,38 +64,76 @@
     </top>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="420.0" prefWidth="710.0" style="-fx-background-color: grey;" BorderPane.alignment="BOTTOM_RIGHT">
-               <children>
-                  <ImageView fx:id="commentIcon" pickOnBounds="true" preserveRatio="true" styleClass="comment-icon" visible="false">
-                      <image>
-                          <!-- @/icons/comment.png → src/main/resources/icons/comment.png -->
-                          <Image url="@/dk/easv/belmanqcreport/Icons/icon.png" />
-                      </image>
-
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-
-                  </ImageView>
-               </children></HBox>
-         </center>
          <right>
-            <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="450.0" prefWidth="74.0" BorderPane.alignment="CENTER">
                <children>
                   <MFXButton fx:id="btnDelete" onAction="#btnDelete" prefHeight="25.6" prefWidth="50.0" text="X">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="5.0" />
                      </HBox.margin></MFXButton>
+                  <HBox alignment="CENTER" prefHeight="450.0" prefWidth="17.0">
+                     <children>
+                        <ImageView fx:id="commentIcon" pickOnBounds="true" preserveRatio="true" styleClass="comment-icon" visible="false">
+                            <image>
+                                <!-- @/icons/comment.png → src/main/resources/icons/comment.png -->
+                                <Image url="@/dk/easv/belmanqcreport/Icons/icon.png" />
+                            </image>
+      
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+      
+                        </ImageView>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </right>
          <left>
-            <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="450.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
          </left>
          <top>
             <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
          </top>
+         <center>
+            <GridPane alignment="CENTER" hgap="15" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="450.0" prefWidth="900.0" vgap="15" BorderPane.alignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+              <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="100" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
+                <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
+                <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <AnchorPane fx:id="imageHboxCenter" prefHeight="173.0" prefWidth="368.0" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <children>
+                        <Label layoutX="170.0" layoutY="61.0" text="Front" />
+                     </children></AnchorPane>
+                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <children>
+                        <Label layoutX="174.0" layoutY="61.0" text="Back" />
+                     </children></AnchorPane>
+                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <children>
+                        <Label layoutX="178.0" layoutY="62.0" text="Left" />
+                     </children></AnchorPane>
+                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <Label layoutX="168.0" layoutY="62.0" text="Right" />
+                     </children></AnchorPane>
+                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                     <children>
+                        <Label layoutX="172.0" layoutY="62.0" text="Top" />
+                     </children></AnchorPane>
+                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label layoutX="171.0" layoutY="62.0" text="Extra" />
+                     </children></AnchorPane>
+               </children>
+            </GridPane>
+         </center>
       </BorderPane>
    </center>
    <bottom>

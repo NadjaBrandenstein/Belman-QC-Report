@@ -2,7 +2,7 @@ package dk.easv.belmanqcreport.GUI.Controller;
 // Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.OrderItem;
-import dk.easv.belmanqcreport.BLL.CameraHandling;
+import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.utils.SwingFXUtils;
