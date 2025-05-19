@@ -87,6 +87,7 @@ public class QcController implements Initializable {
     private ImageModel imageModel;
     private Order order;
     private Window primaryStage;
+    private int imagePositionID;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
@@ -485,7 +486,7 @@ public class QcController implements Initializable {
                     }catch (NumberFormatException e){
                         System.out.println("Failed to extract image ID from file name: " + fileName);
                     }
-                    MyImage myImage = new MyImage(extractedID, tempPath, comment);
+                    MyImage myImage = new MyImage(extractedID, tempPath, comment, imagePositionID);
                     myImage.setOrderItemID(orderID);
                     allImages.add(myImage);
                 }
