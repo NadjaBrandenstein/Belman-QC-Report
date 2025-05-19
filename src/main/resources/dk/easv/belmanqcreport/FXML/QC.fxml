@@ -113,12 +113,12 @@
                     <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
                 </rowConstraints>
                <children>
-                  <AnchorPane fx:id="imageHboxCenter" prefHeight="200.0" prefWidth="200.0" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <AnchorPane fx:id="imageFront" prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane fx:id="imageBack" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <AnchorPane fx:id="imageLeft" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                  <AnchorPane fx:id="imageRight" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <AnchorPane fx:id="imageTop" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                  <AnchorPane fx:id="imageExtra" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </center>

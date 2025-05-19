@@ -50,8 +50,6 @@ public class QcController implements Initializable {
     @FXML
     private Label lblImageCount;
     @FXML
-    private AnchorPane imageHboxCenter;
-    @FXML
     private AnchorPane imageFront;
     @FXML
     private AnchorPane imageBack;
@@ -227,7 +225,7 @@ public class QcController implements Initializable {
     }
 
     private void clearImages() {
-        imageHboxCenter.getChildren().clear();
+        imageFront.getChildren().clear();
     }
 
     private void setIcons(){
@@ -299,13 +297,13 @@ public class QcController implements Initializable {
             Image fxImage = new Image(img.toURI());
             ImageView imageView = new ImageView(fxImage);
 
-            imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
-            imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
-            imageHboxCenter.getChildren().clear();
+            imageView.fitWidthProperty().bind(imageFront.widthProperty());
+            imageView.fitHeightProperty().bind(imageFront.heightProperty());
+            imageFront.getChildren().clear();
 
             imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
 
-            imageHboxCenter.getChildren().add(imageView);
+            imageFront.getChildren().add(imageView);
         }
     }
 
@@ -326,7 +324,7 @@ public class QcController implements Initializable {
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
             Stage stage = new Stage();
-            stage.initOwner(imageHboxCenter.getScene().getWindow());
+            stage.initOwner(imageFront.getScene().getWindow());
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Image Handling");
             stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
@@ -540,7 +538,7 @@ public class QcController implements Initializable {
 
 
     private void displayImages(List<MyImage> capturedImages) {
-        imageHboxCenter.getChildren().clear();
+        imageFront.getChildren().clear();
         for (MyImage image : capturedImages) {
 
             String uri = new File(image .getImagePath()).toURI().toString();
@@ -551,7 +549,7 @@ public class QcController implements Initializable {
             imageView.setFitHeight(100);
             imageView.setPreserveRatio(true);
 
-            imageHboxCenter.getChildren().add(imageView);
+            imageFront.getChildren().add(imageView);
         }
     }
 
