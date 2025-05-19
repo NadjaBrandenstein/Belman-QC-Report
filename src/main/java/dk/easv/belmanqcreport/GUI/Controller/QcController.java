@@ -14,7 +14,10 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.AnchorPane;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -83,6 +86,9 @@ public class QcController implements Initializable {
     private ListView<Order> lstOrder;
     @FXML
     private ListView<OrderItem> lstItem;
+    @FXML
+    private ListView<String> lstLog;
+    private final ObservableList<String> logItems = FXCollections.observableArrayList();
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
@@ -111,13 +117,16 @@ public class QcController implements Initializable {
 
         setIcons();
 
+        lstLog.setItems(logItems);
+
+        initializeCheckBoxes();
+
         try {
             populateLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        initializeCheckBoxes();
 
 
 
@@ -409,17 +418,22 @@ public class QcController implements Initializable {
         button.setGraphic(imageView);
     }
 
+
+    private void showInfo(String msg) {
+        new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
+    }
+
     @FXML
     private void btnSave(ActionEvent actionEvent) {
 
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+        String user = lblEmployee.getText();
+
         if (selected == null) {
 
             new Alert(Alert.AlertType.WARNING, "No order item selected.").showAndWait();
             return;
         }
-
-
 
         boolean isDeny = idDenied.isSelected();
         boolean isApprove = idApproved.isSelected();
@@ -430,6 +444,7 @@ public class QcController implements Initializable {
         }
 
         String verb = isDeny ? "Deny" : "Approve";
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirm " + verb);
         confirm.setHeaderText(null);
@@ -448,18 +463,25 @@ public class QcController implements Initializable {
             approvedItems.remove(selected);
             lstItem.refresh();
 
-            new Alert(Alert.AlertType.INFORMATION,
-                    "Item “" + selected.getOrderItem() + "” has been denied.")
-                    .showAndWait();
+            showInfo("Item “" + selected.getOrderItem() + "” has been denied.");
+
+            logItems.add(String.format("%s item %s by %s", verb, selected.getOrderItem(), user));
+            lstLog.scrollTo(logItems.size() - 1);
 
             idDenied.setSelected(false);
             return;
 
-        }
+        } if(isApprove) {
             approvedItems.add(selected);
             deniedItems.remove(selected);
             lstItem.refresh();
+
+            showInfo("Item “" + selected.getOrderItem() + "” has been approved.");
+
             idApproved.setSelected(false);
+            logItems.add(String.format("%s item %s by %s", verb, selected.getOrderItem(), user));
+            lstLog.scrollTo(logItems.size() - 1);
+
 
         Order myOrder = new Order();
         myOrder.setOrderNumber(order.getOrderNumber());
@@ -497,7 +519,7 @@ public class QcController implements Initializable {
 
                     String comment = fetcher.getCommentByImageID(imageID);
                     int orderID = fetcher.getOrderIDByImageID(imageID);
-                    
+
 
                     String fileName = tempFile.getName();
                     String[] parts = fileName.split("_");
@@ -539,6 +561,7 @@ public class QcController implements Initializable {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
         }
 
         ;
