@@ -423,7 +423,9 @@ public class QcController implements Initializable {
         new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
     }
 
-    @FXML
+
+
+   /* @FXML
     private void btnSave(ActionEvent actionEvent) {
 
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
@@ -565,7 +567,92 @@ public class QcController implements Initializable {
         }
 
         ;
+    }*/
+
+    @FXML
+    private void btnSave(ActionEvent actionEvent) {
+        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+        String user = lblEmployee.getText();
+
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "No order item selected.");
+            return;
+        }
+
+        boolean isDeny = idDenied.isSelected();
+        boolean isApprove = idApproved.isSelected();
+
+        if (isDeny == isApprove) {
+            showAlert(Alert.AlertType.WARNING, "Please select either Approve or Deny.");
+            return;
+        }
+
+        String verb = isDeny ? "Deny" : "Approve";
+        if (!showConfirmation("Confirm " + verb, "Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?")) {
+            resetCheckBoxes();
+            return;
+        }
+
+        if (isDeny) {
+            updateItemStatus(selected, deniedItems, approvedItems, "Denied", user);
+        } else {
+            updateItemStatus(selected, approvedItems, deniedItems, "Approved", user);
+            savePDF(actionEvent);
+        }
     }
+
+    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) {
+        addTo.add(item);
+        removeFrom.remove(item);
+        lstItem.refresh();
+        showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
+        logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
+        lstLog.scrollTo(logItems.size() - 1);
+        resetCheckBoxes();
+    }
+
+    private void savePDF(ActionEvent actionEvent) {
+        try {
+            File pdfFile = showSaveDialog("Report.pdf");
+            if (pdfFile != null) {
+                PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
+                pdfGen.setEmployeeName(lblEmployee.getText());
+                pdfGen.generatePDF(pdfFile.getAbsolutePath(), capturedImages);
+                System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private File showSaveDialog(String initialFileName) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+        fileChooser.setInitialFileName(initialFileName);
+        return fileChooser.showSaveDialog((Stage) btnPDFSave.getScene().getWindow());
+    }
+
+    private boolean showConfirmation(String title, String content) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, content, ButtonType.OK, ButtonType.CANCEL);
+        confirm.setTitle(title);
+        return confirm.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
+    }
+
+    private void showAlert(Alert.AlertType type, String message) {
+        new Alert(type, message).showAndWait();
+    }
+
+    private void resetCheckBoxes() {
+        idDenied.setSelected(false);
+        idApproved.setSelected(false);
+    }
+
+
+
+
+
+
+
 
     private List<MyImage> getImageList() {
         return List.of();
