@@ -6,6 +6,7 @@ import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
+import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
@@ -100,6 +101,7 @@ public class QcController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
+
         try {
             imageModel = new ImageModel();
         } catch (Exception e) {
@@ -107,19 +109,29 @@ public class QcController implements Initializable {
         }
 
 
-
         setIcons();
-        //btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
-        Node pdfIcon = btnPDFSave.getGraphic();
-        btnPDFSave.setGraphic(null);
-        btnPDFSave.setText("");
 
         try {
             populateLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        initializeCheckBoxes();
+
+
+
+
+
+
+    }
+
+    private void initializeCheckBoxes(){
+
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+        Node pdfIcon = btnPDFSave.getGraphic();
+        btnPDFSave.setGraphic(null);
+        btnPDFSave.setText("");
 
         idApproved.selectedProperty().addListener((obs, oldId, newId) -> {
             if (newId) {
@@ -143,29 +155,6 @@ public class QcController implements Initializable {
                         .then("Deny")
                         .otherwise("")
         );
-
-        lstItem.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(OrderItem item, boolean empty){
-                super.updateItem(item, empty);
-                if(empty || item == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText(item.getOrderItem());
-                    if(deniedItems.contains(item)) {
-                        setStyle("-fx-background-color: red;");
-                    } else if(approvedItems.contains(item)){
-                            setStyle("-fx-background-color: green;");
-                        } else {
-                            setStyle("");
-                        }
-                    }
-                }
-        });
-
-
-
 
     }
 
@@ -219,6 +208,26 @@ public class QcController implements Initializable {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+
+        lstItem.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(OrderItem item, boolean empty){
+                super.updateItem(item, empty);
+                if(empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.getOrderItem());
+                    if(deniedItems.contains(item)) {
+                        setStyle("-fx-background-color: red;");
+                    } else if(approvedItems.contains(item)){
+                        setStyle("-fx-background-color: green;");
+                    } else {
+                        setStyle("");
+                    }
                 }
             }
         });
@@ -452,7 +461,19 @@ public class QcController implements Initializable {
             lstItem.refresh();
             idApproved.setSelected(false);
 
+        Order myOrder = new Order();
+        myOrder.setOrderNumber(order.getOrderNumber());
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrderItem("Item - 001");
+        PDFGeneratorImp generator = PDFGeneratorImp.getInstance();
 
+        generator.setOrder(myOrder);
+        generator.setOrderItem(orderItem);
+        generator.setEmployeeName("");
+
+        List<MyImage> myImages = getImageList();
+
+        generator.generatePDF("QC_report.pdf", myImages);
         try {
             ImageDataFetcher fetcher = new ImageDataFetcher();
 
@@ -507,8 +528,8 @@ public class QcController implements Initializable {
 
                 PDFGeneratorImp pdfGen2 = PDFGeneratorImp.getInstance();
                 pdfGen2.setOrder(order);
-                OrderItem orderItem = new OrderItem();
-                pdfGen2.setOrderItem(orderItem);
+                OrderItem orderItem2 = new OrderItem();
+                pdfGen2.setOrderItem(orderItem2);
                 pdfGen2.setEmployeeName("");
                 List<MyImage> imageList = List.of();
                 pdfGen2.generatePDF("your-file.pdf", imageList);
@@ -519,6 +540,12 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        ;
+    }
+
+    private List<MyImage> getImageList() {
+        return List.of();
     }
 
     public void setUserName(String userName) {
