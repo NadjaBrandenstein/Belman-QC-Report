@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -68,14 +69,16 @@
    <bottom>
       <BorderPane prefHeight="115.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
-            <HBox alignment="CENTER" prefHeight="115.0" prefWidth="458.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="115.0" prefWidth="596.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="62.0" prefWidth="348.0" />
+                  <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="62.0" prefWidth="258.0" />
                   <Label fx:id="alertLbl" prefHeight="18.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Label>
+                  <MFXButton onAction="#btnScratch" text="Small Scratch" />
+                  <MFXButton onAction="#btnDent" text="Small Dent" />
                </children>
             </HBox>
          </left>
@@ -85,7 +88,10 @@
                   <MFXButton fx:id="btnSaveId" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
                </children>
             </HBox>
-         </right></BorderPane>
+         </right>
+         <center>
+            <MFXCheckbox text="Denied" BorderPane.alignment="CENTER" />
+         </center></BorderPane>
    </bottom>
 
 </BorderPane>
