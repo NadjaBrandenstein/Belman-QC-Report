@@ -99,6 +99,7 @@ public class QcController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
+
         try {
             imageModel = new ImageModel();
         } catch (Exception e) {
@@ -106,19 +107,29 @@ public class QcController implements Initializable {
         }
 
 
-
         setIcons();
-        //btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
-        Node pdfIcon = btnPDFSave.getGraphic();
-        btnPDFSave.setGraphic(null);
-        btnPDFSave.setText("");
 
         try {
             populateLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        initializeCheckBoxes();
+
+
+
+
+
+
+    }
+
+    private void initializeCheckBoxes(){
+
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+        Node pdfIcon = btnPDFSave.getGraphic();
+        btnPDFSave.setGraphic(null);
+        btnPDFSave.setText("");
 
         idApproved.selectedProperty().addListener((obs, oldId, newId) -> {
             if (newId) {
@@ -142,29 +153,6 @@ public class QcController implements Initializable {
                         .then("Deny")
                         .otherwise("")
         );
-
-        lstItem.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(OrderItem item, boolean empty){
-                super.updateItem(item, empty);
-                if(empty || item == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText(item.getOrderItem());
-                    if(deniedItems.contains(item)) {
-                        setStyle("-fx-background-color: red;");
-                    } else if(approvedItems.contains(item)){
-                            setStyle("-fx-background-color: green;");
-                        } else {
-                            setStyle("");
-                        }
-                    }
-                }
-        });
-
-
-
 
     }
 
@@ -218,6 +206,26 @@ public class QcController implements Initializable {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+
+        lstItem.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(OrderItem item, boolean empty){
+                super.updateItem(item, empty);
+                if(empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.getOrderItem());
+                    if(deniedItems.contains(item)) {
+                        setStyle("-fx-background-color: red;");
+                    } else if(approvedItems.contains(item)){
+                        setStyle("-fx-background-color: green;");
+                    } else {
+                        setStyle("");
+                    }
                 }
             }
         });
