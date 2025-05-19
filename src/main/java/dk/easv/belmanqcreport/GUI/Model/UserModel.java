@@ -49,4 +49,9 @@ public class UserModel {
         userManager.deleteUser(user);
         tblEmployee.remove(user);
     }
+
+    public void activateUser(User user) throws Exception {
+        userManager.activate(user);
+    }
+
 }

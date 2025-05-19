@@ -4,6 +4,8 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,10 +28,10 @@ public class UserRepository implements IRepository<User> {
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
         String sql = """
-            SELECT u.userID, u.fname, u.lname, ut.userType
-            FROM [User] u
-            JOIN UserType ut ON u.userTypeID = ut.userTypeID
-        """;
+                SELECT u.userID, u.fname, u.lname, ut.userType, u.is_active
+                FROM [User] u
+                JOIN UserType ut ON u.userTypeID = ut.userTypeID
+            """;
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -40,13 +42,14 @@ public class UserRepository implements IRepository<User> {
                 String firstName = rs.getString("fname");
                 String lastName = rs.getString("lname");
                 String userType = rs.getString("userType");
+                boolean isActive = rs.getBoolean("is_active");
+                User user = new User(userID, firstName, lastName, userType, new SimpleBooleanProperty(isActive));
 
-                User user = new User(userID, firstName, lastName, userType);
                 users.add(user);
             }
 
         } catch (Exception e) {
-            e.printStackTrace(); // Consider logging instead in production
+            e.printStackTrace();
         }
 
         return users;
@@ -100,7 +103,7 @@ public class UserRepository implements IRepository<User> {
 
     @Override
     public void delete(User user) {
-        String sql = "DELETE FROM [User] WHERE userID = ?";
+        String sql = "UPDATE [User] SET is_active = 0 WHERE userID = ?";
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -112,5 +115,20 @@ public class UserRepository implements IRepository<User> {
             e.printStackTrace();
         }
     }
+
+    public void activate(User user) {
+        String sql = "UPDATE [User] SET is_active = 1 WHERE userID = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, user.getUserID());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
