@@ -465,7 +465,7 @@ public class QcController implements Initializable {
 
             showInfo("Item “" + selected.getOrderItem() + "” has been denied.");
 
-            logItems.add(String.format("%s item %s by %s", verb, selected.getOrderItem(), user));
+            logItems.add(String.format("%s item %s by %s", "Denied", selected.getOrderItem(), user));
             lstLog.scrollTo(logItems.size() - 1);
 
             idDenied.setSelected(false);
@@ -479,7 +479,7 @@ public class QcController implements Initializable {
             showInfo("Item “" + selected.getOrderItem() + "” has been approved.");
 
             idApproved.setSelected(false);
-            logItems.add(String.format("%s item %s by %s", verb, selected.getOrderItem(), user));
+            logItems.add(String.format("%s item %s by %s", "Approved", selected.getOrderItem(), user));
             lstLog.scrollTo(logItems.size() - 1);
 
 
