@@ -132,9 +132,9 @@ public class ImageHandlingController {
         imageHboxCenter.setBackground(new Background(bg));*/
 
         imageView.setImage(fx);
-        imageView.setPreserveRatio(false);
-        imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
-        imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(1400);
+        imageView.setFitHeight(600);
 
     }
 
