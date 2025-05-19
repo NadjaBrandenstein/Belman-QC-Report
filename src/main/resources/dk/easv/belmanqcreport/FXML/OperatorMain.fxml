@@ -107,27 +107,27 @@
                 <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                  <AnchorPane fx:id="imageHboxCenter" prefHeight="173.0" prefWidth="368.0" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                  <AnchorPane fx:id="imageFront" prefHeight="173.0" prefWidth="368.0" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="0">
                      <children>
                         <Label layoutX="170.0" layoutY="61.0" text="Front" />
                      </children></AnchorPane>
-                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                  <AnchorPane fx:id="imageBack" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="0">
                      <children>
                         <Label layoutX="174.0" layoutY="61.0" text="Back" />
                      </children></AnchorPane>
-                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                  <AnchorPane fx:id="imageLeft" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="1">
                      <children>
                         <Label layoutX="178.0" layoutY="62.0" text="Left" />
                      </children></AnchorPane>
-                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <AnchorPane fx:id="imageRight" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Label layoutX="168.0" layoutY="62.0" text="Right" />
                      </children></AnchorPane>
-                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                  <AnchorPane fx:id="imageTop" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="2">
                      <children>
                         <Label layoutX="172.0" layoutY="62.0" text="Top" />
                      </children></AnchorPane>
-                  <AnchorPane style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <AnchorPane fx:id="imageExtra" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <Label layoutX="171.0" layoutY="62.0" text="Extra" />
                      </children></AnchorPane>

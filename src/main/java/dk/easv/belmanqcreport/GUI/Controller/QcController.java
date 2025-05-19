@@ -52,6 +52,18 @@ public class QcController implements Initializable {
     @FXML
     private AnchorPane imageHboxCenter;
     @FXML
+    private AnchorPane imageFront;
+    @FXML
+    private AnchorPane imageBack;
+    @FXML
+    private AnchorPane imageLeft;
+    @FXML
+    private AnchorPane imageRight;
+    @FXML
+    private AnchorPane imageTop;
+    @FXML
+    private AnchorPane imageExtra;
+    @FXML
     private MFXButton btnBack;
     @FXML
     private MFXButton btnLogout;

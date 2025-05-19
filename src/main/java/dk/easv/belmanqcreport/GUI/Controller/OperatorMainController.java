@@ -47,7 +47,17 @@ public class OperatorMainController {
     @FXML
     private Label lblImageCount;
     @FXML
-    private AnchorPane imageHboxCenter;
+    private AnchorPane imageFront;
+    @FXML
+    private AnchorPane imageBack;
+    @FXML
+    private AnchorPane imageLeft;
+    @FXML
+    private AnchorPane imageRight;
+    @FXML
+    private AnchorPane imageTop;
+    @FXML
+    private AnchorPane imageExtra;
     @FXML
     private MFXButton btnBack;
     @FXML
@@ -152,7 +162,7 @@ public class OperatorMainController {
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
             Stage stage = new Stage();
-            stage.initOwner(imageHboxCenter.getScene().getWindow());
+            stage.initOwner(imageFront.getScene().getWindow());
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Image Handling");
             stage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
@@ -237,7 +247,7 @@ public class OperatorMainController {
             }
 
             if(capturedImages.isEmpty()) {
-                imageHboxCenter.getChildren().clear();
+                imageFront.getChildren().clear();
                 lblImageCount.setText("0 / 0");
             }
             else {
@@ -319,13 +329,13 @@ public class OperatorMainController {
         Image fxImage = new Image(img.toURI());
         ImageView imageView = new ImageView(fxImage);
 
-        imageView.fitWidthProperty().bind(imageHboxCenter.widthProperty());
-        imageView.fitHeightProperty().bind(imageHboxCenter.heightProperty());
+        imageView.fitWidthProperty().bind(imageFront.widthProperty());
+        imageView.fitHeightProperty().bind(imageFront.heightProperty());
         imageView.setPreserveRatio(false);
 
         imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
 
-        imageHboxCenter.getChildren().setAll(imageView);
+        imageFront.getChildren().setAll(imageView);
 
     }
 
@@ -472,7 +482,7 @@ public class OperatorMainController {
     }
 
     private void clearImages() {
-        imageHboxCenter.getChildren().clear();
+        imageFront.getChildren().clear();
     }
 
 
@@ -496,7 +506,7 @@ public class OperatorMainController {
     }*/
 
     private void displayImages(List<MyImage> capturedImages) {
-        imageHboxCenter.getChildren().clear();
+        imageFront.getChildren().clear();
         for (MyImage image : capturedImages) {
 
             String uri = new File(image .getImagePath()).toURI().toString();
@@ -506,7 +516,7 @@ public class OperatorMainController {
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             imageView.setPreserveRatio(true);
-            imageHboxCenter.getChildren().add(imageView);
+            imageFront.getChildren().add(imageView);
         }
     }
 

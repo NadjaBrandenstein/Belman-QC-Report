@@ -5,7 +5,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.LoginController">
 
@@ -62,25 +61,17 @@
          <center>
             <BorderPane prefHeight="142.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <center>
-                  <HBox alignment="CENTER" prefHeight="230.0" prefWidth="494.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="210.0" prefWidth="206.0" />
-                     </children>
-                  </HBox>
+                  <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="174.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </center>
          <bottom>
-            <BorderPane prefHeight="131.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="62.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <left>
                   <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </left>
                <center>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="142.0" prefWidth="100.0" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
                <right>
                   <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
