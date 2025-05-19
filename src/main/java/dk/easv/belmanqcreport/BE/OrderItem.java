@@ -22,6 +22,10 @@ public class OrderItem {
         this.orderItem = orderItem;
     }
 
+    public OrderItem() {
+
+    }
+
     public List<MyImage> getImages() {
         return images;
     }

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.AdminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.AdminController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -89,12 +89,13 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                         </MFXTextField>
-                      <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="460.0" prefWidth="320.0">
+                      <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="414.0" prefWidth="370.0">
                           <columns>
                               <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
                               <TableColumn fx:id="colFName" prefWidth="75.0" text="First Name" />
                               <TableColumn fx:id="colLName" prefWidth="75.0" text="Last Name" />
                               <TableColumn fx:id="colRole" prefWidth="75.0" text="Role" />
+                              <TableColumn fx:id="colActive" prefWidth="75.0" text="Active" />
                           </columns>
                       </TableView>
                </children>

@@ -511,6 +511,15 @@ public class QcController implements Initializable {
                 pdfGen.generatePDF(pdfFile.getAbsolutePath(), capturedImages);
                 PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), allImages);
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
+
+                PDFGeneratorImp pdfGen2 = PDFGeneratorImp.getInstance();
+                pdfGen2.setOrder(order);
+                OrderItem orderItem = new OrderItem();
+                pdfGen2.setOrderItem(orderItem);
+                pdfGen2.setEmployeeName("");
+                List<MyImage> imageList = List.of();
+                pdfGen2.generatePDF("your-file.pdf", imageList);
+
             } else {
                 System.out.println("Save operation was canceled");
             }

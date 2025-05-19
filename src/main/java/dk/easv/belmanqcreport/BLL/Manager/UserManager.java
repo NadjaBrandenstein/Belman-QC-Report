@@ -33,6 +33,10 @@ public class UserManager {
         userDAO.delete(user);
     }
 
+    public void activate(User user) {
+        userDAO.activate(user);
+    }
+
     public List<User> searchUser(String query) {
         List<User> allUsers = userDAO.getAll();
         return userSearch.search(allUsers, query);

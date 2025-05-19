@@ -40,6 +40,10 @@
         public class AdminController implements Initializable {
 
 
+            public ListView lstOrder;
+            public ListView lstItem;
+            public ListView lstLog;
+
             @FXML
             private Label lblOrderNumber;
             @FXML
@@ -56,6 +60,8 @@
             private TableColumn<User, String> colLName;
             @FXML
             private TableColumn<User, String> colRole;
+            @FXML
+            public TableColumn<User, Boolean> colActive;
             @FXML
             private MFXButton btnBack;
             @FXML
@@ -87,12 +93,31 @@
                 colFName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
                 colLName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
                 colRole.setCellValueFactory(new PropertyValueFactory<>("userType"));
+                colActive.setCellValueFactory(new PropertyValueFactory<>("active"));
 
                 try {
                     tblEmployee.setItems(userModel.getAllUsers());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
+                tblEmployee.setRowFactory(tv -> new TableRow<User>() {
+                    @Override
+                    protected void updateItem(User user, boolean empty) {
+                        super.updateItem(user, empty);
+
+                        if (user == null || empty) {
+                            setStyle("");
+                        } else {
+                            if (Boolean.FALSE.equals(user.isActive())) {
+                                setStyle("-fx-background-color: lightgray;" + "-fx-text-fill: white");
+                            } else {
+                                setStyle("-fx-background-color: #7fa8c5;" + "-fx-text-fill: black");
+                            }
+                        }
+                    }
+                });
 
                 // Search
                 txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -118,7 +143,8 @@
                 MenuItem adminRole = new MenuItem("admin");
                 MenuItem createUser = new MenuItem("Create User");
                 MenuItem editUser = new MenuItem("Edit User");
-                MenuItem deleteUser = new MenuItem("Delete User");
+                MenuItem inactivateUser = new MenuItem("Inactivate User");
+                MenuItem activateUser = new MenuItem("Activate User");
                 MenuItem createManualLogin = new MenuItem("Create manual Login");
                 MenuItem createQRLogin = new MenuItem("Create QR Login");
                 MenuItem createChipLogin = new MenuItem("Create Chip Login");
@@ -127,11 +153,13 @@
                 createQRLogin.setDisable(true);
                 createManualLogin.setDisable(true);
 
+                Menu activateOptions = new Menu("Activate Options");
                 Menu assingRole = new Menu("Assign Role");
                 Menu loginOptions = new Menu("Login Options");
                 Menu usersOptions = new Menu("User Options");
 
-                usersOptions.getItems().addAll(createUser, editUser, deleteUser);
+                activateOptions.getItems().addAll(activateUser,inactivateUser);
+                usersOptions.getItems().addAll(createUser, editUser, activateOptions);
                 loginOptions.getItems().addAll(createQRLogin,createManualLogin,createChipLogin);
                 assingRole.getItems().addAll(qcRole,operatorRole,adminRole);
                 contextMenu.getItems().addAll(assingRole,usersOptions,loginOptions);
@@ -139,11 +167,22 @@
                 tblEmployee.setContextMenu(contextMenu);
 
                 // action on the context menu
-                deleteUser.setOnAction((ActionEvent event) -> {
+                inactivateUser.setOnAction((ActionEvent event) -> {
                     User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
                     if (SelectedUser != null) {
                         try {
                             deleteUser();
+                        } catch (Exception e) {
+                            displayError(e);
+                        }
+                    }
+                });
+
+                activateUser.setOnAction((ActionEvent event) -> {
+                    User SelectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+                    if (SelectedUser != null) {
+                        try {
+                            activateUser();
                         } catch (Exception e) {
                             displayError(e);
                         }
@@ -372,11 +411,27 @@
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation");
                     alert.setHeaderText("Confirmation");
-                    alert.setContentText("Are you sure you want to delete this user?");
+                    alert.setContentText("Are you sure you want this user inactive");
 
                     ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
                     if(result == ButtonType.OK) {
                         userModel.deleteUser(selectedUser);
+                        tblEmployee.getItems().remove(selectedUser);
+                    }
+                }
+            }
+
+            private void activateUser() throws Exception {
+                User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
+                if(selectedUser != null) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setHeaderText("Confirmation");
+                    alert.setContentText("Are you sure you want to activate this user");
+
+                    ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+                    if(result == ButtonType.OK) {
+                        userModel.activateUser(selectedUser);
                         tblEmployee.getItems().remove(selectedUser);
                     }
                 }

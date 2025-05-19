@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.DAL.Database.LoginRepository;
 import dk.easv.belmanqcreport.DAL.Database.UserRepository;
 import dk.easv.belmanqcreport.GUI.Controller.LoginController;
+import dk.easv.belmanqcreport.GUI.Controller.QcController;
 
 import java.io.IOException;
 
@@ -11,10 +12,12 @@ public class AuthService {
     private final LoginRepository loginRepository;
     private final UserRepository userRepository;
     private LoginController loginController;
+    private QcController qcController;
 
     public AuthService() throws IOException {
         this.loginRepository = new LoginRepository();
         this.userRepository = new UserRepository();
+        this.qcController = new QcController();
     }
 
     public void setLoginController(LoginController controller) {
@@ -40,6 +43,7 @@ public class AuthService {
             if (!Validator.validatePassword(password, login.getPassword())) {
                 System.out.println("Incorrect password.");
                 loginController.lblLoginStatus.setText("Incorrect username or password");
+
                 return null;
             }
 
