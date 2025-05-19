@@ -1,9 +1,6 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
-import dk.easv.belmanqcreport.BE.Login;
-import dk.easv.belmanqcreport.BE.MyImage;
-import dk.easv.belmanqcreport.BE.Order;
-import dk.easv.belmanqcreport.BE.User;
+import dk.easv.belmanqcreport.BE.*;
 import dk.easv.belmanqcreport.GUI.Controller.QcController;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -27,11 +24,13 @@ public class PDFGeneratorImp implements PDFGenerator {
     private float pageHeight;
     private PathGraphics contentStream;
     private Order order;
+    private OrderItem orderItem;
     private QcController qcController;
     private String employeeName = "";
 
     private PDFGeneratorImp() {
         order = new Order();
+        orderItem = new OrderItem();
 
     }
 
@@ -99,15 +98,51 @@ public class PDFGeneratorImp implements PDFGenerator {
                     InputStream in = getClass().getClassLoader().getResourceAsStream("dk/easv/belmanqcreport/Icons/Belman.png");
                     if(in!= null) {
                         BufferedImage logoImage = ImageIO.read(in);
-                        PDImageXObject logoImageObj = LosslessFactory.createFromImage(document, logoImage);
+                        if(logoImage != null) {
+                            PDImageXObject logoImageObj = LosslessFactory.createFromImage(document, logoImage);
 
-                        float logoWidth = 80;
-                        float logoHeight = (float) logoImage.getHeight() / logoImage.getWidth() * logoWidth;
+                            float logoWidth = 80;
+                            float logoHeight = (float) logoImage.getHeight() / logoImage.getWidth() * logoWidth;
 
-                        float logoX = 40;
-                        float logoY = pageHeight - logoHeight - 40;
-                        contentStream.drawImage(logoImageObj, logoX, logoY, logoWidth, logoHeight);
-                    }else{
+                            float logoX = 40;
+                            float logoY = pageHeight - logoHeight - 40;
+                            contentStream.drawImage(logoImageObj, logoX, logoY, logoWidth, logoHeight);
+
+                            float headerX = logoX + logoWidth + 10;
+                            float headerHeight = logoHeight;
+                            float headerWidth = 435;
+
+                            contentStream.setNonStrokingColor(0,75,136);
+                            contentStream.addRect(headerX, logoY, headerWidth, headerHeight);
+                            contentStream.fill();
+
+                            contentStream.beginText();
+                            contentStream.setNonStrokingColor(255,255,255);
+                            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+
+                            float textX = headerX + 10;
+                            float textY = logoY + (headerHeight/2) - 6;
+                            contentStream.newLineAtOffset(textX, textY);
+                            String orderNumber = order !=null && order.getOrderNumber() !=null ? order.getOrderNumber() : "N/A";
+                            contentStream.showText("Order" + orderNumber);
+                            contentStream.endText();
+
+                            contentStream.beginText();
+                            contentStream.setFont(PDType1Font.HELVETICA, 12);
+                            String userLabel = employeeName;
+
+                            float textWidth = PDType1Font.HELVETICA.getStringWidth(userLabel) / 1000 * 12;
+                            float rightTextX = headerX + headerWidth - textWidth - 10;
+
+                            contentStream.newLineAtOffset(rightTextX, textY);
+                            contentStream.showText(userLabel);
+                            contentStream.endText();
+
+                            contentStream.setNonStrokingColor(0,0,0);
+                        } else {
+                            System.out.println("Failed to load image from stream: logoImage is null");
+                        }
+                    } else {
                         System.out.println("Could not find Belman logo");
                     }
 
@@ -118,40 +153,34 @@ public class PDFGeneratorImp implements PDFGenerator {
                     contentStream.setLeading(14.5f);
                     contentStream.newLineAtOffset(50, y - 20);
 
-                    contentStream.showText("Image ID: " + myImage.getImageID());
-                    contentStream.newLine();
-                    contentStream.showText("Order ID: " + order.getOrderID());
+                    contentStream.showText("Items number: " + orderItem.getOrderItem());
                     contentStream.newLine();
                     contentStream.showText("Comment: " + myImage.getComment());
-                    contentStream.newLine();
-                    contentStream.showText("User:" + employeeName);
 
                     contentStream.endText();
-
-                    contentStream.beginText();
-                    contentStream.setFont(PDType1Font.HELVETICA, 10);
-                    contentStream.newLineAtOffset(pageWidth -100,30);
-                    contentStream.showText("Generated by Belman QC Report");
-                    contentStream.endText();
-
 
                 }
-
-            }
+         }
 
             document.save(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-
-
-
     }
     public void setEmployeeName(String name){
         this.employeeName = name;
     }
+
+    public void setOrder(Order order){
+        this.order = order;
+    }
+
+    public void setOrderItem(OrderItem orderItem){
+        this.orderItem = orderItem;
+    }
+
+
 
 
            

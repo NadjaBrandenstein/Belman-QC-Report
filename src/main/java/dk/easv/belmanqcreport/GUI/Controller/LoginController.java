@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.UTIL.AuthService;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -20,7 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
+// Java Imports
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

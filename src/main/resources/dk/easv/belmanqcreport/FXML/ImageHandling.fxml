@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.ImageHandlingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.ImageHandlingController">
 
     <!-- Top area (can be like a title bar) -->
     <top>
@@ -52,9 +53,9 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" prefHeight="269.0" prefWidth="494.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1400.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="imageView" fitHeight="269.0" fitWidth="555.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+                  <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
                </children></HBox>
          </center>
          <right>
@@ -68,14 +69,16 @@
    <bottom>
       <BorderPane prefHeight="115.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
-            <HBox alignment="CENTER" prefHeight="115.0" prefWidth="458.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="115.0" prefWidth="596.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="62.0" prefWidth="348.0" />
+                  <MFXTextField fx:id="txtComment" floatingText="Comment" prefHeight="62.0" prefWidth="258.0" />
                   <Label fx:id="alertLbl" prefHeight="18.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Label>
+                  <MFXButton onAction="#btnScratch" text="Small Scratch" />
+                  <MFXButton onAction="#btnDent" text="Small Dent" />
                </children>
             </HBox>
          </left>
@@ -85,7 +88,10 @@
                   <MFXButton fx:id="btnSaveId" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
                </children>
             </HBox>
-         </right></BorderPane>
+         </right>
+         <center>
+            <MFXCheckbox text="Denied" BorderPane.alignment="CENTER" />
+         </center></BorderPane>
    </bottom>
 
 </BorderPane>
