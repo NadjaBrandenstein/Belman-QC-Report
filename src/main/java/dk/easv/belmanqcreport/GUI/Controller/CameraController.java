@@ -176,4 +176,6 @@ public class CameraController {
         button.setGraphic(imageView);
     }
 
+    void setImagePosition(String position) {
+    }
 }
