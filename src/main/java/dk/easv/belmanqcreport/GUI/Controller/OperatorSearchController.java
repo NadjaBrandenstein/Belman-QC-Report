@@ -86,7 +86,7 @@ public class OperatorSearchController implements Initializable {
 
                 if (loader != null) {
                     OperatorMainController controller = loader.getController();
-                    controller.setUserName(this.lblEmployee.getText());
+                    controller.setFirstNameAndLastName(this.lblEmployee.getText());
                     controller.setStage(this.stage);
                     controller.setOrderNumber(inputOrderNumber); // <-- Send order number
                 }
@@ -155,5 +155,9 @@ public class OperatorSearchController implements Initializable {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setFirstNameAndLastName(String text) {
+        lblEmployee.setText(text);
     }
 }

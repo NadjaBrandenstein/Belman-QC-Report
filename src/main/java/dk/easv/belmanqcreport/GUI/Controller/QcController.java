@@ -570,4 +570,7 @@ public class QcController implements Initializable {
     private void checkDenied(ActionEvent actionEvent) {
     }
 
+    public void setFirstNameAndLastName(String text) {
+        lblEmployee.setText(text);
+    }
 }

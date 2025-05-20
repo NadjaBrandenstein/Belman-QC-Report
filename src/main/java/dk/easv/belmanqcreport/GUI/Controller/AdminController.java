@@ -1,5 +1,7 @@
         package dk.easv.belmanqcreport.GUI.Controller;
         // Project Imports
+        import dk.easv.belmanqcreport.BE.Order;
+        import dk.easv.belmanqcreport.BE.OrderItem;
         import dk.easv.belmanqcreport.BE.User;
         // Other Imports
         import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
@@ -40,9 +42,12 @@
         public class AdminController implements Initializable {
 
 
-            public ListView lstOrder;
-            public ListView lstItem;
-            public ListView lstLog;
+            @FXML
+            private ListView<Order> lstOrder;
+            @FXML
+            private ListView<OrderItem> lstItem;
+            @FXML
+            private ListView lstLog;
 
             @FXML
             private Label lblOrderNumber;
@@ -118,6 +123,18 @@
                         }
                     }
                 });
+
+                // ListView
+
+
+
+                try {
+                    lstOrder.setItems(userModel.getOrders());
+                    populateOrderItem();
+                    lstLog.setItems(userModel.getLog());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 
                 // Search
                 txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -258,6 +275,12 @@
                         }
                     }
                 });
+            }
+
+            public void populateOrderItem() throws Exception {
+                List<Order> orders = List.of();
+
+                lstItem.setItems(userModel.getOrderItems(orders.toString()));
             }
 
             private void displayError(Exception e) {
@@ -437,12 +460,11 @@
                 }
             }
 
-            public void setUserName(String userName) {
-                lblEmployee.setText(userName);
-            }
-
             public void setStage(Stage stage) {
                 this.stage = stage;
             }
 
+            public void setFirstNameAndLastName(String text) {
+                lblEmployee.setText(text);
+            }
         }

@@ -4,6 +4,8 @@ public class Login {
     private String username;
     private String password;
     private String userType;
+    private User user;
+
 
     public Login(String username, String password, String userType) {
         this.username = username;
@@ -40,5 +42,13 @@ public class Login {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

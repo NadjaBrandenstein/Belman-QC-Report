@@ -527,4 +527,8 @@ public class OperatorMainController {
     public Order getCurrentOrder() {
         return currentOrder;
     }
+
+    public void setFirstNameAndLastName(String text) {
+        lblEmployee.setText(text);
+    }
 }

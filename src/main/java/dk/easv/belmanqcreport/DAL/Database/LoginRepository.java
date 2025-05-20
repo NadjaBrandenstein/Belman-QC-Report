@@ -1,6 +1,7 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
 import dk.easv.belmanqcreport.BE.Login;
+import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 
 import java.io.IOException;
@@ -14,9 +15,12 @@ public class LoginRepository implements IRepository<Login> {
 
     private final DBConnection dbConnection;
 
+    private User user;
+
 
     public LoginRepository() throws IOException {
         dbConnection = new DBConnection();
+        user = new User();
     }
 
 
@@ -91,9 +95,10 @@ public class LoginRepository implements IRepository<Login> {
 
     public Login getLoginByUsername(String username) throws Exception {
         String sql = """
-        SELECT l.username, l.password, ut.userType
+        SELECT l.username, l.password, ut.userType, u.fName, u.lName, u.userID
         FROM Login l
         JOIN UserType ut ON l.userTypeID = ut.userTypeID
+        JOIN [User] u ON u.userID = l.userID
         WHERE l.username = ?
         """;
 
@@ -107,8 +112,14 @@ public class LoginRepository implements IRepository<Login> {
                 Login login = new Login();
                 login.setUsername(rs.getString("username"));
                 login.setPassword(rs.getString("password"));
-                login.setUserType(rs.getString("userType")); // this matches your BE model
+                login.setUserType(rs.getString("userType"));
 
+                User user = new User();
+                user.setUserID(rs.getInt("userID"));
+                user.setFirstName(rs.getString("fName"));
+                user.setLastName(rs.getString("lName"));
+
+                login.setUser(user);
                 return login;
             }
         }

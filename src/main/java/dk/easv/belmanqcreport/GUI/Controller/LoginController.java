@@ -93,15 +93,11 @@ public class LoginController implements Initializable {
 
     }
 
-    public void btnChip(ActionEvent actionEvent) {
-
-    }
-
     public void btnLogin(ActionEvent actionEvent) throws IOException {
         String username = this.txtUsername.getText();
         String password = this.txtPassword.getText();
 
-        Login login = authService.login(username, password);
+        this.login = authService.login(username, password);
 
         if (login != null) {
             lblLoginStatus.setText("Login successful!");
@@ -140,7 +136,7 @@ public class LoginController implements Initializable {
 
         if(loader != null) {
             AdminController adminController = loader.getController();
-            adminController.setUserName(this.txtUsername.getText());
+            adminController.setFirstNameAndLastName(login.getUser().getFirstName() + " " + login.getUser().getLastName());
             adminController.setStage(this.stage);
         }
     }
@@ -150,7 +146,7 @@ public class LoginController implements Initializable {
 
         if (loader != null) {
             OperatorSearchController controller = loader.getController();
-            controller.setUserName(this.txtUsername.getText());
+            controller.setFirstNameAndLastName(login.getUser().getFirstName() + " " + login.getUser().getLastName());
         }
     }
 
@@ -159,7 +155,7 @@ public class LoginController implements Initializable {
 
         if (loader != null) {
             QcController qcController = loader.getController();
-            qcController.setUserName(this.txtUsername.getText());
+            qcController.setFirstNameAndLastName(login.getUser().getFirstName() + " " + login.getUser().getLastName());
         }
     }
 
