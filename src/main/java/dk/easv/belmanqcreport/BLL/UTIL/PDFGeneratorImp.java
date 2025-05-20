@@ -124,8 +124,10 @@ public class PDFGeneratorImp implements PDFGenerator {
                             float textY = logoY + (headerHeight/2) - 6;
                             contentStream.newLineAtOffset(textX, textY);
                             String orderNumber = order !=null && order.getOrderNumber() !=null ? order.getOrderNumber() : "N/A";
-                            contentStream.showText("Order" + orderNumber);
+                            String orderText = "Order " + orderNumber;
+                            contentStream.showText("Order " + orderNumber);
                             contentStream.endText();
+
 
                             contentStream.beginText();
                             contentStream.setFont(PDType1Font.HELVETICA, 12);

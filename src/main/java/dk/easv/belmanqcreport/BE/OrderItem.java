@@ -2,6 +2,7 @@ package dk.easv.belmanqcreport.BE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderItem {
 
@@ -56,6 +57,18 @@ public class OrderItem {
 
     public void setOrderItem(String orderIte) {
         this.orderItem = orderIte;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if (!(o instanceof OrderItem )) return false;
+        return this.orderItemId == ((OrderItem) o).orderItemId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(orderItemId);
     }
 
     @Override

@@ -18,13 +18,14 @@ public class ImageRepository implements IRepository<MyImage> {
 
     @Override
     public MyImage add(MyImage img) throws SQLException {
-        String sql = "INSERT INTO Image (orderItemID, imagePath, comment) VALUES (?,?,?);";
+        String sql = "INSERT INTO Image (orderItemID, imagePath, comment, imagePositionID) VALUES (?,?,?,?);";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, img.getOrderItemID());
             stmt.setString(2, img.getImagePath());
             stmt.setString(3, img.getComment());
+            stmt.setInt(4,img.getImagePositionID());
             stmt.executeUpdate();
 
             try (ResultSet keys = stmt.getGeneratedKeys()) {
@@ -72,7 +73,7 @@ public class ImageRepository implements IRepository<MyImage> {
     @Override
     public List<MyImage> getAll() {
         // Return all images, regardless of orderID
-        String sql = "SELECT imageID, orderItemID, imagePath, comment FROM Image;";
+        String sql = "SELECT imageID, orderItemID, imagePath, comment, imagePositionID FROM Image;";
         List<MyImage> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection();
@@ -83,7 +84,8 @@ public class ImageRepository implements IRepository<MyImage> {
                 MyImage img = new MyImage(
                         rs.getInt("imageID"),
                         rs.getString("imagePath"),
-                        rs.getString("comment")
+                        rs.getString("comment"),
+                        rs.getInt("imagePositionID")
                 );
                 img.setOrderItemID(rs.getInt("orderItemID"));
                 list.add(img);
@@ -95,7 +97,7 @@ public class ImageRepository implements IRepository<MyImage> {
     }
 
     public List<MyImage> getImagesByOrderId(int orderItemID) throws Exception {
-        String sql = "SELECT imageID, imagePath, comment FROM Image WHERE orderItemID = ?;";
+        String sql = "SELECT imageID, imagePath, comment, imagePositionID FROM Image WHERE orderItemID = ?;";
         List<MyImage> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection();
@@ -107,7 +109,8 @@ public class ImageRepository implements IRepository<MyImage> {
                     MyImage img = new MyImage(
                             rs.getInt("imageID"),
                             rs.getString("imagePath"),
-                            rs.getString("comment")
+                            rs.getString("comment"),
+                            rs.getInt("imagePositionID")
                     );
                     img.setOrderItemID(orderItemID);
                     list.add(img);

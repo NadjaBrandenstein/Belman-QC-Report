@@ -6,6 +6,7 @@ import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
+import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
@@ -13,7 +14,10 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.AnchorPane;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -82,11 +86,15 @@ public class QcController implements Initializable {
     private ListView<Order> lstOrder;
     @FXML
     private ListView<OrderItem> lstItem;
+    @FXML
+    private ListView<String> lstLog;
+    private final ObservableList<String> logItems = FXCollections.observableArrayList();
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
     private Order order;
     private Window primaryStage;
+    private int imagePositionID;
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
@@ -99,6 +107,7 @@ public class QcController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
+
         try {
             imageModel = new ImageModel();
         } catch (Exception e) {
@@ -106,19 +115,32 @@ public class QcController implements Initializable {
         }
 
 
-
         setIcons();
-        //btnPDFSave.setText("");
-        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
-        Node pdfIcon = btnPDFSave.getGraphic();
-        btnPDFSave.setGraphic(null);
-        btnPDFSave.setText("");
+
+        lstLog.setItems(logItems);
+
+        initializeCheckBoxes();
 
         try {
             populateLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+
+
+
+
+    }
+
+    private void initializeCheckBoxes(){
+
+        setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
+        Node pdfIcon = btnPDFSave.getGraphic();
+        btnPDFSave.setGraphic(null);
+        btnPDFSave.setText("");
 
         idApproved.selectedProperty().addListener((obs, oldId, newId) -> {
             if (newId) {
@@ -142,29 +164,6 @@ public class QcController implements Initializable {
                         .then("Deny")
                         .otherwise("")
         );
-
-        lstItem.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(OrderItem item, boolean empty){
-                super.updateItem(item, empty);
-                if(empty || item == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText(item.getOrderItem());
-                    if(deniedItems.contains(item)) {
-                        setStyle("-fx-background-color: red;");
-                    } else if(approvedItems.contains(item)){
-                            setStyle("-fx-background-color: green;");
-                        } else {
-                            setStyle("");
-                        }
-                    }
-                }
-        });
-
-
-
 
     }
 
@@ -218,6 +217,26 @@ public class QcController implements Initializable {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+
+        lstItem.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(OrderItem item, boolean empty){
+                super.updateItem(item, empty);
+                if(empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.getOrderItem());
+                    if(deniedItems.contains(item)) {
+                        setStyle("-fx-background-color: red;");
+                    } else if(approvedItems.contains(item)){
+                        setStyle("-fx-background-color: green;");
+                    } else {
+                        setStyle("");
+                    }
                 }
             }
         });
@@ -399,17 +418,24 @@ public class QcController implements Initializable {
         button.setGraphic(imageView);
     }
 
-    @FXML
+
+    private void showInfo(String msg) {
+        new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
+    }
+
+
+
+   /* @FXML
     private void btnSave(ActionEvent actionEvent) {
 
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+        String user = lblEmployee.getText();
+
         if (selected == null) {
 
             new Alert(Alert.AlertType.WARNING, "No order item selected.").showAndWait();
             return;
         }
-
-
 
         boolean isDeny = idDenied.isSelected();
         boolean isApprove = idApproved.isSelected();
@@ -420,6 +446,7 @@ public class QcController implements Initializable {
         }
 
         String verb = isDeny ? "Deny" : "Approve";
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirm " + verb);
         confirm.setHeaderText(null);
@@ -438,20 +465,39 @@ public class QcController implements Initializable {
             approvedItems.remove(selected);
             lstItem.refresh();
 
-            new Alert(Alert.AlertType.INFORMATION,
-                    "Item “" + selected.getOrderItem() + "” has been denied.")
-                    .showAndWait();
+            showInfo("Item “" + selected.getOrderItem() + "” has been denied.");
+
+            logItems.add(String.format("%s item %s by %s", "Denied", selected.getOrderItem(), user));
+            lstLog.scrollTo(logItems.size() - 1);
 
             idDenied.setSelected(false);
             return;
 
-        }
+        } if(isApprove) {
             approvedItems.add(selected);
             deniedItems.remove(selected);
             lstItem.refresh();
+
+            showInfo("Item “" + selected.getOrderItem() + "” has been approved.");
+
             idApproved.setSelected(false);
+            logItems.add(String.format("%s item %s by %s", "Approved", selected.getOrderItem(), user));
+            lstLog.scrollTo(logItems.size() - 1);
 
 
+        Order myOrder = new Order();
+        myOrder.setOrderNumber(order.getOrderNumber());
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrderItem("Item - 001");
+        PDFGeneratorImp generator = PDFGeneratorImp.getInstance();
+
+        generator.setOrder(myOrder);
+        generator.setOrderItem(orderItem);
+        generator.setEmployeeName("");
+
+        List<MyImage> myImages = getImageList();
+
+        generator.generatePDF("QC_report.pdf", myImages);
         try {
             ImageDataFetcher fetcher = new ImageDataFetcher();
 
@@ -475,7 +521,7 @@ public class QcController implements Initializable {
 
                     String comment = fetcher.getCommentByImageID(imageID);
                     int orderID = fetcher.getOrderIDByImageID(imageID);
-                    
+
 
                     String fileName = tempFile.getName();
                     String[] parts = fileName.split("_");
@@ -485,7 +531,7 @@ public class QcController implements Initializable {
                     }catch (NumberFormatException e){
                         System.out.println("Failed to extract image ID from file name: " + fileName);
                     }
-                    MyImage myImage = new MyImage(extractedID, tempPath, comment);
+                    MyImage myImage = new MyImage(extractedID, tempPath, comment, imagePositionID);
                     myImage.setOrderItemID(orderID);
                     allImages.add(myImage);
                 }
@@ -506,8 +552,8 @@ public class QcController implements Initializable {
 
                 PDFGeneratorImp pdfGen2 = PDFGeneratorImp.getInstance();
                 pdfGen2.setOrder(order);
-                OrderItem orderItem = new OrderItem();
-                pdfGen2.setOrderItem(orderItem);
+                OrderItem orderItem2 = new OrderItem();
+                pdfGen2.setOrderItem(orderItem2);
                 pdfGen2.setEmployeeName("");
                 List<MyImage> imageList = List.of();
                 pdfGen2.generatePDF("your-file.pdf", imageList);
@@ -518,6 +564,98 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        }
+
+        ;
+    }*/
+
+    @FXML
+    private void btnSave(ActionEvent actionEvent) {
+        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+        String user = lblEmployee.getText();
+
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "No order item selected.");
+            return;
+        }
+
+        boolean isDeny = idDenied.isSelected();
+        boolean isApprove = idApproved.isSelected();
+
+        if (isDeny == isApprove) {
+            showAlert(Alert.AlertType.WARNING, "Please select either Approve or Deny.");
+            return;
+        }
+
+        String verb = isDeny ? "Deny" : "Approve";
+        if (!showConfirmation("Confirm " + verb, "Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?")) {
+            resetCheckBoxes();
+            return;
+        }
+
+        if (isDeny) {
+            updateItemStatus(selected, deniedItems, approvedItems, "Denied", user);
+        } else {
+            updateItemStatus(selected, approvedItems, deniedItems, "Approved", user);
+            savePDF(actionEvent);
+        }
+    }
+
+    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) {
+        addTo.add(item);
+        removeFrom.remove(item);
+        lstItem.refresh();
+        showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
+        logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
+        lstLog.scrollTo(logItems.size() - 1);
+        resetCheckBoxes();
+    }
+
+    private void savePDF(ActionEvent actionEvent) {
+        try {
+            File pdfFile = showSaveDialog("Report.pdf");
+            if (pdfFile != null) {
+                PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
+                pdfGen.setEmployeeName(lblEmployee.getText());
+                pdfGen.generatePDF(pdfFile.getAbsolutePath(), capturedImages);
+                System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private File showSaveDialog(String initialFileName) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+        fileChooser.setInitialFileName(initialFileName);
+        return fileChooser.showSaveDialog((Stage) btnPDFSave.getScene().getWindow());
+    }
+
+    private boolean showConfirmation(String title, String content) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, content, ButtonType.OK, ButtonType.CANCEL);
+        confirm.setTitle(title);
+        return confirm.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
+    }
+
+    private void showAlert(Alert.AlertType type, String message) {
+        new Alert(type, message).showAndWait();
+    }
+
+    private void resetCheckBoxes() {
+        idDenied.setSelected(false);
+        idApproved.setSelected(false);
+    }
+
+
+
+
+
+
+
+
+    private List<MyImage> getImageList() {
+        return List.of();
     }
 
     public void setUserName(String userName) {

@@ -14,8 +14,17 @@ public class MyImage {
     private int    imageID;
     private String imagePath;
     private String comment;
+    private int imagePositionID;
 
-    //called by DAO
+    //called by MyImageDAO
+    public MyImage(int imageID, String imagePath, String comment, int imagePositionID) {
+        this.imageID   = imageID;
+        this.imagePath = imagePath;
+        this.imageFile = new File(imagePath);
+        this.comment   = comment;
+        this.imagePositionID = imagePositionID;
+    }
+    //called by OrderDAO
     public MyImage(int imageID, String imagePath, String comment) {
         this.imageID   = imageID;
         this.imagePath = imagePath;
@@ -33,7 +42,6 @@ public class MyImage {
     public MyImage() {
         this.imageFile = imageFile;
     }
-
 
     public File getImageFile() {
         return imageFile;
@@ -95,4 +103,8 @@ public class MyImage {
     public int getUserID() { return 0; }
 
     public int setUserID() { return 0; }
+
+    public int getImagePositionID() {
+        return 0;
+    }
 }

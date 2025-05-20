@@ -284,4 +284,11 @@ public class ImageHandlingController {
     }
 
 
+    @FXML
+    private void btnScratch(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void btnDent(ActionEvent actionEvent) {
+    }
 }
