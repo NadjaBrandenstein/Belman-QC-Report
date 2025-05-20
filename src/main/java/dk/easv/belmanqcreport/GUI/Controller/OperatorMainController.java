@@ -6,6 +6,7 @@ import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
+import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 // Other Imports
@@ -31,9 +32,7 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class OperatorMainController {
 
@@ -97,6 +96,11 @@ public class OperatorMainController {
     private Image imageBackImg;
     private Image imageExtraImg;
 
+    private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
+
+    private Map<Position, AnchorPane> getPaneByPosition;
+
+
     @FXML
     private void initialize() throws Exception {
 
@@ -151,12 +155,23 @@ public class OperatorMainController {
         });*/
         //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
 
-        imageTop.setOnMouseClicked(event -> openCameraAndSaveImage("Top"));
-        imageFront.setOnMouseClicked(event -> openCameraAndSaveImage("Front"));
-        imageBack.setOnMouseClicked(event -> openCameraAndSaveImage("Back"));
-        imageLeft.setOnMouseClicked(event -> openCameraAndSaveImage("Left"));
-        imageRight.setOnMouseClicked(event -> openCameraAndSaveImage("Right"));
-        imageExtra.setOnMouseClicked(event -> openCameraAndSaveImage("Extra"));
+
+        getPaneByPosition = Map.of(
+                Position.TOP, imageTop,
+                Position.FRONT, imageFront,
+                Position.BACK, imageBack,
+                Position.LEFT, imageLeft,
+                Position.RIGHT, imageRight,
+                Position.EXTRA, imageExtra
+        );
+
+        imageTop.setOnMouseClicked(event -> openCameraAndSaveImage(Position.TOP));
+        imageFront.setOnMouseClicked(event -> openCameraAndSaveImage(Position.FRONT));
+        imageBack.setOnMouseClicked(event -> openCameraAndSaveImage(Position.BACK));
+        imageLeft.setOnMouseClicked(event -> openCameraAndSaveImage(Position.LEFT));
+        imageRight.setOnMouseClicked(event -> openCameraAndSaveImage(Position.RIGHT));
+        imageExtra.setOnMouseClicked(event -> openCameraAndSaveImage(Position.EXTRA));
+
 
 
     }
@@ -325,7 +340,22 @@ public class OperatorMainController {
     }
 
     public void displayCapturedImage(MyImage myImg) {
+
         Platform.runLater(() -> {
+            Position pos = myImg.getImagePosition();
+            myImg.setOrderItemID(currentOrderItem.getOrderItemId());
+
+            capturedImages.add(myImg);
+            currentImageIndex = capturedImages.size() - 1;
+
+            imagesByPosition.put(pos, myImg);
+            showImageForPosition(pos);
+            updateImageCountLabel();
+        });
+
+
+
+        /*Platform.runLater(() -> {
             myImg.setOrderItemID(currentOrderItem.getOrderItemId());
             capturedImages.add(myImg);
             currentImageIndex = capturedImages.size() - 1;
@@ -342,16 +372,37 @@ public class OperatorMainController {
             AnchorPane targetPane = getPaneForPosition(position);
             targetPane.getChildren().setAll(imageView);
 
-            /*switch (position) {
+            *//*switch (position) {
                 case "Top" -> imageTop.getChildren().setAll(imageView);
                 case "Front" -> imageFront.getChildren().setAll(imageView);
                 case "Back" -> imageBack.getChildren().setAll(imageView);
                 case "Left" -> imageLeft.getChildren().setAll(imageView);
                 case "Right" -> imageRight.getChildren().setAll(imageView);
                 case "Extra" -> imageExtra.getChildren().setAll(imageView);
-            }*/
-        });
+            }*//*
+        });*/
     }
+
+    private void showImageForPosition(Position position) {
+        AnchorPane targetPane = getPaneByPosition.get(position);
+        targetPane.getChildren().clear();
+
+        MyImage image = imagesByPosition.get(position);
+        if (image != null) {
+
+            Image fxImage = new Image(image.toURI());
+            ImageView imageView = new ImageView(fxImage);
+
+            imageView.fitWidthProperty().bind(targetPane.widthProperty());
+            imageView.fitHeightProperty().bind(targetPane.heightProperty());
+            imageView.setPreserveRatio(true);
+            imageView.setOnMouseClicked(e -> openImageHandlingScene(image));
+
+            targetPane.getChildren().setAll(imageView);
+        }
+    }
+
+
 
     private AnchorPane getPaneForPosition(String position) {
         return switch (position) {
@@ -365,7 +416,7 @@ public class OperatorMainController {
         };
     }
 
-    private void openCameraAndSaveImage(String position) {
+    private void openCameraAndSaveImage(Position position) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
             Scene scene = new Scene(loader.load());
@@ -377,7 +428,8 @@ public class OperatorMainController {
             camStage.setResizable(true);
             camStage.setMaximized(true);
 
-            this.position = position;
+            //this.position = position;
+            System.out.println("DEBUG: openCameraAndSaveImage() → position: " + position);
 
             CameraController controller = loader.getController();
             controller.setParentController(this);
@@ -548,8 +600,18 @@ public class OperatorMainController {
             List<MyImage> imgs = imageModel.getImageForOrder(orderItemID);
 
             System.out.println("DEBUG: loadImagesForItem(" + orderItemID + ") → " + imgs.size() + " images");
+            imagesByPosition.clear();
+            clearImages();
 
-            capturedImages = new ArrayList<>(imgs);
+            for (MyImage image : imgs) {
+                Position pos = image.getImagePosition();
+                imagesByPosition.put(pos, image);
+                showImageForPosition(pos);
+            }
+
+            lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
+
+            /*capturedImages = new ArrayList<>(imgs);
             currentImageIndex = imgs.isEmpty() ? -1 : 0;
             clearImages();
 
@@ -559,7 +621,7 @@ public class OperatorMainController {
             } else {
                 //imageHboxCenter.getChildren().clear();
                 lblImageCount.setText("0 / 0");
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
