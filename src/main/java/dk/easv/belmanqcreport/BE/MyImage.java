@@ -15,6 +15,7 @@ public class MyImage {
     private String imagePath;
     private String comment;
     private int imagePositionID;
+    private String imagePosition;
 
     //called by MyImageDAO
     public MyImage(int imageID, String imagePath, String comment, int imagePositionID) {
@@ -107,4 +108,9 @@ public class MyImage {
     public int getImagePositionID() {
         return 0;
     }
+
+    public void setImagePosition(String position) {
+        this.imagePosition = position;
+    }
+
 }
