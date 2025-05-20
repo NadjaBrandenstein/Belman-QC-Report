@@ -1,5 +1,8 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import dk.easv.belmanqcreport.BE.*;
 import dk.easv.belmanqcreport.GUI.Controller.QcController;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -120,21 +123,31 @@ public class PDFGeneratorImp implements PDFGenerator {
                             contentStream.setNonStrokingColor(255,255,255);
                             contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
 
-                            float textX = headerX + 10;
-                            float textY = logoY + (headerHeight/2) - 6;
-                            contentStream.newLineAtOffset(textX, textY);
-                            String orderNumber = order !=null && order.getOrderNumber() !=null ? order.getOrderNumber() : "N/A";
+                            contentStream.endText();
+
+                            String orderNumber = order != null && order.getOrderNumber() != null ? order.getOrderNumber() : "N/A";
                             String orderText = "Order " + orderNumber;
-                            contentStream.showText("Order " + orderNumber);
+
+
+                            float fontSize = 18;
+                            float textWidth = PDType1Font.HELVETICA_BOLD.getStringWidth(orderText) / 1000 * fontSize;
+
+
+                            float textX = headerX + (headerWidth - textWidth) / 2;
+                            float textY = logoY + (headerHeight / 2) - (fontSize / 2.5f);  // Adjust for vertical alignment
+
+                            contentStream.beginText();
+                            contentStream.newLineAtOffset(textX, textY);
+                            contentStream.showText(orderText);
                             contentStream.endText();
 
 
                             contentStream.beginText();
-                            contentStream.setFont(PDType1Font.HELVETICA, 12);
+                            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                             String userLabel = employeeName;
 
-                            float textWidth = PDType1Font.HELVETICA.getStringWidth(userLabel) / 1000 * 12;
-                            float rightTextX = headerX + headerWidth - textWidth - 10;
+                            float userLabelWidth = PDType1Font.HELVETICA.getStringWidth(userLabel) / 1000 * 12;
+                            float rightTextX = headerX + headerWidth - userLabelWidth - 10;
 
                             contentStream.newLineAtOffset(rightTextX, textY);
                             contentStream.showText(userLabel);
@@ -150,6 +163,20 @@ public class PDFGeneratorImp implements PDFGenerator {
 
                     contentStream.drawImage(pdImage, x, y, drawWidth, drawHeight);
 
+                    String dateTakenStr = "Unknown";
+                    try{
+                        Metadata metadata = ImageMetadataReader.readMetadata(imgFile);
+                        ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+                        if (directory !=null && directory.getDateOriginal() != null) {
+                            dateTakenStr = directory.getDateOriginal().toString();
+                        }else{
+                            long lastModified = imgFile.lastModified();
+                            dateTakenStr = new java.util.Date(lastModified).toString();
+                        }
+                    }catch (Exception e){
+                        System.out.println("Could not extract EXIF date for:" + imgFile.getName());
+                    }
+
                     contentStream.beginText();
                     contentStream.setFont(PDType1Font.HELVETICA, 12);
                     contentStream.setLeading(14.5f);
@@ -158,6 +185,8 @@ public class PDFGeneratorImp implements PDFGenerator {
                     contentStream.showText("Items number: " + orderItem.getOrderItem());
                     contentStream.newLine();
                     contentStream.showText("Comment: " + myImage.getComment());
+                    contentStream.newLine();
+                    contentStream.showText("Date taken: " + dateTakenStr);
 
                     contentStream.endText();
 
