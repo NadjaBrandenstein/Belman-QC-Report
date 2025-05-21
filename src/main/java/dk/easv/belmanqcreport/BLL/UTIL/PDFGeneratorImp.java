@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PDFGeneratorImp implements PDFGenerator {
@@ -30,6 +30,7 @@ public class PDFGeneratorImp implements PDFGenerator {
     private OrderItem orderItem;
     private QcController qcController;
     private String employeeName = "";
+    private String orderNumberFromDatabase = "";
 
     private PDFGeneratorImp() {
         order = new Order();
@@ -46,7 +47,7 @@ public class PDFGeneratorImp implements PDFGenerator {
     }
 
     @Override
-    public void generatePDF(String fileName) {
+    public void generatePDF(String fileName, String s) {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
@@ -125,8 +126,19 @@ public class PDFGeneratorImp implements PDFGenerator {
 
                             contentStream.endText();
 
-                            String orderNumber = order != null && order.getOrderNumber() != null ? order.getOrderNumber() : "N/A";
+                            /*Order order = new Order();
+                            order.setOrderNumber(actualOrderNumberFromYourData);
+                            JComboBox<Order> orderComboBox = new JComboBox<>();
+                            Order selectedOrder = (Order) orderComboBox.getSelectedItem();
+                            PDFGeneratorImp.getInstance().setOrder(selectedOrder);
+                            List<MyImage> imageList = List.of();
+                            PDFGeneratorImp.getInstance().generatePDF("Report", imageList);*/
+
+                            String orderNumber = getOrderNumberFromDatabase(orderItem);
+                            /*String orderNumber = (order != null && order.getOrderNumber() != null) ? order.getOrderNumber() : "N/A";*/
                             String orderText = "Order " + orderNumber;
+
+
 
 
                             float fontSize = 18;
@@ -171,7 +183,7 @@ public class PDFGeneratorImp implements PDFGenerator {
                             dateTakenStr = directory.getDateOriginal().toString();
                         }else{
                             long lastModified = imgFile.lastModified();
-                            dateTakenStr = new java.util.Date(lastModified).toString();
+                            dateTakenStr = new Date(lastModified).toString();
                         }
                     }catch (Exception e){
                         System.out.println("Could not extract EXIF date for:" + imgFile.getName());
@@ -181,6 +193,7 @@ public class PDFGeneratorImp implements PDFGenerator {
                     contentStream.setFont(PDType1Font.HELVETICA, 12);
                     contentStream.setLeading(14.5f);
                     contentStream.newLineAtOffset(50, y - 20);
+
 
                     contentStream.showText("Items number: " + orderItem.getItemNumber());
                     contentStream.newLine();
@@ -199,6 +212,12 @@ public class PDFGeneratorImp implements PDFGenerator {
         }
 
     }
+
+    private String getOrderNumberFromDatabase(OrderItem orderItem) {
+        this.orderItem = orderItem;
+        return "";
+    }
+
     public void setEmployeeName(String name){
         this.employeeName = name;
     }
