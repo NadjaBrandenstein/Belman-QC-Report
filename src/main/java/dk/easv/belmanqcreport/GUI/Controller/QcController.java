@@ -311,21 +311,22 @@ public class QcController implements Initializable {
     public void showImageAtIndex(int index) {
 
 
-        if (index >= 0 && index < capturedImages.size()) {
+        if(index < 0 || index >= capturedImages.size()) return;
 
-            MyImage img = capturedImages.get(index);
-            Image fxImage = new Image(img.toURI());
-            ImageView imageView = new ImageView(fxImage);
+        MyImage img = capturedImages.get(index);
+        Image fxImage = new Image(img.toURI());
+        ImageView imageView = new ImageView(fxImage);
 
-            imageView.fitWidthProperty().bind(imageFront.widthProperty());
-            imageView.fitHeightProperty().bind(imageFront.heightProperty());
-            imageFront.getChildren().clear();
+        imageView.fitWidthProperty().bind(imageFront.widthProperty());
+        imageView.fitHeightProperty().bind(imageFront.heightProperty());
+        imageView.setPreserveRatio(false);
 
-            imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
+        imageView.setOnMouseClicked(event -> openImageHandlingScene(img));
 
-            imageFront.getChildren().add(imageView);
-        }
+        imageFront.getChildren().setAll(imageView);
     }
+
+
 
     public void openImageHandlingScene(MyImage image) {
         try{
@@ -364,7 +365,7 @@ public class QcController implements Initializable {
         lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
     }
 
-    public void btnPDFSave(ActionEvent actionEvent) {
+    /*public void btnPDFSave(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save PDF");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
@@ -396,7 +397,7 @@ public class QcController implements Initializable {
             }
         }
 
-    }
+    }*/
 
     private void setButtonIcon(Button button, String iconPath, double width, double height) {
         if (button == null) {

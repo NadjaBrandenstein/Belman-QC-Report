@@ -1,5 +1,6 @@
 package dk.easv.belmanqcreport.BE;
 
+import dk.easv.belmanqcreport.DAL.Interface.Position;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
@@ -8,14 +9,25 @@ import java.io.File;
 public class MyImage {
 
     
-    private File imageFile;
+
     private int orderID;
 
     private int    imageID;
     private String imagePath;
     private String comment;
+    private File imageFile;
     private int imagePositionID;
     private String imagePosition;
+    private Position position;
+
+    public MyImage(File file, Position position) {
+
+        this.imageFile = file;
+        this.imagePath = file.getPath();
+        this.comment = "";
+        this.position = position;
+
+    }
 
     //called by MyImageDAO
     public MyImage(int imageID, String imagePath, String comment, int imagePositionID) {
@@ -23,7 +35,7 @@ public class MyImage {
         this.imagePath = imagePath;
         this.imageFile = new File(imagePath);
         this.comment   = comment;
-        this.imagePositionID = imagePositionID;
+        this.position = Position.fromDbId(imagePositionID);
     }
     //called by OrderDAO
     public MyImage(int imageID, String imagePath, String comment) {
@@ -106,11 +118,19 @@ public class MyImage {
     public int setUserID() { return 0; }
 
     public int getImagePositionID() {
-        return 0;
+        return position.getDbId();
     }
 
-    public void setImagePosition(String position) {
-        this.imagePosition = position;
+    public void setImagePositionID(int imagePositionID) {
+        this.imagePositionID = imagePositionID;
+    }
+
+    public Position getImagePosition() {
+        return position;
+    }
+
+    public void setImagePosition(Position position) {
+        this.position = position;
     }
 
 }
