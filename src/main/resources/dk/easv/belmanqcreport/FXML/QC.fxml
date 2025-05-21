@@ -6,15 +6,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
 
 
     <!-- Top area (can be like a title bar) -->
@@ -105,12 +105,12 @@
                     <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
                 </rowConstraints>
                <children>
-                  <AnchorPane fx:id="imageFront" prefHeight="200.0" prefWidth="200.0" />
-                  <AnchorPane fx:id="imageBack" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                  <AnchorPane fx:id="imageLeft" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                  <AnchorPane fx:id="imageRight" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <AnchorPane fx:id="imageTop" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                  <AnchorPane fx:id="imageExtra" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <StackPane fx:id="imageFront" prefHeight="150.0" prefWidth="200.0" />
+                  <StackPane fx:id="imageBack" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <StackPane fx:id="imageLeft" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                  <StackPane fx:id="imageRight" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <StackPane fx:id="imageTop" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                  <StackPane fx:id="imageExtra" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </center>
