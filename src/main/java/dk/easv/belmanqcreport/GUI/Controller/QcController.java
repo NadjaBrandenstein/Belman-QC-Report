@@ -41,6 +41,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 // Java Imports
 import javax.imageio.ImageIO;
+import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -569,15 +570,22 @@ public class QcController implements Initializable {
         ;
     }*/
 
+    private PDFGeneratorImp pdfGenerator;
+
     @FXML
     private void btnSave(ActionEvent actionEvent) {
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+        pdfGenerator = PDFGeneratorImp.getInstance();
+        dk.easv.belmanqcreport.BLL.UTIL.OrderItem utilOrderItem = new dk.easv.belmanqcreport.BLL.UTIL.OrderItem();
+        utilOrderItem.setItemNumber(selected.getOrderItem());
+        pdfGenerator.setOrderItem(utilOrderItem);
         String user = lblEmployee.getText();
 
         if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "No order item selected.");
             return;
         }
+
 
         boolean isDeny = idDenied.isSelected();
         boolean isApprove = idApproved.isSelected();
@@ -602,8 +610,14 @@ public class QcController implements Initializable {
     }
 
     private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) {
+        if (status.equals("Approved")) {
+            item.setOrderItem(item.getOrderItem() + " (Approved)");
+        }else if(status.equalsIgnoreCase("Denied")){
+            item.setOrderItem(item.getOrderItem() + " (Denied)");
+        }
         addTo.add(item);
         removeFrom.remove(item);
+        item.setOrderItem("NewOrderItem: " + item.getOrderItem());
         lstItem.refresh();
         showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
         logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));

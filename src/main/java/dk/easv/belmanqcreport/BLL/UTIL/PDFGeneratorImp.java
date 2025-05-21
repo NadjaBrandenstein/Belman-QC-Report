@@ -182,7 +182,7 @@ public class PDFGeneratorImp implements PDFGenerator {
                     contentStream.setLeading(14.5f);
                     contentStream.newLineAtOffset(50, y - 20);
 
-                    contentStream.showText("Items number: " + orderItem.getOrderItem());
+                    contentStream.showText("Items number: " + orderItem.getItemNumber());
                     contentStream.newLine();
                     contentStream.showText("Comment: " + myImage.getComment());
                     contentStream.newLine();
@@ -211,9 +211,5 @@ public class PDFGeneratorImp implements PDFGenerator {
         this.orderItem = orderItem;
     }
 
-
-
-
-           
 }
 
