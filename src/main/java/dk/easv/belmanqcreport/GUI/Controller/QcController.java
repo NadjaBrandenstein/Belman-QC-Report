@@ -8,6 +8,7 @@ import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
+import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
@@ -104,6 +105,11 @@ public class QcController implements Initializable {
     private final Set<OrderItem> deniedItems = new HashSet<>();
     private final Set<OrderItem> approvedItems = new HashSet<>();
 
+    private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
+    private Map<Position, AnchorPane> getPaneByPosition;
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -127,6 +133,15 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        getPaneByPosition = Map.of(
+                Position.TOP, imageTop,
+                Position.FRONT, imageFront,
+                Position.BACK, imageBack,
+                Position.LEFT, imageLeft,
+                Position.RIGHT, imageRight,
+                Position.EXTRA, imageExtra
+        );
 
 
 
@@ -200,25 +215,11 @@ public class QcController implements Initializable {
 
         lstItem.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
             if(newItem != null){
-                try{
-                    List<MyImage> imgs = imageModel.getImageForOrder(newItem.getOrderItemId());
 
-                    System.out.println("DEBUG: loadImagesForItem(" + newItem.getOrderItemId() + ") → " + imgs.size() + " images");
-
-                    capturedImages = new ArrayList<>(imgs);
-                    currentImageIndex = imgs.isEmpty() ? -1 : 0;
-                    clearImages();
-
-                    if(currentImageIndex >= 0) {
-                        showImageAtIndex(currentImageIndex);
-                        updateImageCountLabel();
-                    } else {
-                        //imageHboxCenter.getChildren().clear();
-                        lblImageCount.setText("0 / 0");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    loadImagesForItem(newItem.getOrderItemId());
+            } else {
+                clearImages();
+                lblImageCount.setText("0 / 0");
             }
         });
 
@@ -244,9 +245,55 @@ public class QcController implements Initializable {
 
     }
 
-    private void clearImages() {
-        imageFront.getChildren().clear();
+    private void loadImagesForItem(int orderItemId) {
+        try{
+            List<MyImage> images = imageModel.getImageForOrder(orderItemId);
+
+            imagesByPosition.clear();
+            clearImages();
+
+            for(MyImage image : images){
+                Position position = image.getImagePosition();
+                imagesByPosition.put(position, image);
+                showImageForPosition(position);
+            }
+
+            lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    private void showImageForPosition(Position position) {
+        AnchorPane targetPane = getPaneByPosition.get(position);
+        targetPane.getChildren().clear();
+
+        MyImage image = imagesByPosition.get(position);
+        if (image != null) {
+
+            Image fxImage = new Image(image.toURI());
+            ImageView imageView = new ImageView(fxImage);
+
+            imageView.fitWidthProperty().bind(targetPane.widthProperty());
+            imageView.fitHeightProperty().bind(targetPane.heightProperty());
+            imageView.setPreserveRatio(true);
+            imageView.setOnMouseClicked(e -> openImageHandlingScene(image));
+
+            targetPane.getChildren().add(imageView);
+        }
+    }
+
+    private void clearImages() {
+        imageTop.getChildren().clear();
+        imageFront.getChildren().clear();
+        imageBack.getChildren().clear();
+        imageLeft.getChildren().clear();
+        imageRight.getChildren().clear();
+        imageExtra.getChildren().clear();
+    }
+
+
 
     private void setIcons(){
 
