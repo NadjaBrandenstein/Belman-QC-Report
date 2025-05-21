@@ -659,13 +659,13 @@ public class QcController implements Initializable {
 
     private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) {
         if (status.equals("Approved")) {
-            item.setOrderItem(item.getOrderItem() + " (Approved)");
+            //item.setOrderItem(item.getOrderItem() + " (Approved)");
         }else if(status.equalsIgnoreCase("Denied")){
-            item.setOrderItem(item.getOrderItem() + " (Denied)");
+            //item.setOrderItem(item.getOrderItem() + " (Denied)");
         }
         addTo.add(item);
         removeFrom.remove(item);
-        item.setOrderItem("NewOrderItem: " + item.getOrderItem());
+        //item.setOrderItem("NewOrderItem: " + item.getOrderItem());
         lstItem.refresh();
         showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
         logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
