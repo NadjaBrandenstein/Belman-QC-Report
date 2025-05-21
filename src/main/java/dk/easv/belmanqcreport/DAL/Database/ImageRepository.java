@@ -3,6 +3,7 @@ package dk.easv.belmanqcreport.DAL.Database;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
+import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -118,6 +119,38 @@ public class ImageRepository implements IRepository<MyImage> {
             }
         }
         return list;
+    }
+
+    public void updateValidationType(int orderItemID, int validationTypeID) throws SQLException {
+
+        String sql = "UPDATE Item SET validationTypeID = ? WHERE orderItemID = ?;";
+
+        try (Connection conn = dbConnection.getConnection();
+
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, validationTypeID);
+            stmt.setInt(2, orderItemID);
+            stmt.executeUpdate();
+
+        }catch (SQLException e) {
+            throw new SQLException("Error updating validation type " + validationTypeID, e);
+        }
+    }
+
+    public int getValidationTypeByOrderItemID(int orderItemID) throws SQLException {
+
+        String sql = "SELECT validationTypeID FROM Item WHERE orderItemID = ?;";
+
+        try (Connection conn = dbConnection.getConnection();
+
+            PreparedStatement stmt = conn.prepareStatement(sql) ) {
+            stmt.setInt(1, orderItemID);
+
+            try (ResultSet rs = stmt.executeQuery() ) {
+                if (rs.next()) return rs.getInt("validationTypeID");
+            }
+        }
+        return ValidationType.AWAITING.getId();
     }
 
     public void updateComment(MyImage img) throws Exception {

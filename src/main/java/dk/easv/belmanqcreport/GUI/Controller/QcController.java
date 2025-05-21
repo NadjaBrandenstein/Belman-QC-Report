@@ -9,6 +9,7 @@ import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.DAL.Interface.Position;
+import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
@@ -212,6 +213,17 @@ public class QcController implements Initializable {
                 try {
                     List<OrderItem> items = imageHandlingModel.getItemsByOrderID(selOrder.getOrderID());
                     lstItem.getItems().setAll(items);
+
+                    //fetching from db
+                    for (OrderItem item : lstItem.getItems()) {
+                        int validType = imageModel.getValidationType(item.getOrderItemId());
+                        if(validType == ValidationType.APPROVED.getId()) {
+                            approvedItems.add(item);
+                        } else if (validType == ValidationType.DENIED.getId()) {
+                            deniedItems.add(item);
+                        }
+                    }
+                    lstItem.refresh(); //
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -474,7 +486,7 @@ public class QcController implements Initializable {
     private PDFGeneratorImp pdfGenerator;
 
     @FXML
-    private void btnSave(ActionEvent actionEvent) {
+    private void btnSave(ActionEvent actionEvent) throws Exception {
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
         pdfGenerator = PDFGeneratorImp.getInstance();
         dk.easv.belmanqcreport.BLL.UTIL.OrderItem utilOrderItem = new dk.easv.belmanqcreport.BLL.UTIL.OrderItem();
@@ -510,7 +522,7 @@ public class QcController implements Initializable {
         }
     }
 
-    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) {
+    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) throws Exception {
         if (status.equals("Approved")) {
             //item.setOrderItem(item.getOrderItem() + " (Approved)");
         }else if(status.equalsIgnoreCase("Denied")){
@@ -520,6 +532,13 @@ public class QcController implements Initializable {
         removeFrom.remove(item);
         //item.setOrderItem("NewOrderItem: " + item.getOrderItem());
         lstItem.refresh();
+
+        boolean approved = status.equalsIgnoreCase("Approved");
+        int vtID = approved
+                ? ValidationType.APPROVED.getId()
+                : ValidationType.DENIED.getId();
+        imageModel.updateValidation(item.getOrderItemId(), vtID);
+
         showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
         logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
         lstLog.scrollTo(logItems.size() - 1);
