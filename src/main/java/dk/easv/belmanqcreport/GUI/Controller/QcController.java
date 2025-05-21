@@ -9,6 +9,7 @@ import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.DAL.Interface.Position;
+import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
@@ -19,11 +20,16 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Window;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
+
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
 import javafx.fxml.Initializable;
@@ -43,11 +49,13 @@ import javafx.scene.control.Button;
 // Java Imports
 import javax.imageio.ImageIO;
 import javax.swing.text.Document;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 public class QcController implements Initializable {
 
@@ -56,17 +64,17 @@ public class QcController implements Initializable {
     @FXML
     private Label lblImageCount;
     @FXML
-    private AnchorPane imageFront;
+    private StackPane imageFront;
     @FXML
-    private AnchorPane imageBack;
+    private StackPane imageBack;
     @FXML
-    private AnchorPane imageLeft;
+    private StackPane imageLeft;
     @FXML
-    private AnchorPane imageRight;
+    private StackPane imageRight;
     @FXML
-    private AnchorPane imageTop;
+    private StackPane imageTop;
     @FXML
-    private AnchorPane imageExtra;
+    private StackPane imageExtra;
     @FXML
     private MFXButton btnBack;
     @FXML
@@ -106,7 +114,8 @@ public class QcController implements Initializable {
     private final Set<OrderItem> approvedItems = new HashSet<>();
 
     private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
-    private Map<Position, AnchorPane> getPaneByPosition;
+    private final Map<Position, Rectangle> imagePanesOverlay = new EnumMap<>(Position.class);
+    private Map<Position, StackPane> getPaneByPosition;
 
 
 
@@ -205,6 +214,17 @@ public class QcController implements Initializable {
                     List<OrderItem> items = imageHandlingModel.getItemsByOrderID(selOrder.getOrderID());
                     lstItem.getItems().setAll(items);
 
+                    //fetching from db
+                    for (OrderItem item : lstItem.getItems()) {
+                        int validType = imageModel.getValidationType(item.getOrderItemId());
+                        if(validType == ValidationType.APPROVED.getId()) {
+                            approvedItems.add(item);
+                        } else if (validType == ValidationType.DENIED.getId()) {
+                            deniedItems.add(item);
+                        }
+                    }
+                    lstItem.refresh(); //
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -250,7 +270,11 @@ public class QcController implements Initializable {
             List<MyImage> images = imageModel.getImageForOrder(orderItemId);
 
             imagesByPosition.clear();
+
             clearImages();
+            for (StackPane pane : getPaneByPosition.values()) {
+                pane.setStyle("");   // reset background
+            }
 
             for(MyImage image : images){
                 Position position = image.getImagePosition();
@@ -260,29 +284,47 @@ public class QcController implements Initializable {
 
             lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
 
+            OrderItem selectedItem = lstItem.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                if(approvedItems.contains(selectedItem)) {
+                    applyOverlayForItem(selectedItem, true);
+                } else if (deniedItems.contains(selectedItem)) {
+                    applyOverlayForItem(selectedItem, false);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void showImageForPosition(Position position) {
-        AnchorPane targetPane = getPaneByPosition.get(position);
-        targetPane.getChildren().clear();
+        StackPane cell = getPaneByPosition.get(position);
+        cell.getChildren().clear();
 
         MyImage image = imagesByPosition.get(position);
         if (image != null) {
 
-            Image fxImage = new Image(image.toURI());
-            ImageView imageView = new ImageView(fxImage);
-
-            imageView.fitWidthProperty().bind(targetPane.widthProperty());
-            imageView.fitHeightProperty().bind(targetPane.heightProperty());
+            ImageView imageView = new ImageView(new Image(image.toURI()));
+            imageView.fitWidthProperty().bind(cell.widthProperty());
+            imageView.fitHeightProperty().bind(cell.heightProperty());
             imageView.setPreserveRatio(true);
+
+
+            Rectangle overlay = new Rectangle();
+            overlay.widthProperty().bind(cell.widthProperty());
+            overlay.heightProperty().bind(cell.heightProperty());
+            overlay.setFill(Color.color(0, 0, 0, 0));
+            overlay.setMouseTransparent(true);
+
             imageView.setOnMouseClicked(e -> openImageHandlingScene(image));
 
-            targetPane.getChildren().add(imageView);
+            cell.getChildren().addAll(imageView, overlay);
+            imagePanesOverlay.put(position, overlay);
         }
     }
+
+
 
     private void clearImages() {
         imageTop.getChildren().clear();
@@ -412,39 +454,6 @@ public class QcController implements Initializable {
         lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
     }
 
-    /*public void btnPDFSave(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save PDF");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
-        fileChooser.setInitialFileName("Report.pdf");
-
-        File file = fileChooser.showSaveDialog(primaryStage);
-
-        if (file != null) {
-            try (PDDocument document = new PDDocument()) {
-                PDPage page = new PDPage(PDRectangle.A4);
-                document.addPage(page);
-
-
-                PDPageContentStream contentStream = new PDPageContentStream(document, page);
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
-
-
-                contentStream.newLineAtOffset(100, 750);
-
-                contentStream.showText("This is a sample PDF report.");
-                contentStream.endText();
-                contentStream.close();
-
-                document.save(file);
-                System.out.println("PDF saved to " + file.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }*/
 
     private void setButtonIcon(Button button, String iconPath, double width, double height) {
         if (button == null) {
@@ -474,154 +483,10 @@ public class QcController implements Initializable {
 
 
 
-   /* @FXML
-    private void btnSave(ActionEvent actionEvent) {
-
-        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
-        String user = lblEmployee.getText();
-
-        if (selected == null) {
-
-            new Alert(Alert.AlertType.WARNING, "No order item selected.").showAndWait();
-            return;
-        }
-
-        boolean isDeny = idDenied.isSelected();
-        boolean isApprove = idApproved.isSelected();
-
-        if ((isDeny && isApprove) || (!isDeny && !isApprove)) {
-            new Alert(Alert.AlertType.WARNING, "Please select either Approve or Deny.").showAndWait();
-            return;
-        }
-
-        String verb = isDeny ? "Deny" : "Approve";
-
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirm " + verb);
-        confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?");
-
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isEmpty() || result.get() != ButtonType.OK) {
-
-            idDenied.setSelected(false);
-            idApproved.setSelected(false);
-            return;
-        }
-
-        if(isDeny) {
-            deniedItems.add(selected);
-            approvedItems.remove(selected);
-            lstItem.refresh();
-
-            showInfo("Item “" + selected.getOrderItem() + "” has been denied.");
-
-            logItems.add(String.format("%s item %s by %s", "Denied", selected.getOrderItem(), user));
-            lstLog.scrollTo(logItems.size() - 1);
-
-            idDenied.setSelected(false);
-            return;
-
-        } if(isApprove) {
-            approvedItems.add(selected);
-            deniedItems.remove(selected);
-            lstItem.refresh();
-
-            showInfo("Item “" + selected.getOrderItem() + "” has been approved.");
-
-            idApproved.setSelected(false);
-            logItems.add(String.format("%s item %s by %s", "Approved", selected.getOrderItem(), user));
-            lstLog.scrollTo(logItems.size() - 1);
-
-
-        Order myOrder = new Order();
-        myOrder.setOrderNumber(order.getOrderNumber());
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrderItem("Item - 001");
-        PDFGeneratorImp generator = PDFGeneratorImp.getInstance();
-
-        generator.setOrder(myOrder);
-        generator.setOrderItem(orderItem);
-        generator.setEmployeeName("");
-
-        List<MyImage> myImages = getImageList();
-
-        generator.generatePDF("QC_report.pdf", myImages);
-        try {
-            ImageDataFetcher fetcher = new ImageDataFetcher();
-
-
-            List<MyImage> allImages = new ArrayList<>();
-
-            allImages.addAll(capturedImages);
-
-            int[] imageIDs = {1, 2, 3};
-
-            for (int imageID : imageIDs) {
-                BufferedImage img = fetcher.getImageFromDatabase(imageID); // Or getImageByPathFromDatabase
-
-                if (img != null) {
-                    String tempPath = new File(System.getProperty("java.io.tmpdir"), "temp_" + imageID + ".png").getAbsolutePath();
-                    File tempFile = new File(tempPath);
-                    ImageIO.write(img, "png", tempFile);
-                    if (!tempFile.exists()) {
-                        System.out.println("Failed to create temp image file:" + tempFile.getAbsolutePath());
-                    }
-
-                    String comment = fetcher.getCommentByImageID(imageID);
-                    int orderID = fetcher.getOrderIDByImageID(imageID);
-
-
-                    String fileName = tempFile.getName();
-                    String[] parts = fileName.split("_");
-                    int extractedID = -1;
-                    try{
-                        extractedID = Integer.parseInt(parts[parts.length-1].replace(".png", ""));
-                    }catch (NumberFormatException e){
-                        System.out.println("Failed to extract image ID from file name: " + fileName);
-                    }
-                    MyImage myImage = new MyImage(extractedID, tempPath, comment, imagePositionID);
-                    myImage.setOrderItemID(orderID);
-                    allImages.add(myImage);
-                }
-
-            }
-
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
-            fileChooser.setInitialFileName("Report.pdf");
-            File pdfFile = fileChooser.showSaveDialog((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
-
-            if (pdfFile != null) {
-                PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
-                pdfGen.setEmployeeName(lblEmployee.getText());
-                pdfGen.generatePDF(pdfFile.getAbsolutePath(), capturedImages);
-                PDFGeneratorImp.getInstance().generatePDF(pdfFile.getAbsolutePath(), allImages);
-                System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
-
-                PDFGeneratorImp pdfGen2 = PDFGeneratorImp.getInstance();
-                pdfGen2.setOrder(order);
-                OrderItem orderItem2 = new OrderItem();
-                pdfGen2.setOrderItem(orderItem2);
-                pdfGen2.setEmployeeName("");
-                List<MyImage> imageList = List.of();
-                pdfGen2.generatePDF("your-file.pdf", imageList);
-
-            } else {
-                System.out.println("Save operation was canceled");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        }
-
-        ;
-    }*/
-
     private PDFGeneratorImp pdfGenerator;
 
     @FXML
-    private void btnSave(ActionEvent actionEvent) {
+    private void btnSave(ActionEvent actionEvent) throws Exception {
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
         pdfGenerator = PDFGeneratorImp.getInstance();
         dk.easv.belmanqcreport.BLL.UTIL.OrderItem utilOrderItem = new dk.easv.belmanqcreport.BLL.UTIL.OrderItem();
@@ -657,7 +522,7 @@ public class QcController implements Initializable {
         }
     }
 
-    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) {
+    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) throws Exception {
         if (status.equals("Approved")) {
             //item.setOrderItem(item.getOrderItem() + " (Approved)");
         }else if(status.equalsIgnoreCase("Denied")){
@@ -667,10 +532,34 @@ public class QcController implements Initializable {
         removeFrom.remove(item);
         //item.setOrderItem("NewOrderItem: " + item.getOrderItem());
         lstItem.refresh();
+
+        boolean approved = status.equalsIgnoreCase("Approved");
+        int vtID = approved
+                ? ValidationType.APPROVED.getId()
+                : ValidationType.DENIED.getId();
+        imageModel.updateValidation(item.getOrderItemId(), vtID);
+
         showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
         logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
         lstLog.scrollTo(logItems.size() - 1);
         resetCheckBoxes();
+        applyOverlayForItem(item, status.equals("Approved"));
+    }
+
+    private void applyOverlayForItem(OrderItem selected, boolean approved) {
+        // clear all overlays
+        imagePanesOverlay.values().forEach(r -> r.setFill(Color.color(0,0,0,0)));
+        // tint only matching slot(s)
+        imagesByPosition.forEach((pos, img) -> {
+            if (img.getOrderItemID() == selected.getOrderItemId()) {
+                Rectangle overlay = imagePanesOverlay.get(pos);
+                overlay.setFill(
+                        approved
+                                ? Color.color(0,1,0, 0.3)   // transparent green
+                                : Color.color(1,0,0, 0.3)   // transparent red
+                );
+            }
+        });
     }
 
     private void savePDF(ActionEvent actionEvent) {
