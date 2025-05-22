@@ -3,6 +3,7 @@ package dk.easv.belmanqcreport.DAL.Database;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
+import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class ImageRepository implements IRepository<MyImage> {
     @Override
     public List<MyImage> getAll() {
         // Return all images, regardless of orderID
-        String sql = "SELECT imageID, orderItemID, imagePath, comment, imagePositionID FROM Image;";
+        String sql = "SELECT imageID, orderItemID, imagePath, comment, imagePositionID, validationTypeID FROM Image;";
         List<MyImage> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection();
@@ -85,7 +86,8 @@ public class ImageRepository implements IRepository<MyImage> {
                         rs.getInt("imageID"),
                         rs.getString("imagePath"),
                         rs.getString("comment"),
-                        rs.getInt("imagePositionID")
+                        rs.getInt("imagePositionID"),
+                        rs.getInt("validationTypeID")
                 );
                 img.setOrderItemID(rs.getInt("orderItemID"));
                 list.add(img);
@@ -97,7 +99,7 @@ public class ImageRepository implements IRepository<MyImage> {
     }
 
     public List<MyImage> getImagesByOrderId(int orderItemID) throws Exception {
-        String sql = "SELECT imageID, imagePath, comment, imagePositionID FROM Image WHERE orderItemID = ?;";
+        String sql = "SELECT imageID, imagePath, comment, imagePositionID, validationTypeID FROM Image WHERE orderItemID = ?;";
         List<MyImage> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection();
@@ -110,7 +112,8 @@ public class ImageRepository implements IRepository<MyImage> {
                             rs.getInt("imageID"),
                             rs.getString("imagePath"),
                             rs.getString("comment"),
-                            rs.getInt("imagePositionID")
+                            rs.getInt("imagePositionID"),
+                            rs.getInt("validationTypeID")
                     );
                     img.setOrderItemID(orderItemID);
                     list.add(img);
@@ -118,6 +121,48 @@ public class ImageRepository implements IRepository<MyImage> {
             }
         }
         return list;
+    }
+
+    public void updateValidationType(int orderItemID, int validationTypeID) throws SQLException {
+
+        String sql = "UPDATE Item SET validationTypeID = ? WHERE orderItemID = ?;";
+
+        try (Connection conn = dbConnection.getConnection();
+
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, validationTypeID);
+            stmt.setInt(2, orderItemID);
+            stmt.executeUpdate();
+
+        }catch (SQLException e) {
+            throw new SQLException("Error updating validation type " + validationTypeID, e);
+        }
+    }
+
+    public int getValidationTypeByOrderItemID(int orderItemID) throws SQLException {
+
+        String sql = "SELECT validationTypeID FROM Item WHERE orderItemID = ?;";
+
+        try (Connection conn = dbConnection.getConnection();
+
+            PreparedStatement stmt = conn.prepareStatement(sql) ) {
+            stmt.setInt(1, orderItemID);
+
+            try (ResultSet rs = stmt.executeQuery() ) {
+                if (rs.next()) return rs.getInt("validationTypeID");
+            }
+        }
+        return ValidationType.AWAITING.getId();
+    }
+
+    public void updateImageValidationType(int imageID, int validationTypeID) throws SQLException {
+        String sql = "UPDATE Image SET validationTypeID = ? WHERE imageID = ?;";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, validationTypeID);
+            ps.setInt(2, imageID);
+            ps.executeUpdate();
+        }
     }
 
     public void updateComment(MyImage img) throws Exception {

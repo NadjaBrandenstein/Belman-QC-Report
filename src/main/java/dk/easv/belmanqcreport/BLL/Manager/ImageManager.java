@@ -32,4 +32,17 @@ public class ImageManager {
     public void updateComment(MyImage img) throws Exception {
         imageRepository.updateComment(img);
     }
+
+    public void updateItemStatus(int orderItemID, int validationTypeID) throws Exception {
+        imageRepository.updateValidationType(orderItemID, validationTypeID);
+    }
+
+    public int getValidationType(int orderItemID) throws Exception {
+        return imageRepository.getValidationTypeByOrderItemID(orderItemID);
+    }
+
+    public void updateImageStatus(int imageID, int validationTypeID) throws Exception {
+        imageRepository.updateImageValidationType(imageID, validationTypeID);
+    }
+
 }

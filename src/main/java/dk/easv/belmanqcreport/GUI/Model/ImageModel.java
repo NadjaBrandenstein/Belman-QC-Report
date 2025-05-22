@@ -27,4 +27,20 @@ public class ImageModel {
     public void updateComment(MyImage img) throws Exception {
         imageManager.updateComment(img);
     }
+
+    /**
+     * Validation part
+     */
+    public void updateValidation(int orderItemID, int validationTypeID) throws Exception {
+        imageManager.updateItemStatus(orderItemID, validationTypeID);
+    }
+
+    public int getValidationType(int orderItemID) throws Exception {
+        return imageManager.getValidationType(orderItemID);
+    }
+
+    public void updateImageStatus(int imageID, int validationTypeID) throws Exception {
+        imageManager.updateImageStatus(imageID, validationTypeID);
+    }
+
 }
