@@ -10,6 +10,7 @@ import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
+import dk.easv.belmanqcreport.GUI.Model.LogModel;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -100,6 +101,7 @@ public class QcController implements Initializable {
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
+    private LogModel logModel;
     private Order order;
     private Window primaryStage;
     private int imagePositionID;
@@ -122,6 +124,11 @@ public class QcController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
+        try {
+            logModel = new LogModel();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             imageModel = new ImageModel();
@@ -478,16 +485,29 @@ public class QcController implements Initializable {
                 OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
 
                 String user = lblEmployee.getText();
+                String pos = updatedImage.getImagePosition().name();
+                int itemId = lstItem.getSelectionModel().getSelectedItem().getOrderItemId();
+
                 if (updatedImage.getValidationTypeID() == ValidationType.DENIED.getId()) {
                     logItems.add(String.format("Denied image %s of item %s by %s",
                             updatedImage.getImagePosition(),
                             lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
                             user));
+                    try {
+                        logModel.addLog(itemId, pos, "Denied image", user);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (updatedImage.getValidationTypeID() == ValidationType.APPROVED.getId()) {
                     logItems.add(String.format("Approved image %s of item %s by %s",
                             updatedImage.getImagePosition(),
                             lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
                             user));
+                    try {
+                        logModel.addLog(itemId, pos, "Approved image", user);
+                    } catch (Exception e) {
+                       e.printStackTrace();
+                    }
                 }
                 lstLog.scrollTo(logItems.size() - 1);
 
