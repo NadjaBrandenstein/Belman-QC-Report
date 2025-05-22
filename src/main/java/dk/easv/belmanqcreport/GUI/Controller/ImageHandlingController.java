@@ -37,7 +37,8 @@ public class ImageHandlingController {
     private Label lblOrderNumber;
     @FXML
     private Label lblEmployee;
-
+    @FXML
+    private MFXButton btnDelete;
     @FXML
     private MFXButton btnBackId;
     @FXML
@@ -74,13 +75,16 @@ public class ImageHandlingController {
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
 
         btnBackId.setText("");
-        setButtonIcon(btnBackId, "/dk/easv/belmanqcreport/Icons/backbtn.png");
+        setButtonIcon(btnBackId, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
 
         btnLogoutId.setText("");
-        setButtonIcon(btnLogoutId, "/dk/easv/belmanqcreport/Icons/logout.png");
+        setButtonIcon(btnLogoutId, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
 
         btnSaveId.setText("");
-        setButtonIcon(btnSaveId, "/dk/easv/belmanqcreport/Icons/save.png");
+        setButtonIcon(btnSaveId, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
+
+        btnDelete.setText("");
+        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
 
        this.model = new ImageHandlingModel();
        this.operatorController = new OperatorMainController();
@@ -204,7 +208,14 @@ public class ImageHandlingController {
     }
 
     @FXML
-    private void btnRefresh(ActionEvent actionEvent) {
+    private void btnDelete(ActionEvent actionEvent) {
+        //MyImage imageToDelete = capturedImages.get(currentImageIndex);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Image");
+        alert.setHeaderText("Are you sure you want to delete this image?");
+        alert.setContentText("This action cannot be undone.");
+        Optional<ButtonType> result = alert.showAndWait();
     }
 
     @FXML
@@ -248,7 +259,7 @@ public class ImageHandlingController {
         ((Stage)btnBackId.getScene().getWindow()).close();
     }
 
-    private void setButtonIcon(MFXButton button, String iconPath) {
+    private void setButtonIcon(MFXButton button, String iconPath, double width, double height) {
         URL iconUrl = getClass().getResource(iconPath);
         if (button == null) {
             System.out.println("Error loading icon: " + iconPath);
@@ -257,8 +268,8 @@ public class ImageHandlingController {
 
         Image icon = new Image(iconUrl.toExternalForm());
         ImageView imageView = new ImageView(icon);
-        imageView.setFitHeight(20);
-        imageView.setFitWidth(20);
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
         imageView.setPreserveRatio(true);
 
         button.setGraphic(imageView);

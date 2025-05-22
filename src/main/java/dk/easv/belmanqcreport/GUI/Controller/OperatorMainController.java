@@ -59,8 +59,6 @@ public class OperatorMainController {
     @FXML
     private MFXButton btnLogout;
     @FXML
-    private MFXButton btnDelete;
-    @FXML
     private MFXButton btnPrevious;
     @FXML
     private MFXButton btnNext;
@@ -102,8 +100,6 @@ public class OperatorMainController {
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png", 20, 20);
         btnLogout.setText("");
         setButtonIcon(btnLogout, "/dk/easv/belmanqcreport/Icons/logout.png", 20, 20);
-        btnDelete.setText("");
-        setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
         btnPrevious.setText("");
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");

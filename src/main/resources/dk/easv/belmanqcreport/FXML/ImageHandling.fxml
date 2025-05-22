@@ -53,13 +53,16 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <HBox fx:id="imageHboxCenter" alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1400.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+            <HBox fx:id="imageHboxCenter" alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="432.0" prefWidth="750.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
                </children></HBox>
          </center>
          <right>
-            <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton fx:id="btnDelete" onAction="#btnDelete" text="X" />
+               </children></HBox>
          </right>
          <left>
             <HBox prefHeight="258.0" prefWidth="55.0" BorderPane.alignment="CENTER" />

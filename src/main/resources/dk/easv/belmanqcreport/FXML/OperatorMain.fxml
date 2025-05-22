@@ -65,12 +65,8 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <right>
-            <HBox prefHeight="450.0" prefWidth="74.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="450.0" prefWidth="21.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton fx:id="btnDelete" onAction="#btnDelete" prefHeight="25.6" prefWidth="50.0" text="X">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin></MFXButton>
                   <HBox alignment="CENTER" prefHeight="450.0" prefWidth="17.0">
                      <children>
                         <ImageView fx:id="commentIcon" pickOnBounds="true" preserveRatio="true" styleClass="comment-icon" visible="false">
@@ -115,8 +111,8 @@
                      </AnchorPane>
                   <AnchorPane fx:id="imageRight" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      </AnchorPane>
-                  <AnchorPane fx:id="imageBack" style="-fx-border-color: gray;" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
-                  <AnchorPane fx:id="imageExtra" style="-fx-border-color: gray;" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <AnchorPane fx:id="imageBack" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" GridPane.columnIndex="2" />
+                  <AnchorPane fx:id="imageExtra" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </center>
