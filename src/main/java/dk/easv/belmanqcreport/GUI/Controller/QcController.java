@@ -1,6 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 
 // Project Imports
+import dk.easv.belmanqcreport.BE.Log;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
@@ -51,6 +52,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
@@ -264,8 +266,14 @@ public class QcController implements Initializable {
             if (newItem != null) {
 
                 loadImagesForItem(newItem.getOrderItemId());
+                try {
+                    loadLogList(newItem.getOrderItemId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 clearImages();
+                logItems.clear();
                 lblImageCount.setText("0 / 0");
             }
         });
@@ -352,6 +360,20 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadLogList(int orderItemId) throws Exception {
+        logItems.clear();
+        for(Log log : logModel.getLogsForItem(orderItemId)){
+            logItems.add(String.format(
+                    "%s image %s → %s by %s",
+                    log.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    log.getImagePosition(),
+                    log.getAction(),
+                    log.getUsername()
+            ));
+        }
+        lstLog.scrollTo(logItems.size() - 1);
     }
 
     private void showImageForPosition(Position position) {
@@ -508,6 +530,12 @@ public class QcController implements Initializable {
                     } catch (Exception e) {
                        e.printStackTrace();
                     }
+                    
+                    String line = String.format("Approved image %s of item %s by %s",
+                            updatedImage.getImagePosition(),
+                            lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
+                            user);
+                    logItems.add(line);
                 }
                 lstLog.scrollTo(logItems.size() - 1);
 

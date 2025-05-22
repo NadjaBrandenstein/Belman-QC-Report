@@ -5,6 +5,7 @@ import dk.easv.belmanqcreport.BLL.Manager.LogManager;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class LogModel {
 
@@ -22,6 +23,10 @@ public class LogModel {
         log.setUsername(user);
         log.setTimestamp(LocalDateTime.now());      // or however you track time
         return manager.addLog(log);
+    }
+
+    public List<Log> getLogsForItem(int orderItemId) throws Exception {
+        return manager.getLogsForItem(orderItemId);
     }
 
     public void addLogSafe(int orderItemId, String imagePosition, String action, String user) {
