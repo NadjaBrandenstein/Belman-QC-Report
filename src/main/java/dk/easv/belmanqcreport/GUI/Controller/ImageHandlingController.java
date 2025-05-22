@@ -142,13 +142,39 @@ public class ImageHandlingController {
 
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
-        //MyImage imageToDelete = capturedImages.get(currentImageIndex);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Image");
         alert.setHeaderText("Are you sure you want to delete this image?");
         alert.setContentText("This action cannot be undone.");
         Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            try{
+                imageModel.deleteImage(currentImage);
+
+                File file = new File(currentImage.getImagePath());
+                if(file.exists()){
+                    boolean deleted = file.delete();
+                    if(!deleted){
+                        System.out.println("Failed to delete image file: " + file.getAbsolutePath());
+                    }
+                }
+
+                onSaveCallBack.accept(null);
+
+                ((Stage) btnDelete.getScene().getWindow()).close();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Failed to delete image");
+                errorAlert.setContentText(e.getMessage());
+                errorAlert.showAndWait();
+            }
+        }
+
     }
 
     @FXML
