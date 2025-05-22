@@ -5,8 +5,6 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
-import dk.easv.belmanqcreport.BLL.UTIL.ImageDataFetcher;
-import dk.easv.belmanqcreport.BLL.UTIL.PDFGenerator;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
@@ -14,16 +12,10 @@ import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.AnchorPane;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -32,7 +24,6 @@ import javafx.stage.*;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -40,9 +31,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 // Java Imports
-import javax.imageio.ImageIO;
-import javax.swing.text.Document;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -575,6 +563,7 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+        PDFGeneratorImp.getInstance().setOrder(order);
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
         pdfGenerator = PDFGeneratorImp.getInstance();
         dk.easv.belmanqcreport.BLL.UTIL.OrderItem utilOrderItem = new dk.easv.belmanqcreport.BLL.UTIL.OrderItem();
