@@ -107,6 +107,7 @@ public class ImageHandlingController {
         txtComment.setText(image.getComment());
 
         checkDeny.setSelected(image.getValidationTypeID() == ValidationType.DENIED.getId());
+        resetCheckbox();
         showImage();
     }
 
@@ -199,6 +200,7 @@ public class ImageHandlingController {
             e.printStackTrace();
         }
 
+        resetCheckbox();
         onSaveCallBack.accept(currentImage);
         ((Stage)btnBackId.getScene().getWindow()).close();
     }
@@ -236,6 +238,10 @@ public class ImageHandlingController {
         logoImage.setFitWidth(100);  // Set your desired width
         logoImage.setFitHeight(100); // Set your desired height
         logoImage.setPreserveRatio(true);
+    }
+
+    private void resetCheckbox() {
+        checkDeny.setSelected(false);
     }
 
 
