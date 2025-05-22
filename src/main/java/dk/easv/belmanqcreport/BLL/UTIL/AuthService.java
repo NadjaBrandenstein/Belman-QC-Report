@@ -9,10 +9,10 @@ import dk.easv.belmanqcreport.GUI.Controller.QcController;
 import java.io.IOException;
 
 public class AuthService {
-    private final LoginRepository loginRepository;
+    public LoginRepository loginRepository;
     private final UserRepository userRepository;
-    private LoginController loginController;
-    private QcController qcController;
+    public LoginController loginController;
+    public QcController qcController;
 
     public AuthService() throws IOException {
         this.loginRepository = new LoginRepository();

@@ -3,7 +3,6 @@ package dk.easv.belmanqcreport.GUI.Model;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.Manager.OrderManager;
-import javafx.fxml.FXML;
 
 import java.util.List;
 import java.util.Optional;

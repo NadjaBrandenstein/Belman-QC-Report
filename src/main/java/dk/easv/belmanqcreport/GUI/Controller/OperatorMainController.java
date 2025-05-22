@@ -10,7 +10,6 @@ import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import org.opencv.core.Core;
@@ -26,7 +25,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 // Java Imports
