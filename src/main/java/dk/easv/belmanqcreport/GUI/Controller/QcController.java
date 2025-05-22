@@ -53,6 +53,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+import static java.awt.SystemColor.text;
+
 public class QcController implements Initializable {
 
     @FXML
@@ -114,7 +116,6 @@ public class QcController implements Initializable {
     private Map<Position, StackPane> getPaneByPosition;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -149,14 +150,9 @@ public class QcController implements Initializable {
         );
 
 
-
-
-
-
-
     }
 
-    private void initializeCheckBoxes(){
+    private void initializeCheckBoxes() {
 
         setButtonIcon(btnPDFSave, "/dk/easv/belmanqcreport/Icons/pdf.png", 50, 50);
         Node pdfIcon = btnPDFSave.getGraphic();
@@ -197,14 +193,15 @@ public class QcController implements Initializable {
         lstOrder.getItems().setAll(orders);
 
         lstOrder.setCellFactory(lv -> new ListCell<>() {
-            @Override protected void updateItem(Order o, boolean empty) {
+            @Override
+            protected void updateItem(Order o, boolean empty) {
                 super.updateItem(o, empty);
-                setText(empty||o==null ? null : o.getOrderNumber());
+                setText(empty || o == null ? null : o.getOrderNumber());
             }
         });
 
         lstOrder.getSelectionModel().selectedItemProperty().addListener((obs, oldOrder, selOrder) -> {
-            if(selOrder != null) {
+            if (selOrder != null) {
                 this.order = selOrder;
                 try {
                     List<OrderItem> items = imageHandlingModel.getItemsByOrderID(selOrder.getOrderID());
@@ -213,7 +210,7 @@ public class QcController implements Initializable {
                     //fetching from db
                     for (OrderItem item : lstItem.getItems()) {
                         int validType = imageModel.getValidationType(item.getOrderItemId());
-                        if(validType == ValidationType.APPROVED.getId()) {
+                        if (validType == ValidationType.APPROVED.getId()) {
                             approvedItems.add(item);
                         } else if (validType == ValidationType.DENIED.getId()) {
                             deniedItems.add(item);
@@ -230,9 +227,9 @@ public class QcController implements Initializable {
         });
 
         lstItem.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
-            if(newItem != null){
+            if (newItem != null) {
 
-                    loadImagesForItem(newItem.getOrderItemId());
+                loadImagesForItem(newItem.getOrderItemId());
             } else {
                 clearImages();
                 lblImageCount.setText("0 / 0");
@@ -241,16 +238,16 @@ public class QcController implements Initializable {
 
         lstItem.setCellFactory(lv -> new ListCell<>() {
             @Override
-            protected void updateItem(OrderItem item, boolean empty){
+            protected void updateItem(OrderItem item, boolean empty) {
                 super.updateItem(item, empty);
-                if(empty || item == null) {
+                if (empty || item == null) {
                     setText(null);
                     setStyle("");
                 } else {
                     setText(item.getOrderItem());
-                    if(deniedItems.contains(item)) {
+                    if (deniedItems.contains(item)) {
                         setStyle("-fx-background-color: red;");
-                    } else if(approvedItems.contains(item)){
+                    } else if (approvedItems.contains(item)) {
                         setStyle("-fx-background-color: green;");
                     } else {
                         setStyle("");
@@ -262,7 +259,7 @@ public class QcController implements Initializable {
     }
 
     private void loadImagesForItem(int orderItemId) {
-        try{
+        try {
             List<MyImage> images = imageModel.getImageForOrder(orderItemId);
 
             imagesByPosition.clear();
@@ -274,7 +271,7 @@ public class QcController implements Initializable {
                 pane.setStyle("");   // reset background
             }
 
-            for(MyImage image : images){
+            for (MyImage image : images) {
                 Position position = image.getImagePosition();
                 imagesByPosition.put(position, image);
                 showImageForPosition(position);
@@ -282,19 +279,19 @@ public class QcController implements Initializable {
 
             for (Map.Entry<Position, MyImage> e : imagesByPosition.entrySet()) {
                 Position pos = e.getKey();
-                MyImage img   = e.getValue();
+                MyImage img = e.getValue();
                 Rectangle overlay = imagePanesOverlay.get(pos);
                 if (overlay == null) continue;
 
                 switch (img.getValidationType()) {
                     case APPROVED:
-                        overlay.setFill(Color.color(0,1,0,0.3));
+                        overlay.setFill(Color.color(0, 1, 0, 0.3));
                         break;
                     case DENIED:
-                        overlay.setFill(Color.color(1,0,0,0.3));
+                        overlay.setFill(Color.color(1, 0, 0, 0.3));
                         break;
                     default:
-                        overlay.setFill(Color.color(0,0,0,0)); // awaiting / no tint
+                        overlay.setFill(Color.color(0, 0, 0, 0)); // awaiting / no tint
                 }
             }
 
@@ -302,7 +299,7 @@ public class QcController implements Initializable {
 
             OrderItem selectedItem = lstItem.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
-                if(approvedItems.contains(selectedItem)) {
+                if (approvedItems.contains(selectedItem)) {
                     applyOverlayForItem(selectedItem, true);
                 } else if (deniedItems.contains(selectedItem)) {
                     applyOverlayForItem(selectedItem, false);
@@ -341,7 +338,6 @@ public class QcController implements Initializable {
     }
 
 
-
     private void clearImages() {
         imageTop.getChildren().clear();
         imageFront.getChildren().clear();
@@ -352,8 +348,7 @@ public class QcController implements Initializable {
     }
 
 
-
-    private void setIcons(){
+    private void setIcons() {
 
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
         btnBack.setText("");
@@ -416,7 +411,7 @@ public class QcController implements Initializable {
     public void showImageAtIndex(int index) {
 
 
-        if(index < 0 || index >= capturedImages.size()) return;
+        if (index < 0 || index >= capturedImages.size()) return;
 
         MyImage img = capturedImages.get(index);
         Image fxImage = new Image(img.toURI());
@@ -432,9 +427,8 @@ public class QcController implements Initializable {
     }
 
 
-
     public void openImageHandlingScene(MyImage image) {
-        try{
+        try {
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/ImageHandling.fxml"));
             Parent root = loader.load();
@@ -442,20 +436,20 @@ public class QcController implements Initializable {
 
             controller.setOrderDetails(order, image, updatedImage -> {
 
-                        imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
-                        showImageForPosition(updatedImage.getImagePosition());
-                        updateImageCountLabel();
-                        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+                imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
+                showImageForPosition(updatedImage.getImagePosition());
+                updateImageCountLabel();
+                OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
 
-                        Rectangle overlay = imagePanesOverlay.get(updatedImage.getImagePosition());
-                        if(selected != null) {
-                            boolean denied = updatedImage.getValidationTypeID() == ValidationType.DENIED.getId();
-                            overlay.setFill(denied
-                                    ? Color.color(1, 0, 0, 0.3)
-                                    : Color.color(0, 1, 0, 0.3)
-                            );
-                        }
-                    });
+                Rectangle overlay = imagePanesOverlay.get(updatedImage.getImagePosition());
+                if (selected != null) {
+                    boolean denied = updatedImage.getValidationTypeID() == ValidationType.DENIED.getId();
+                    overlay.setFill(denied
+                            ? Color.color(1, 0, 0, 0.3)
+                            : Color.color(0, 1, 0, 0.3)
+                    );
+                }
+            });
 
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
@@ -508,86 +502,86 @@ public class QcController implements Initializable {
     }
 
 
-
     private PDFGeneratorImp pdfGenerator;
 
     @FXML
     private void btnSave(ActionEvent actionEvent) throws Exception {
-        PDFGeneratorImp.getInstance().setOrder(order);
-        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
-        pdfGenerator = PDFGeneratorImp.getInstance();
-        dk.easv.belmanqcreport.BLL.UTIL.OrderItem utilOrderItem = new dk.easv.belmanqcreport.BLL.UTIL.OrderItem();
-        utilOrderItem.setItemNumber(selected.getOrderItem());
-        pdfGenerator.setOrderItem(utilOrderItem);
-        String user = lblEmployee.getText();
+            PDFGeneratorImp.getInstance().setOrder(order);
+            OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+            pdfGenerator = PDFGeneratorImp.getInstance();
+            dk.easv.belmanqcreport.BLL.UTIL.OrderItem utilOrderItem = new dk.easv.belmanqcreport.BLL.UTIL.OrderItem();
+            utilOrderItem.setItemNumber(selected.getOrderItem());
+            pdfGenerator.setOrderItem(utilOrderItem);
+            String user = lblEmployee.getText();
 
-        if (selected == null) {
-            showAlert(Alert.AlertType.WARNING, "No order item selected.");
-            return;
-        }
-
-
-        boolean isDeny = idDenied.isSelected();
-        boolean isApprove = idApproved.isSelected();
-
-        if (isDeny == isApprove) {
-            showAlert(Alert.AlertType.WARNING, "Please select either Approve or Deny.");
-            return;
-        }
-
-        String verb = isDeny ? "Deny" : "Approve";
-        if (!showConfirmation("Confirm " + verb, "Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?")) {
-            resetCheckBoxes();
-            return;
-        }
-
-        if (isDeny) {
-            updateItemStatus(selected, deniedItems, approvedItems, "Denied", user);
-        } else {
-            updateItemStatus(selected, approvedItems, deniedItems, "Approved", user);
-            savePDF(actionEvent);
-        }
-    }
-
-    private void updateItemStatus(OrderItem item, Set<OrderItem> addTo, Set<OrderItem> removeFrom, String status, String user) throws Exception {
-        if (status.equals("Approved")) {
-            //item.setOrderItem(item.getOrderItem() + " (Approved)");
-        }else if(status.equalsIgnoreCase("Denied")){
-            //item.setOrderItem(item.getOrderItem() + " (Denied)");
-        }
-        addTo.add(item);
-        removeFrom.remove(item);
-        //item.setOrderItem("NewOrderItem: " + item.getOrderItem());
-        lstItem.refresh();
-
-        boolean approved = status.equalsIgnoreCase("Approved");
-        int vtID = approved
-                ? ValidationType.APPROVED.getId()
-                : ValidationType.DENIED.getId();
-        imageModel.updateValidation(item.getOrderItemId(), vtID);
-
-        showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
-        logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
-        lstLog.scrollTo(logItems.size() - 1);
-        resetCheckBoxes();
-        applyOverlayForItem(item, status.equals("Approved"));
-    }
-
-    private void applyOverlayForItem(OrderItem selected, boolean approved) {
-        // clear all overlays
-        imagePanesOverlay.values().forEach(r -> r.setFill(Color.color(0,0,0,0)));
-        // tint only matching slot(s)
-        imagesByPosition.forEach((pos, img) -> {
-            if (img.getOrderItemID() == selected.getOrderItemId()) {
-                Rectangle overlay = imagePanesOverlay.get(pos);
-                overlay.setFill(
-                        approved
-                                ? Color.color(0,1,0, 0.3)   // transparent green
-                                : Color.color(1,0,0, 0.3)   // transparent red
-                );
+            if (selected == null) {
+                showAlert(Alert.AlertType.WARNING, "No order item selected.");
+                return;
             }
-        });
-    }
+
+
+            boolean isDeny = idDenied.isSelected();
+            boolean isApprove = idApproved.isSelected();
+
+            if (isDeny == isApprove) {
+                showAlert(Alert.AlertType.WARNING, "Please select either Approve or Deny.");
+                return;
+            }
+
+            String verb = isDeny ? "Deny" : "Approve";
+            if (!showConfirmation("Confirm " + verb, "Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?")) {
+                resetCheckBoxes();
+                return;
+            }
+
+            if (isDeny) {
+                updateItemStatus(selected, deniedItems, approvedItems, "Denied", user);
+            } else {
+                updateItemStatus(selected, approvedItems, deniedItems, "Approved", user);
+                savePDF(actionEvent);
+            }
+        }
+
+        private void updateItemStatus (OrderItem item, Set < OrderItem > addTo, Set < OrderItem > removeFrom, String
+        status, String user) throws Exception {
+            if (status.equals("Approved")) {
+                //item.setOrderItem(item.getOrderItem() + " (Approved)");
+            } else if (status.equalsIgnoreCase("Denied")) {
+                //item.setOrderItem(item.getOrderItem() + " (Denied)");
+            }
+            addTo.add(item);
+            removeFrom.remove(item);
+            //item.setOrderItem("NewOrderItem: " + item.getOrderItem());
+            lstItem.refresh();
+
+            boolean approved = status.equalsIgnoreCase("Approved");
+            int vtID = approved
+                    ? ValidationType.APPROVED.getId()
+                    : ValidationType.DENIED.getId();
+            imageModel.updateValidation(item.getOrderItemId(), vtID);
+
+            showInfo("Item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
+            logItems.add(String.format("%s item %s by %s", status, item.getOrderItem(), user));
+            lstLog.scrollTo(logItems.size() - 1);
+            resetCheckBoxes();
+            applyOverlayForItem(item, status.equals("Approved"));
+        }
+
+        private void applyOverlayForItem (OrderItem selected,boolean approved){
+            // clear all overlays
+            imagePanesOverlay.values().forEach(r -> r.setFill(Color.color(0, 0, 0, 0)));
+            // tint only matching slot(s)
+            imagesByPosition.forEach((pos, img) -> {
+                if (img.getOrderItemID() == selected.getOrderItemId()) {
+                    Rectangle overlay = imagePanesOverlay.get(pos);
+                    overlay.setFill(
+                            approved
+                                    ? Color.color(0, 1, 0, 0.3)   // transparent green
+                                    : Color.color(1, 0, 0, 0.3)   // transparent red
+                    );
+                }
+            });
+        }
 
     private void savePDF(ActionEvent actionEvent) {
         try {
@@ -606,90 +600,83 @@ public class QcController implements Initializable {
         }
     }
 
-    private File showSaveDialog(String initialFileName) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
-        fileChooser.setInitialFileName(initialFileName);
-        return fileChooser.showSaveDialog((Stage) btnPDFSave.getScene().getWindow());
-    }
-
-    private boolean showConfirmation(String title, String content) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, content, ButtonType.OK, ButtonType.CANCEL);
-        confirm.setTitle(title);
-        return confirm.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
-    }
-
-    private void showAlert(Alert.AlertType type, String message) {
-        new Alert(type, message).showAndWait();
-    }
-
-    private void resetCheckBoxes() {
-        idDenied.setSelected(false);
-        idApproved.setSelected(false);
-    }
-
-
-
-
-
-
-
-
-    private List<MyImage> getImageList() {
-        return List.of();
-    }
-
-    public void setUserName(String userName) {
-        lblEmployee.setText(userName);
-    }
-
-
-
-    private void setImageViewIcon(ImageView logoImage, String iconPath) {
-        if (logoImage == null) {
-            System.out.println("logoImage is null. Cannot set icon: " + iconPath);
-            return;
+        private File showSaveDialog (String initialFileName){
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+            fileChooser.setInitialFileName(initialFileName);
+            return fileChooser.showSaveDialog((Stage) btnPDFSave.getScene().getWindow());
         }
 
-        URL iconUrl = getClass().getResource(iconPath);
-        if (iconUrl == null) {
-            System.out.println("Error loading icon: " + iconPath);
-            return;
+        private boolean showConfirmation (String title, String content){
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, content, ButtonType.OK, ButtonType.CANCEL);
+            confirm.setTitle(title);
+            return confirm.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
         }
 
-        Image icon = new Image(iconUrl.toExternalForm());
-        logoImage.setImage(icon);
-        logoImage.setFitWidth(100);  // Set your desired width
-        logoImage.setFitHeight(100); // Set your desired height
-        logoImage.setPreserveRatio(true);
-    }
+        private void showAlert (Alert.AlertType type, String message){
+            new Alert(type, message).showAndWait();
+        }
+
+        private void resetCheckBoxes () {
+            idDenied.setSelected(false);
+            idApproved.setSelected(false);
+        }
 
 
-    private void displayImages(List<MyImage> capturedImages) {
-        imageFront.getChildren().clear();
-        for (MyImage image : capturedImages) {
+        private List<MyImage> getImageList () {
+            return List.of();
+        }
 
-            String uri = new File(image .getImagePath()).toURI().toString();
-            Image fxImage = new Image(uri);
+        public void setUserName (String userName){
+            lblEmployee.setText(userName);
+        }
 
-            ImageView imageView = new ImageView(fxImage);
-            imageView.setFitWidth(100);
-            imageView.setFitHeight(100);
-            imageView.setPreserveRatio(true);
 
-            imageFront.getChildren().add(imageView);
+        private void setImageViewIcon (ImageView logoImage, String iconPath){
+            if (logoImage == null) {
+                System.out.println("logoImage is null. Cannot set icon: " + iconPath);
+                return;
+            }
+
+            URL iconUrl = getClass().getResource(iconPath);
+            if (iconUrl == null) {
+                System.out.println("Error loading icon: " + iconPath);
+                return;
+            }
+
+            Image icon = new Image(iconUrl.toExternalForm());
+            logoImage.setImage(icon);
+            logoImage.setFitWidth(100);  // Set your desired width
+            logoImage.setFitHeight(100); // Set your desired height
+            logoImage.setPreserveRatio(true);
+        }
+
+
+        private void displayImages (List < MyImage > capturedImages) {
+            imageFront.getChildren().clear();
+            for (MyImage image : capturedImages) {
+
+                String uri = new File(image.getImagePath()).toURI().toString();
+                Image fxImage = new Image(uri);
+
+                ImageView imageView = new ImageView(fxImage);
+                imageView.setFitWidth(100);
+                imageView.setFitHeight(100);
+                imageView.setPreserveRatio(true);
+
+                imageFront.getChildren().add(imageView);
+            }
+        }
+
+        @FXML
+        private void checkApproved (ActionEvent actionEvent){
+        }
+
+        @FXML
+        private void checkDenied (ActionEvent actionEvent){
+        }
+
+        public void setFirstNameAndLastName (String text){
+            lblEmployee.setText(text);
         }
     }
-
-    @FXML
-    private void checkApproved(ActionEvent actionEvent) {
-    }
-
-    @FXML
-    private void checkDenied(ActionEvent actionEvent) {
-    }
-
-    public void setFirstNameAndLastName(String text) {
-        lblEmployee.setText(text);
-    }
-}

@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -46,12 +47,22 @@ public class PDFGeneratorImp implements PDFGenerator {
     }
 
     @Override
-    public void generatePDF(String fileName, String s) {
+    public void generatePDF(String fileName, String imagePath) {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
 
-            PDImageXObject pdImage = PDImageXObject.createFromFile("saved_image.png", document);
+            File imgFile = new File(imagePath);
+            if (!imgFile.exists()) {
+                System.out.println("Image file does not exist: " + imgFile.getAbsolutePath());
+                return;
+            }
+            BufferedImage bufferedImage = ImageIO.read(imgFile);
+            if (bufferedImage == null) {
+                System.out.println("Could not load image:" + imagePath);
+                return;
+            }
+            PDImageXObject pdImage = LosslessFactory.createFromImage(document, bufferedImage);
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 float scale = 0.5f;
                 float x = 100;
@@ -71,6 +82,7 @@ public class PDFGeneratorImp implements PDFGenerator {
             for (MyImage myImage : images) {
 
                 File imgFile = new File(myImage.getImagePath());
+                System.out.println("Checking image file: " + imgFile.getAbsolutePath() + ",exists?" + imgFile.exists());
                 if (!imgFile.exists()) {
                     System.out.println("Skipping missing image: " + myImage.getImagePath());
                     continue;
@@ -78,6 +90,10 @@ public class PDFGeneratorImp implements PDFGenerator {
 
                 BufferedImage bufferedImage = ImageIO.read(imgFile);
 
+                if (bufferedImage == null) {
+                    System.out.println("Failed to load image file:" + imgFile.getAbsolutePath());
+                    continue;
+                }
                 PDPage page = new PDPage(PDRectangle.A4);
                 document.addPage(page);
 
@@ -150,6 +166,15 @@ public class PDFGeneratorImp implements PDFGenerator {
 
                             contentStream.newLineAtOffset(rightTextX, textY);
                             contentStream.showText(userLabel);
+                            contentStream.endText();
+
+                            contentStream.beginText();
+                            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 6);
+                            float dateTextY = textY - 7;
+                            contentStream.newLineAtOffset(rightTextX, dateTextY);
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            String creationDateStr = "Created: " + sdf.format(new Date());
+                            contentStream.showText(creationDateStr);
                             contentStream.endText();
 
                             contentStream.setNonStrokingColor(0,0,0);
