@@ -4,6 +4,7 @@ import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 // Other Imports
+import dk.easv.belmanqcreport.DAL.Interface.Position;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.utils.SwingFXUtils;
 import org.opencv.core.Core;
@@ -46,6 +47,10 @@ public class CameraController {
     private final CameraHandling cameraHandler = new CameraHandling();
     private OperatorMainController parentController;
     private QcController qcController;
+
+    private Position capturePosition;
+
+
 
     public void setParentController(OperatorMainController controller) {
         this.parentController = controller;
@@ -97,6 +102,8 @@ public class CameraController {
 
     }
 
+
+
     @FXML
     private void captureBtn(ActionEvent actionEvent) {
 
@@ -114,7 +121,7 @@ public class CameraController {
             System.out.println("Image saved to: " + fullPath);
 
             File imageFile = new File(fullPath);
-            MyImage image = new MyImage(imageFile);
+            MyImage image = new MyImage(imageFile, capturePosition);
 
             if (parentController != null) {
                 image.setOrderItemID(orderItem.getOrderItemId());
@@ -176,4 +183,7 @@ public class CameraController {
         button.setGraphic(imageView);
     }
 
+    void setImagePosition(Position position) {
+        this.capturePosition = position;
+    }
 }

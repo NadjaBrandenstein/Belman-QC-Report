@@ -6,6 +6,7 @@ import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
+import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 // Other Imports
@@ -31,12 +32,9 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class OperatorMainController {
-
 
     @FXML
     private Label lblOrderNumber;
@@ -87,6 +85,11 @@ public class OperatorMainController {
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
     private Stage stage;
+
+
+    private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
+
+    private Map<Position, AnchorPane> getPaneByPosition;
 
     @FXML
     private void initialize() throws Exception {
@@ -141,6 +144,23 @@ public class OperatorMainController {
             }
         });*/
         //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
+
+        getPaneByPosition = Map.of(
+                Position.TOP, imageTop,
+                Position.FRONT, imageFront,
+                Position.BACK, imageBack,
+                Position.LEFT, imageLeft,
+                Position.RIGHT, imageRight,
+                Position.EXTRA, imageExtra
+        );
+
+        imageTop.setOnMouseClicked(event -> handleImageClick(Position.TOP));
+        imageFront.setOnMouseClicked(event -> handleImageClick(Position.FRONT));
+        imageBack.setOnMouseClicked(event -> handleImageClick(Position.BACK));
+        imageLeft.setOnMouseClicked(event -> handleImageClick(Position.LEFT));
+        imageRight.setOnMouseClicked(event -> handleImageClick(Position.RIGHT));
+        imageExtra.setOnMouseClicked(event -> handleImageClick(Position.EXTRA));
+
     }
 
     private void openImageHandlingScene(MyImage image) {
@@ -174,6 +194,26 @@ public class OperatorMainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleImageClick(Position position) {
+        if (position == Position.EXTRA) {
+            List<MyImage> extras = getExtraImages();
+            if (!extras.isEmpty()) {
+                showExtraImageAtIndex(currentImageIndex >= 0 ? currentImageIndex : 0);
+            } else {
+                openCameraAndSaveImage(position);
+            }
+            return;
+        }
+
+        MyImage existingImage = imagesByPosition.get(position);
+        if (existingImage != null) {
+            openImageHandlingScene(existingImage);
+        } else {
+            openCameraAndSaveImage(position);
+        }
+
     }
 
     /*private void showOrderDetails(Order order) {
@@ -257,9 +297,10 @@ public class OperatorMainController {
 
     @FXML
     private void btnPrevious(ActionEvent actionEvent) {
-        if(currentImageIndex > 0) {
+        List<MyImage> extraImages = getExtraImages();
+        if(currentImageIndex > 0 && currentImageIndex < extraImages.size()) {
             currentImageIndex--;
-            showImageAtIndex(currentImageIndex);
+            showExtraImageAtIndex(currentImageIndex);
             updateImageCountLabel();
         }
 
@@ -267,16 +308,67 @@ public class OperatorMainController {
 
     @FXML
     private void btnNext(ActionEvent actionEvent) {
-        if(currentImageIndex < capturedImages.size() -1) {
+        List<MyImage> extraImages = getExtraImages();
+        if(currentImageIndex < extraImages.size() -1) {
             currentImageIndex++;
-            showImageAtIndex(currentImageIndex);
+            showExtraImageAtIndex(currentImageIndex);
             updateImageCountLabel();
         }
 
     }
 
+    private List<MyImage> getExtraImages(){
+        List<MyImage> extraImg = new ArrayList<>();
+
+        for (MyImage img : capturedImages) {
+            if (img.getImagePosition() == Position.EXTRA) {
+                extraImg.add(img);
+            }
+        }
+        return extraImg;
+    }
+
+    private void showExtraImageAtIndex (int index) {
+        List<MyImage> extraImages = getExtraImages();
+        if(index < 0 || index >= extraImages.size()) {
+            return;
+        }
+
+        MyImage img = extraImages.get(index);
+        Image fxImage = new Image(img.toURI());
+        ImageView imageView = new ImageView(fxImage);
+
+        imageView.fitWidthProperty().bind(imageExtra.widthProperty());
+        imageView.fitHeightProperty().bind(imageExtra.heightProperty());
+        imageView.setPreserveRatio(true);
+        imageView.setOnMouseClicked(e -> openImageHandlingScene(img));
+
+        imageExtra.getChildren().setAll(imageView);
+
+    }
+
+    public void updateImageCountLabel() {
+        List<MyImage> extraImages = getExtraImages();
+        boolean hasExtras = !extraImages.isEmpty();
+
+        lblImageCount.setVisible(hasExtras);
+        btnNext.setVisible(hasExtras);
+        btnPrevious.setVisible(hasExtras);
+
+        if(extraImages.isEmpty()) {
+            lblImageCount.setText("");
+        }
+        else {
+            lblImageCount.setText((currentImageIndex + 1) + " / " + extraImages.size());
+        }
+    }
+
+
     @FXML
     private void btnCamera(ActionEvent actionEvent) {
+
+        // Only allow capturing images for the EXTRA position via this button
+        Position position = Position.EXTRA;
 
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
@@ -293,6 +385,7 @@ public class OperatorMainController {
             CameraController controller = loader.getController();
             controller.setParentController(this);
             controller.setOrderItem(currentOrderItem);
+            controller.setImagePosition(position);
 
             //controller.initialize();
 
@@ -306,18 +399,60 @@ public class OperatorMainController {
         }
     }
 
-    public void displayCapturedImage (MyImage myImg) {
-        Platform.runLater(() -> {
+    private void showImageForPosition(Position position) {
+        AnchorPane targetPane = getPaneByPosition.get(position);
+        targetPane.getChildren().clear();
 
+        MyImage image = imagesByPosition.get(position);
+        if (image != null) {
 
-            myImg.setOrderItemID(currentOrderItem.getOrderItemId());
+            Image fxImage = new Image(image.toURI());
+            ImageView imageView = new ImageView(fxImage);
 
-            capturedImages.add(myImg);
-            currentImageIndex = capturedImages.size() -1;
-            updateImageCountLabel();
-            showImageAtIndex(currentImageIndex);
+            imageView.fitWidthProperty().bind(targetPane.widthProperty());
+            imageView.fitHeightProperty().bind(targetPane.heightProperty());
+            imageView.setPreserveRatio(true);
+            //imageView.setOnMouseClicked(e -> openImageHandlingScene(image));
 
-        });
+            imageView.setOnMouseClicked(null);
+            imageView.setOnMouseClicked(e -> {
+                e.consume();
+                openImageHandlingScene(image);
+            });
+
+            targetPane.getChildren().setAll(imageView);
+        }
+        else {
+            targetPane.setOnMouseClicked(e -> openCameraAndSaveImage(position));
+        }
+    }
+
+    private void openCameraAndSaveImage(Position position) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/belmanqcreport/FXML/Camera.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            Stage camStage = new Stage();
+            camStage.getIcons().add(new Image("/dk/easv/belmanqcreport/Icons/Belman.png"));
+            camStage.setTitle("Capture - " + position);
+            camStage.setScene(scene);
+            camStage.setResizable(true);
+            camStage.setMaximized(true);
+
+            System.out.println("DEBUG: openCameraAndSaveImage() → position: " + position);
+
+            CameraController controller = loader.getController();
+            controller.setParentController(this);
+            controller.setOrderItem(currentOrderItem);
+            controller.setImagePosition(position); // NEW: pass position if needed
+
+            camStage.setOnCloseRequest(event -> controller.cleanup());
+            camStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to open camera.");
+            alert.showAndWait();
+        }
     }
 
     public void showImageAtIndex(int index) {
@@ -337,8 +472,45 @@ public class OperatorMainController {
 
     }
 
-    public void updateImageCountLabel() {
-        lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
+    public void displayCapturedImage(MyImage myImg) {
+
+        Platform.runLater(() -> {
+            Position pos = myImg.getImagePosition();
+            myImg.setOrderItemID(currentOrderItem.getOrderItemId());
+
+            capturedImages.add(myImg);
+            currentImageIndex = capturedImages.size() - 1;
+
+            if(pos == Position.EXTRA){
+                List<MyImage> extraImages = getExtraImages();
+                currentImageIndex = extraImages.size() - 1;
+                showExtraImageAtIndex(currentImageIndex);
+                //showAllExtraImages();
+            }
+            else {
+                imagesByPosition.put(pos, myImg);
+                showImageForPosition(pos);
+            }
+
+            updateImageCountLabel();
+        });
+
+    }
+
+    private void showAllExtraImages() {
+        imageExtra.getChildren().clear();
+
+        for (MyImage img : capturedImages) {
+            if(img.getImagePosition() == Position.EXTRA) {
+                Image fxImage = new Image(img.toURI());
+                ImageView imageView = new ImageView(fxImage);
+                imageView.fitWidthProperty().bind(imageExtra.widthProperty());
+                imageView.fitHeightProperty().bind(imageExtra.heightProperty());
+                imageView.setPreserveRatio(true);
+                imageView.setOnMouseClicked(e -> openImageHandlingScene(img));
+                imageExtra.getChildren().setAll(imageView);
+            }
+        }
     }
 
     @FXML
@@ -346,9 +518,19 @@ public class OperatorMainController {
         try{
             for (MyImage myImage : capturedImages) {
                 if(myImage.getImageID() <= 0) {
+
+                    ImageView imageView = new ImageView();
+
                     MyImage saved = imageModel.saveNewImage(myImage);
                     myImage.setImageID(saved.getImageID());
                     currentOrderItem.getImages().add(myImage);
+
+                    imageTop.getChildren().add(imageView);
+                    imageFront.getChildren().setAll(imageView);
+                    imageBack.getChildren().setAll(imageView);
+                    imageLeft.getChildren().setAll(imageView);
+                    imageRight.getChildren().setAll(imageView);
+                    imageExtra.getChildren().setAll(imageView);
                 } else {
                     imageModel.updateImage(myImage);
                 }
@@ -364,9 +546,9 @@ public class OperatorMainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
+
 
     private void setButtonIcon(Button button, String iconPath, double width, double height) {
         if (button == null) {
@@ -387,11 +569,6 @@ public class OperatorMainController {
         imageView.setPreserveRatio(true);
 
         button.setGraphic(imageView);
-    }
-
-    public void setUserName(String userName) {
-
-        lblEmployee.setText(userName);
     }
 
     private void setImageViewIcon(ImageView logoImage, String iconPath) {
@@ -461,8 +638,18 @@ public class OperatorMainController {
             List<MyImage> imgs = imageModel.getImageForOrder(orderItemID);
 
             System.out.println("DEBUG: loadImagesForItem(" + orderItemID + ") → " + imgs.size() + " images");
+            imagesByPosition.clear();
+            clearImages();
 
-            capturedImages = new ArrayList<>(imgs);
+            for (MyImage image : imgs) {
+                Position pos = image.getImagePosition();
+                imagesByPosition.put(pos, image);
+                showImageForPosition(pos);
+            }
+
+            updateImageCountLabel();
+
+            /*capturedImages = new ArrayList<>(imgs);
             currentImageIndex = imgs.isEmpty() ? -1 : 0;
             clearImages();
 
@@ -472,7 +659,7 @@ public class OperatorMainController {
             } else {
                 //imageHboxCenter.getChildren().clear();
                 lblImageCount.setText("0 / 0");
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -480,9 +667,14 @@ public class OperatorMainController {
     }
 
     private void clearImages() {
+        imageTop.getChildren().clear();
         imageFront.getChildren().clear();
+        imageBack.getChildren().clear();
+        imageLeft.getChildren().clear();
+        imageRight.getChildren().clear();
+        imageExtra.getChildren().clear();
+        lblImageCount.setText("");
     }
-
 
     /*@FXML
     private void cbOrderNumber(ActionEvent actionEvent) {
@@ -503,27 +695,8 @@ public class OperatorMainController {
 
     }*/
 
-    private void displayImages(List<MyImage> capturedImages) {
-        imageFront.getChildren().clear();
-        for (MyImage image : capturedImages) {
-
-            String uri = new File(image .getImagePath()).toURI().toString();
-            Image fxImage = new Image(uri);
-
-            ImageView imageView = new ImageView(fxImage);
-            imageView.setFitWidth(100);
-            imageView.setFitHeight(100);
-            imageView.setPreserveRatio(true);
-            imageFront.getChildren().add(imageView);
-        }
-    }
-
     public void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    public Order getCurrentOrder() {
-        return currentOrder;
     }
 
     public void setFirstNameAndLastName(String text) {
