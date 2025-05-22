@@ -282,6 +282,24 @@ public class QcController implements Initializable {
                 showImageForPosition(position);
             }
 
+            for (Map.Entry<Position, MyImage> e : imagesByPosition.entrySet()) {
+                Position pos = e.getKey();
+                MyImage img   = e.getValue();
+                Rectangle overlay = imagePanesOverlay.get(pos);
+                if (overlay == null) continue;
+
+                switch (img.getValidationType()) {
+                    case APPROVED:
+                        overlay.setFill(Color.color(0,1,0,0.3));
+                        break;
+                    case DENIED:
+                        overlay.setFill(Color.color(1,0,0,0.3));
+                        break;
+                    default:
+                        overlay.setFill(Color.color(0,0,0,0)); // awaiting / no tint
+                }
+            }
+
             lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
 
             OrderItem selectedItem = lstItem.getSelectionModel().getSelectedItem();
@@ -424,11 +442,21 @@ public class QcController implements Initializable {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
-            controller.setOrderDetails(order,
-                    image, updatedImage -> {
-                        capturedImages.set(currentImageIndex, updatedImage);
-                        showImageAtIndex(currentImageIndex);
+            controller.setOrderDetails(order, image, updatedImage -> {
+
+                        imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
+                        showImageForPosition(updatedImage.getImagePosition());
                         updateImageCountLabel();
+                        OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
+
+                        Rectangle overlay = imagePanesOverlay.get(updatedImage.getImagePosition());
+                        if(selected != null) {
+                            boolean denied = updatedImage.getValidationTypeID() == ValidationType.DENIED.getId();
+                            overlay.setFill(denied
+                                    ? Color.color(1, 0, 0, 0.3)
+                                    : Color.color(0, 1, 0, 0.3)
+                            );
+                        }
                     });
 
 
@@ -451,7 +479,7 @@ public class QcController implements Initializable {
     }
 
     public void updateImageCountLabel() {
-        lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
+        lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
     }
 
 

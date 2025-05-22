@@ -39,4 +39,8 @@ public class ImageModel {
         return imageManager.getValidationType(orderItemID);
     }
 
+    public void updateImageStatus(int imageID, int validationTypeID) throws Exception {
+        imageManager.updateImageStatus(imageID, validationTypeID);
+    }
+
 }

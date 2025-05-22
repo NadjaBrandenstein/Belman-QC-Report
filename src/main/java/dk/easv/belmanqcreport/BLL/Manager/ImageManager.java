@@ -41,4 +41,8 @@ public class ImageManager {
         return imageRepository.getValidationTypeByOrderItemID(orderItemID);
     }
 
+    public void updateImageStatus(int imageID, int validationTypeID) throws Exception {
+        imageRepository.updateImageValidationType(imageID, validationTypeID);
+    }
+
 }
