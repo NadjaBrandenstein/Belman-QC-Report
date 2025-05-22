@@ -5,33 +5,26 @@
         import dk.easv.belmanqcreport.BE.User;
         // Other Imports
         import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
-        import dk.easv.belmanqcreport.BLL.UTIL.Search;
         import dk.easv.belmanqcreport.GUI.Model.UserModel;
         import dk.easv.belmanqcreport.Main;
         import io.github.palexdev.materialfx.controls.MFXButton;
         // JavaFX Imports
         import io.github.palexdev.materialfx.controls.MFXTextField;
-        import javafx.collections.FXCollections;
-        import javafx.collections.ObservableList;
         import javafx.event.ActionEvent;
         import javafx.fxml.FXML;
         import javafx.fxml.FXMLLoader;
         import javafx.fxml.Initializable;
         import javafx.geometry.Rectangle2D;
         import javafx.scene.Node;
-        import javafx.scene.Parent;
         import javafx.scene.Scene;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.Image;
         import javafx.scene.image.ImageView;
-        import javafx.stage.Modality;
         import javafx.stage.Screen;
         import javafx.stage.Stage;
 
-        import javax.naming.Context;
         import java.io.IOException;
-        import java.io.InputStream;
         import java.net.URL;
         import java.util.List;
         import java.util.Objects;

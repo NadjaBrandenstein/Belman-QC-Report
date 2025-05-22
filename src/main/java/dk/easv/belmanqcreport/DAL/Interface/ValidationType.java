@@ -5,4 +5,12 @@ public enum ValidationType {
     private int id;
     ValidationType(int id) { this.id = id; }
     public int getId() { return id; }
+
+    public static ValidationType fromId(int id) {
+        for (ValidationType v : values()) {
+            if (v.id == id) return v;
+        }
+        return AWAITING;
+    }
+
 }

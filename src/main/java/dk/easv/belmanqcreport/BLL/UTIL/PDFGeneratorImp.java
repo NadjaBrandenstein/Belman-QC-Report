@@ -30,12 +30,11 @@ public class PDFGeneratorImp implements PDFGenerator {
     private OrderItem orderItem;
     private QcController qcController;
     private String employeeName = "";
-    private String orderNumberFromDatabase = "";
+    private String orderNumber = "";
 
     private PDFGeneratorImp() {
         order = new Order();
         orderItem = new OrderItem();
-
     }
 
     private static class Holder{
@@ -126,29 +125,17 @@ public class PDFGeneratorImp implements PDFGenerator {
 
                             contentStream.endText();
 
-                            /*Order order = new Order();
-                            order.setOrderNumber(actualOrderNumberFromYourData);
-                            JComboBox<Order> orderComboBox = new JComboBox<>();
-                            Order selectedOrder = (Order) orderComboBox.getSelectedItem();
-                            PDFGeneratorImp.getInstance().setOrder(selectedOrder);
-                            List<MyImage> imageList = List.of();
-                            PDFGeneratorImp.getInstance().generatePDF("Report", imageList);*/
-
-                            String orderNumber = getOrderNumberFromDatabase(orderItem);
-                            /*String orderNumber = (order != null && order.getOrderNumber() != null) ? order.getOrderNumber() : "N/A";*/
+                            String orderNumber = (order != null && order.getOrderNumber() != null) ? order.getOrderNumber() : "Unknown";
                             String orderText = "Order " + orderNumber;
-
-
-
 
                             float fontSize = 18;
                             float textWidth = PDType1Font.HELVETICA_BOLD.getStringWidth(orderText) / 1000 * fontSize;
-
-
                             float textX = headerX + (headerWidth - textWidth) / 2;
                             float textY = logoY + (headerHeight / 2) - (fontSize / 2.5f);  // Adjust for vertical alignment
 
                             contentStream.beginText();
+                            contentStream.setNonStrokingColor(255,255,255);
+                            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
                             contentStream.newLineAtOffset(textX, textY);
                             contentStream.showText(orderText);
                             contentStream.endText();

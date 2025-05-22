@@ -93,7 +93,7 @@
             </HBox>
          </right>
          <center>
-            <MFXCheckbox text="Denied" BorderPane.alignment="CENTER" />
+            <MFXCheckbox fx:id="checkDeny" text="Denied" BorderPane.alignment="CENTER" />
          </center></BorderPane>
    </bottom>
 

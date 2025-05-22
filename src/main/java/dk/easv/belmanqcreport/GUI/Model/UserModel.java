@@ -13,9 +13,6 @@ import java.util.List;
 import javafx.collections.FXCollections;
 
 
-import java.io.IOException;
-
-
 public class UserModel {
 
     private ObservableList<User> tblEmployee;
