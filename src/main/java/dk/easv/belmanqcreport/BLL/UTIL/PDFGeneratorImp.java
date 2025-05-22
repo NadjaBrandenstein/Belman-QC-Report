@@ -57,7 +57,7 @@ public class PDFGeneratorImp implements PDFGenerator {
                 System.out.println("Image file does not exist: " + imgFile.getAbsolutePath());
                 return;
             }
-            BufferedImage bufferedImage = ImageIO.read(imgFile);
+            BufferedImage bufferedImage = ImageIO.read(new File("dk/easv/belmanqcreport/Images"));
             if (bufferedImage == null) {
                 System.out.println("Could not load image:" + imagePath);
                 return;
