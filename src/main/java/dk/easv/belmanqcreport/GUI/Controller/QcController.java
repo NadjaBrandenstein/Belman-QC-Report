@@ -266,6 +266,8 @@ public class QcController implements Initializable {
             List<MyImage> images = imageModel.getImageForOrder(orderItemId);
 
             imagesByPosition.clear();
+            /*capturedImages.clear();
+            capturedImages.addAll(images);*/
 
             clearImages();
             for (StackPane pane : getPaneByPosition.values()) {
@@ -593,7 +595,10 @@ public class QcController implements Initializable {
             if (pdfFile != null) {
                 PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
                 pdfGen.setEmployeeName(lblEmployee.getText());
-                pdfGen.generatePDF(pdfFile.getAbsolutePath(), capturedImages);
+
+                List<MyImage> imagesToPdf = new ArrayList<>(imagesByPosition.values());
+                pdfGen.generatePDF(pdfFile.getAbsolutePath(), imagesToPdf);
+
                 System.out.println("PDF saved to " + pdfFile.getAbsolutePath());
             }
         } catch (Exception e) {
