@@ -35,6 +35,11 @@ Label{
     -fx-text-alignment: RIGHT;
 }
 
+.positionLabel {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
 .ContextMenu{
     -fx-text-fill: black;
 
