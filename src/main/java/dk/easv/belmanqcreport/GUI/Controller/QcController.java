@@ -511,7 +511,6 @@ public class QcController implements Initializable {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) throws Exception {
-    private void btnSave(ActionEvent actionEvent) {
         PDFGeneratorImp.getInstance().setOrder(order);
         OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
         pdfGenerator = PDFGeneratorImp.getInstance();
