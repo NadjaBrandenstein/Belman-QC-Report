@@ -1,6 +1,7 @@
 package dk.easv.belmanqcreport.GUI.Controller;
 
 // Project Imports
+import dk.easv.belmanqcreport.BE.Log;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
@@ -10,6 +11,7 @@ import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
+import dk.easv.belmanqcreport.GUI.Model.LogModel;
 import dk.easv.belmanqcreport.Main;
 //Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -44,12 +46,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 // Java Imports
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.text.Document;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
@@ -100,9 +104,12 @@ public class QcController implements Initializable {
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
+    private LogModel logModel;
     private Order order;
     private Window primaryStage;
     private int imagePositionID;
+
+
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
@@ -116,12 +123,19 @@ public class QcController implements Initializable {
     private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
     private final Map<Position, Rectangle> imagePanesOverlay = new EnumMap<>(Position.class);
     private Map<Position, StackPane> getPaneByPosition;
+    private String orderNumber;
+    private String orderItem;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         imageHandlingModel = new ImageHandlingModel();
+        try {
+            logModel = new LogModel();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             imageModel = new ImageModel();
@@ -257,8 +271,14 @@ public class QcController implements Initializable {
             if (newItem != null) {
 
                 loadImagesForItem(newItem.getOrderItemId());
+                try {
+                    loadLogList(newItem.getOrderItemId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 clearImages();
+                logItems.clear();
                 lblImageCount.setText("0 / 0");
             }
         });
@@ -345,6 +365,20 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadLogList(int orderItemId) throws Exception {
+        logItems.clear();
+        for(Log log : logModel.getLogsForItem(orderItemId)){
+            logItems.add(String.format(
+                    "%s image %s → %s by %s",
+                    log.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    log.getImagePosition(),
+                    log.getAction(),
+                    log.getUsername()
+            ));
+        }
+        lstLog.scrollTo(logItems.size() - 1);
     }
 
     private void showImageForPosition(Position position) {
@@ -478,16 +512,35 @@ public class QcController implements Initializable {
                 OrderItem selected = lstItem.getSelectionModel().getSelectedItem();
 
                 String user = lblEmployee.getText();
+                String pos = updatedImage.getImagePosition().name();
+                int itemId = lstItem.getSelectionModel().getSelectedItem().getOrderItemId();
+
                 if (updatedImage.getValidationTypeID() == ValidationType.DENIED.getId()) {
                     logItems.add(String.format("Denied image %s of item %s by %s",
                             updatedImage.getImagePosition(),
                             lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
                             user));
+                    try {
+                        logModel.addLog(itemId, pos, "Denied image", user);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (updatedImage.getValidationTypeID() == ValidationType.APPROVED.getId()) {
                     logItems.add(String.format("Approved image %s of item %s by %s",
                             updatedImage.getImagePosition(),
                             lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
                             user));
+                    try {
+                        logModel.addLog(itemId, pos, "Approved image", user);
+                    } catch (Exception e) {
+                       e.printStackTrace();
+                    }
+                    
+                    String line = String.format("Approved image %s of item %s by %s",
+                            updatedImage.getImagePosition(),
+                            lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
+                            user);
+                    logItems.add(line);
                 }
                 lstLog.scrollTo(logItems.size() - 1);
 
@@ -554,6 +607,8 @@ public class QcController implements Initializable {
 
 
     private PDFGeneratorImp pdfGenerator;
+    @FXML
+    private TableView<Order> orderTableView;
 
     @FXML
     private void btnSave(ActionEvent actionEvent) throws Exception {
@@ -636,7 +691,13 @@ public class QcController implements Initializable {
 
     private void savePDF(ActionEvent actionEvent) {
         try {
-            File pdfFile = showSaveDialog("Report.pdf");
+            String orderNumber = lstOrder.getSelectionModel().getSelectedItem().getOrderNumber();
+            String orderItem = lstItem.getSelectionModel().getSelectedItem().getOrderItem();
+
+
+
+            String filename = "Report " + orderNumber + "-" + orderItem + ".pdf";
+            File pdfFile = showSaveDialog(filename);
             if (pdfFile != null) {
                 PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
                 pdfGen.setEmployeeName(lblEmployee.getText());
@@ -651,7 +712,11 @@ public class QcController implements Initializable {
         }
     }
 
-        private File showSaveDialog (String initialFileName){
+    private Order getSelectedOrder() {
+        return orderTableView.getSelectionModel().getSelectedItem();
+    }
+
+    private File showSaveDialog (String initialFileName){
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
             fileChooser.setInitialFileName(initialFileName);

@@ -273,9 +273,11 @@ public class ImageHandlingController {
 
     @FXML
     private void btnScratch(ActionEvent actionEvent) {
+        txtComment.setText("minor scratch");
     }
 
     @FXML
     private void btnDent(ActionEvent actionEvent) {
+        txtComment.setText("minor dent");
     }
 }

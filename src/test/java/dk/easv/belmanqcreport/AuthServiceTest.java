@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AuthServiceTest {
 
-    AuthService authService;
+    private AuthService authService;
 
     // Fake Label class to replace JavaFX Label
     static class FakeLabel {

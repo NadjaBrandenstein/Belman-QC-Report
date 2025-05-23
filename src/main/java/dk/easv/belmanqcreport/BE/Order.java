@@ -93,4 +93,7 @@ public class Order {
         return 0;
     }
 
+    public String getItemNumber() {
+        return orderNumber.substring(orderNumber.lastIndexOf("-") + 1);
+    }
 }
