@@ -191,7 +191,7 @@ public class QcController implements Initializable {
 
         btnPDFSave.textProperty().bind(
                 Bindings.when(idDenyAll.selectedProperty())
-                        .then("Deny")
+                        .then("Send back")
                         .otherwise("")
         );
 
@@ -303,10 +303,8 @@ public class QcController implements Initializable {
 
                         if(allApproved) {
                             setStyle("-fx-background-color: green;");
-                            lstItem.refresh();
                         } else if (allDenied) {
                             setStyle("-fx-background-color: red;");
-                            lstItem.refresh();
                         } else {
                             setStyle("");
                         }
@@ -364,17 +362,50 @@ public class QcController implements Initializable {
 
     private void loadLogList(int orderItemId) throws Exception {
         logItems.clear();
+
         for(Log log : logModel.getLogsForItem(orderItemId)){
+
+            String itemNumber = lstItem.getItems().stream()
+                    .filter(item -> item.getOrderItemId() == log.getOrderItemID())
+                    .findFirst()
+                    .map(OrderItem::getOrderItem)
+                    .orElse("Unknown Item");
+
             logItems.add(String.format(
-                    "%s image %s → %s by %s",
+                    "%s image %s → %s on item %s by %s",
                     log.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                     log.getImagePosition(),
                     log.getAction(),
+                    itemNumber,
                     log.getUsername()
             ));
         }
         lstLog.scrollTo(logItems.size() - 1);
     }
+
+    private void appendLog(int orderItemId, String position, String action, String user) throws Exception {
+        Log newLog = logModel.addLog(orderItemId, position, action, user);
+
+        logItems.add(formatLogEntry(newLog));
+        lstLog.scrollTo(logItems.size() - 1);
+    }
+
+    private String formatLogEntry(Log log) {
+        String timestamp = log.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        String itemNumber = lstItem.getItems().stream()
+                .filter(item -> item.getOrderItemId() == log.getOrderItemID())
+                .findFirst()
+                .map(OrderItem::getOrderItem)
+                .orElse("Unknown Item");
+        return String.format("%s image %s → %s on item %s by %s",
+                timestamp,
+                log.getImagePosition(),
+                log.getAction(),
+                itemNumber,
+                log.getUsername());
+    }
+
 
     private void showImageForPosition(Position position) {
         StackPane cell = getPaneByPosition.get(position);
@@ -511,33 +542,21 @@ public class QcController implements Initializable {
                 int itemId = lstItem.getSelectionModel().getSelectedItem().getOrderItemId();
 
                 if (updatedImage.getValidationTypeID() == ValidationType.DENIED.getId()) {
-                    logItems.add(String.format("Denied image %s of item %s by %s",
-                            updatedImage.getImagePosition(),
-                            lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
-                            user));
                     try {
-                        logModel.addLog(itemId, pos, "Denied image", user);
+                        appendLog(itemId, pos, "Denied", user);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 } else if (updatedImage.getValidationTypeID() == ValidationType.APPROVED.getId()) {
-                    logItems.add(String.format("Approved image %s of item %s by %s",
-                            updatedImage.getImagePosition(),
-                            lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
-                            user));
                     try {
-                        logModel.addLog(itemId, pos, "Approved image", user);
+                        appendLog(itemId, pos, "Approved", user);
                     } catch (Exception e) {
-                       e.printStackTrace();
+                        e.printStackTrace();
                     }
-                    
-                    String line = String.format("Approved image %s of item %s by %s",
-                            updatedImage.getImagePosition(),
-                            lstItem.getSelectionModel().getSelectedItem().getOrderItem(),
-                            user);
-                    logItems.add(line);
+
                 }
-                lstLog.scrollTo(logItems.size() - 1);
+
 
 
                 Rectangle overlay = imagePanesOverlay.get(updatedImage.getImagePosition());
@@ -568,6 +587,7 @@ public class QcController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     public void updateImageCountLabel() {
         lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);

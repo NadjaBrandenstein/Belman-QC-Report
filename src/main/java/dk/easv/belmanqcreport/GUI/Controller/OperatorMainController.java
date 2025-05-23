@@ -192,6 +192,8 @@ public class OperatorMainController {
         }
     }
 
+
+
     private void handleImageClick(Position position) {
         if (position == Position.EXTRA) {
             List<MyImage> extras = getExtraImages();
@@ -452,7 +454,6 @@ public class OperatorMainController {
     }
 
     public void showImageAtIndex(int index) {
-        if(index < 0 || index >= capturedImages.size()) return;
 
         MyImage img = capturedImages.get(index);
         Image fxImage = new Image(img.toURI());
