@@ -111,7 +111,7 @@
                             if (Boolean.FALSE.equals(user.isActive())) {
                                 setStyle("-fx-background-color: lightgray;" + "-fx-text-fill: white");
                             } else {
-                                setStyle("-fx-background-color: #7fa8c5;" + "-fx-text-fill: black");
+                                setStyle("-fx-background-color: white;" + "-fx-text-fill: black");
                             }
                         }
                     }
