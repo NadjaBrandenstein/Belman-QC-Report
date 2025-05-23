@@ -506,6 +506,13 @@ public class QcController implements Initializable {
 
             controller.setOrderDetails(order, image, updatedImage -> {
 
+                if (updatedImage == null) {
+                    imagesByPosition.remove(image.getImagePosition());
+                    showImageForPosition(image.getImagePosition());
+                    updateImageCountLabel();
+                    return;
+                }
+
                 imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
                 showImageForPosition(updatedImage.getImagePosition());
                 updateImageCountLabel();
