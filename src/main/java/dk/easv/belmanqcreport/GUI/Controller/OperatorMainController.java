@@ -235,7 +235,7 @@ public class OperatorMainController {
         FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
     }
 
-    @FXML
+    /*@FXML
     private void btnDelete(ActionEvent actionEvent) {
         if (currentImageIndex < 0 || currentImageIndex >= capturedImages.size())
             return;
@@ -289,7 +289,7 @@ public class OperatorMainController {
                 updateImageCountLabel();
             }
 
-    }
+    }*/
 
     @FXML
     private void btnPrevious(ActionEvent actionEvent) {
@@ -511,27 +511,38 @@ public class OperatorMainController {
 
     @FXML
     private void btnSave(ActionEvent actionEvent) {
+        // Check for missing required images
+        List<Position> requiredPositions = List.of(Position.TOP, Position.FRONT, Position.BACK, Position.LEFT, Position.RIGHT);
+
+        List<String> missingPositions = new ArrayList<>();
+        for(Position pos : requiredPositions) {
+            if(!imagesByPosition.containsKey(pos) || imagesByPosition.get(pos) == null) {
+                missingPositions.add(pos.name());
+            }
+        }
+
+        if(!missingPositions.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Missing images.");
+            alert.setHeaderText("Required images are missing.");
+            alert.setContentText("Please capture the following images beforesaving: \n" +
+                    String.join(", ", missingPositions));
+            alert.showAndWait();
+            return;
+        }
+
+        // Proceed with saving only if all required images are present
         try{
             for (MyImage myImage : capturedImages) {
                 if(myImage.getImageID() <= 0) {
-
-                    ImageView imageView = new ImageView();
-
                     MyImage saved = imageModel.saveNewImage(myImage);
                     myImage.setImageID(saved.getImageID());
                     currentOrderItem.getImages().add(myImage);
-
-                    imageTop.getChildren().add(imageView);
-                    imageFront.getChildren().setAll(imageView);
-                    imageBack.getChildren().setAll(imageView);
-                    imageLeft.getChildren().setAll(imageView);
-                    imageRight.getChildren().setAll(imageView);
-                    imageExtra.getChildren().setAll(imageView);
                 } else {
                     imageModel.updateImage(myImage);
                 }
-
             }
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Save Successful");
             alert.setHeaderText(null);

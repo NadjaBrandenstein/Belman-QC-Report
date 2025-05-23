@@ -145,8 +145,8 @@
             <right>
                 <HBox alignment="CENTER" prefHeight="43.0" prefWidth="335.0" BorderPane.alignment="CENTER">
                     <children>
-                          <MFXCheckbox fx:id="idApproved" onAction="#checkApproved" text="Approve All" />
-                          <MFXCheckbox fx:id="idDenied" onAction="#checkDenied" text="Deny All" />
+                          <MFXCheckbox fx:id="idApproveAll" onAction="#checkApproved" text="Approve All" />
+                          <MFXCheckbox fx:id="idDenyAll" onAction="#checkDenied" text="Deny All" />
                         <MFXButton fx:id="btnPDFSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="PDFSave">
                      <HBox.margin>
                         <Insets left="5.0" />

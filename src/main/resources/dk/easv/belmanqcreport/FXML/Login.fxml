@@ -47,15 +47,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="82.0" prefWidth="160.0" BorderPane.alignment="CENTER" />
                </left>
                <center>
-                  <HBox alignment="CENTER" prefHeight="82.0" prefWidth="312.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <MFXButton onAction="#btnQRCode" text="QR Code " />
-                        <MFXButton onAction="#btnManual" text="Manual">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin></MFXButton>
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="82.0" prefWidth="312.0" BorderPane.alignment="CENTER" />
                </center>
                <right>
                   <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="160.0" BorderPane.alignment="CENTER" />

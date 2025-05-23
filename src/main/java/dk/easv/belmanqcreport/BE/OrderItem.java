@@ -76,4 +76,8 @@ public class OrderItem {
     public String toString() {
         return orderItem;
     }
+
+    public void setItemNumber(String item001) {
+
+    }
 }
