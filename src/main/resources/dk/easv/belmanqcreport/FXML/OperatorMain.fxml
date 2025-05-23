@@ -103,34 +103,74 @@
                 <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                  <AnchorPane fx:id="imageTop" prefHeight="173.0" prefWidth="368.0" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                     <children>
-                        <Label layoutX="114.0" layoutY="100.0" styleClass="positionLabel" text="Top" />
-                     </children></AnchorPane>
-                  <AnchorPane fx:id="imageFront" style="-fx-border-color: gray;" GridPane.columnIndex="1">
-                     <children>
-                        <Label alignment="CENTER" layoutX="119.0" layoutY="99.0" prefHeight="217.6" prefWidth="250.4" styleClass="positionLabel" text="Front" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <opaqueInsets>
-                              <Insets left="200.0" />
-                           </opaqueInsets>
-                        </Label>
-                     </children></AnchorPane>
-                  <AnchorPane fx:id="imageLeft" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                     <children>
-                        <Label layoutX="119.0" layoutY="104.0" text="Left" />
-                     </children></AnchorPane>
-                  <AnchorPane fx:id="imageRight" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
-                        <Label layoutX="111.0" layoutY="100.0" text="Right" />
-                     </children></AnchorPane>
-                  <AnchorPane fx:id="imageBack" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" GridPane.columnIndex="2">
-                     <children>
-                        <Label layoutX="111.0" layoutY="100.0" text="Back" />
-                     </children></AnchorPane>
-                  <AnchorPane fx:id="imageExtra" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <children>
-                        <Label layoutX="111.0" layoutY="100.0" text="Extra" />
-                     </children></AnchorPane>
+                  <Label alignment="CENTER" styleClass="positionLabel" text="Top">
+                     <GridPane.margin>
+                        <Insets bottom="50.0" left="200.0" />
+                     </GridPane.margin></Label>
+                  <Label fx:id="lblAddTop" text="+">
+                     <GridPane.margin>
+                        <Insets left="218.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <AnchorPane fx:id="imageTop" prefHeight="173.0" prefWidth="368.0" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <Label alignment="CENTER" prefHeight="18.0" prefWidth="42.0" styleClass="positionLabel" text="Front" GridPane.columnIndex="1">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets bottom="50.0" left="200.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lblAddFront" text="+" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="218.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <AnchorPane fx:id="imageFront" style="-fx-border-color: gray;" GridPane.columnIndex="1" />
+                  <Label styleClass="positionLabel" text="Left" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="50.0" left="200.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lblAddLeft" text="+" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="218.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <AnchorPane fx:id="imageLeft" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <Label styleClass="positionLabel" text="Right" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="50.0" left="200.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lblAddRight" text="+" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="218.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <AnchorPane fx:id="imageRight" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label styleClass="positionLabel" text="Back" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="50.0" left="200.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lblAddBack" text="+" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets left="218.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <AnchorPane fx:id="imageBack" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" GridPane.columnIndex="2" />
+                  <Label styleClass="positionLabel" text="Extra" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="50.0" left="200.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label styleClass="positionLabel" text="Press camera button to take picture." GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="80.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <AnchorPane fx:id="imageExtra" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </center>
@@ -143,13 +183,12 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <MFXButton fx:id="btnPrevious" onAction="#btnPrevious" prefHeight="25.6" prefWidth="60.0" text="&lt;-" HBox.hgrow="ALWAYS">
+                        <MFXButton fx:id="btnCamera" alignment="CENTER" onAction="#btnCamera" prefHeight="62.0" prefWidth="100.0" text="Camera" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets left="10.0" />
                            </HBox.margin>
                         </MFXButton>
-                        <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
-                        <MFXButton fx:id="btnNext" onAction="#btnNext" prefHeight="25.6" prefWidth="60.0" text="-&gt;" HBox.hgrow="ALWAYS">
+                        <MFXButton fx:id="btnSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -160,20 +199,22 @@
             </HBox>
          </center>
          <left>
-            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="336.0" BorderPane.alignment="CENTER">
-               <children>
-                  <MFXButton fx:id="btnCamera" alignment="CENTER" onAction="#btnCamera" prefHeight="62.0" prefWidth="100.0" text="Camera" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-            </HBox>
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="340.0" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="336.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="347.0" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <MFXButton fx:id="btnSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="Save" />
+                  <MFXButton fx:id="btnPrevious" onAction="#btnPrevious" prefHeight="25.6" prefWidth="60.0" text="&lt;-" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </MFXButton>
+                  <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
+                  <MFXButton fx:id="btnNext" onAction="#btnNext" prefHeight="25.6" prefWidth="60.0" text="-&gt;" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" right="50.0" />
+                     </HBox.margin>
+                  </MFXButton>
                </children>
             </HBox>
          </right>

@@ -43,6 +43,16 @@ public class OperatorMainController {
     @FXML
     private Label lblImageCount;
     @FXML
+    private Label lblAddTop;
+    @FXML
+    private Label lblAddFront;
+    @FXML
+    private Label lblAddBack;
+    @FXML
+    private Label lblAddLeft;
+    @FXML
+    private Label lblAddRight;
+    @FXML
     private AnchorPane imageFront;
     @FXML
     private AnchorPane imageBack;
@@ -108,6 +118,13 @@ public class OperatorMainController {
         setButtonIcon(btnCamera, "/dk/easv/belmanqcreport/Icons/camera.png", 50, 50);
         btnSave.setText("");
         setButtonIcon(btnSave, "/dk/easv/belmanqcreport/Icons/save.png", 50, 50);
+
+        setLabelIcon(lblAddTop, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
+        setLabelIcon(lblAddFront, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
+        setLabelIcon(lblAddBack, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
+        setLabelIcon(lblAddLeft, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
+        setLabelIcon(lblAddRight, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
+
 
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
@@ -454,8 +471,9 @@ public class OperatorMainController {
     }
 
     public void showImageAtIndex(int index) {
+        if(index < 0 || index >= imagesByPosition.size()) return;
 
-        MyImage img = capturedImages.get(index);
+        MyImage img = imagesByPosition.get(index);
         Image fxImage = new Image(img.toURI());
         ImageView imageView = new ImageView(fxImage);
 
@@ -596,6 +614,25 @@ public class OperatorMainController {
         logoImage.setFitWidth(100);
         logoImage.setFitHeight(100);
         logoImage.setPreserveRatio(true);
+    }
+
+    private void setLabelIcon(Labeled label, String iconPath, double width, double height) {
+        if (label == null) {
+            System.out.println("Node is null. Cannot set label: " + iconPath);
+            return;
+        }
+
+        URL iconUrl = getClass().getResource(iconPath);
+        if (iconUrl == null) {
+            System.out.println("Error loading icon: " + iconPath);
+            return;
+        }
+
+        Image icon = new Image(iconUrl.toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        imageView.setPreserveRatio(true);
     }
 
     public void setOrderNumber(String orderNumber) throws Exception {

@@ -46,6 +46,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 // Java Imports
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.text.Document;
 
 import java.awt.image.BufferedImage;
@@ -108,6 +109,8 @@ public class QcController implements Initializable {
     private Window primaryStage;
     private int imagePositionID;
 
+
+
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
@@ -120,6 +123,8 @@ public class QcController implements Initializable {
     private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
     private final Map<Position, Rectangle> imagePanesOverlay = new EnumMap<>(Position.class);
     private Map<Position, StackPane> getPaneByPosition;
+    private String orderNumber;
+    private String orderItem;
 
 
     @Override
@@ -532,6 +537,13 @@ public class QcController implements Initializable {
 
             controller.setOrderDetails(order, image, updatedImage -> {
 
+                if (updatedImage == null) {
+                    imagesByPosition.remove(image.getImagePosition());
+                    showImageForPosition(image.getImagePosition());
+                    updateImageCountLabel();
+                    return;
+                }
+
                 imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
                 showImageForPosition(updatedImage.getImagePosition());
                 updateImageCountLabel();
@@ -622,6 +634,8 @@ public class QcController implements Initializable {
 
 
     private PDFGeneratorImp pdfGenerator;
+    @FXML
+    private TableView<Order> orderTableView;
 
     @FXML
     private void btnSave(ActionEvent actionEvent) throws Exception {
@@ -704,7 +718,13 @@ public class QcController implements Initializable {
 
     private void savePDF(ActionEvent actionEvent) {
         try {
-            File pdfFile = showSaveDialog("Report.pdf");
+            String orderNumber = lstOrder.getSelectionModel().getSelectedItem().getOrderNumber();
+            String orderItem = lstItem.getSelectionModel().getSelectedItem().getOrderItem();
+
+
+
+            String filename = "Report " + orderNumber + "-" + orderItem + ".pdf";
+            File pdfFile = showSaveDialog(filename);
             if (pdfFile != null) {
                 PDFGeneratorImp pdfGen = PDFGeneratorImp.getInstance();
                 pdfGen.setEmployeeName(lblEmployee.getText());
@@ -719,7 +739,11 @@ public class QcController implements Initializable {
         }
     }
 
-        private File showSaveDialog (String initialFileName){
+    private Order getSelectedOrder() {
+        return orderTableView.getSelectionModel().getSelectedItem();
+    }
+
+    private File showSaveDialog (String initialFileName){
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
             fileChooser.setInitialFileName(initialFileName);

@@ -90,10 +90,9 @@ public class ImageHandlingController {
         btnDelete.setText("");
         setButtonIcon(btnDelete, "/dk/easv/belmanqcreport/Icons/delete.png", 30, 30);
 
-       this.model = new ImageHandlingModel();
-       this.operatorController = new OperatorMainController();
-       this.imageModel = new ImageModel();
-
+        this.model = new ImageHandlingModel();
+        this.operatorController = new OperatorMainController();
+        this.imageModel = new ImageModel();
 
 
     }
@@ -111,18 +110,18 @@ public class ImageHandlingController {
         showImage();
     }
 
-    private void showImage(){
+    private void showImage() {
         String path = currentImage.getImagePath();
 
         System.out.println("Image path: " + path);
-        if(path == null || path.isEmpty()){
+        if (path == null || path.isEmpty()) {
             System.err.println("Image path is null or empty");
             return;
         }
 
         File file = new File(path);
         System.out.println("Image " + file.exists() + " @" + file.getAbsolutePath());
-        if(!file.exists()){
+        if (!file.exists()) {
             System.err.println("Image file missing" + path);
             return;
         }
@@ -137,13 +136,12 @@ public class ImageHandlingController {
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
-        ((Stage)btnBackId.getScene().getWindow()).close();
+        ((Stage) btnBackId.getScene().getWindow()).close();
 
     }
 
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Image");
         alert.setHeaderText("Are you sure you want to delete this image?");
@@ -175,7 +173,6 @@ public class ImageHandlingController {
                 errorAlert.showAndWait();
             }
         }
-
     }
 
     @FXML
@@ -273,9 +270,11 @@ public class ImageHandlingController {
 
     @FXML
     private void btnScratch(ActionEvent actionEvent) {
+        txtComment.setText("minor scratch");
     }
 
     @FXML
     private void btnDent(ActionEvent actionEvent) {
+        txtComment.setText("minor dent");
     }
 }
