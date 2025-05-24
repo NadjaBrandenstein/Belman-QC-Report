@@ -5,14 +5,11 @@ import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
-import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
 import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 // Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import org.opencv.core.Core;
 // JavaFx Imports
 import javafx.application.Platform;
@@ -28,8 +25,9 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 // Java Imports
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -94,7 +92,6 @@ public class OperatorMainController {
     private int currentImageIndex = -1;
     private Stage stage;
 
-
     private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
 
     private Map<Position, AnchorPane> getPaneByPosition;
@@ -125,10 +122,8 @@ public class OperatorMainController {
         setLabelIcon(lblAddLeft, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
         setLabelIcon(lblAddRight, "/dk/easv/belmanqcreport/Icons/add.png", 50, 50);
 
-
         imageHandlingModel = new ImageHandlingModel();
         imageModel = new ImageModel();
-
 
         cbOrderNumber.setConverter(new StringConverter<>() {
             @Override public String toString(OrderItem item) {
@@ -147,7 +142,6 @@ public class OperatorMainController {
                     }
                 });
 
-
         /*cbOrderNumber.setOnAction(event -> {
             currentOrderItem = cbOrderNumber.getSelectionModel().getSelectedItem();
 
@@ -156,7 +150,6 @@ public class OperatorMainController {
 
             }
         });*/
-        //imageHboxCenter.setOnMouseClicked(event -> openImageHandlingScene());
 
         getPaneByPosition = Map.of(
                 Position.TOP, imageTop,
@@ -190,7 +183,6 @@ public class OperatorMainController {
                 updateImageCountLabel();
             });
 
-
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
             Stage stage = new Stage();
             stage.initOwner(imageFront.getScene().getWindow());
@@ -203,13 +195,10 @@ public class OperatorMainController {
             stage.setScene(scene);
             stage.showAndWait();
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     private void handleImageClick(Position position) {
         if (position == Position.EXTRA) {
@@ -253,62 +242,6 @@ public class OperatorMainController {
     private void btnLogout(ActionEvent actionEvent) {
         FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Login.fxml");
     }
-
-    /*@FXML
-    private void btnDelete(ActionEvent actionEvent) {
-        if (currentImageIndex < 0 || currentImageIndex >= capturedImages.size())
-            return;
-
-        MyImage imageToDelete = capturedImages.get(currentImageIndex);
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Image");
-        alert.setHeaderText("Are you sure you want to delete this image?");
-        alert.setContentText("This action cannot be undone.");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isEmpty() || result.get() != ButtonType.OK) {
-            return;
-        }
-
-        File file = imageToDelete.getImageFile();
-        if(imageToDelete.getImageID() <= 0) {
-            if (file != null && file.exists()) {
-                try{
-                    if(!file.delete()) {
-                        System.out.println("Failed to delete image file: " + file.getAbsolutePath());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-        if(imageToDelete.getImageID() > 0) {
-            try {
-                ImageRepository repo =new ImageRepository();
-                repo.delete(imageToDelete);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-            //alert.showAndWait();
-            capturedImages.remove(currentImageIndex);
-            if(currentImageIndex >= capturedImages.size()) {
-                currentImageIndex = capturedImages.size() -1;
-            }
-
-            if(capturedImages.isEmpty()) {
-                imageFront.getChildren().clear();
-                lblImageCount.setText("0 / 0");
-            }
-            else {
-                showImageAtIndex(currentImageIndex);
-                updateImageCountLabel();
-            }
-
-    }*/
 
     @FXML
     private void btnPrevious(ActionEvent actionEvent) {
@@ -401,8 +334,6 @@ public class OperatorMainController {
             controller.setParentController(this);
             controller.setOrderItem(currentOrderItem);
             controller.setImagePosition(position);
-
-            //controller.initialize();
 
             stage.setOnCloseRequest(event -> controller.cleanup());
             stage.show();
@@ -633,6 +564,8 @@ public class OperatorMainController {
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
         imageView.setPreserveRatio(true);
+
+        label.setGraphic(imageView);
     }
 
     public void setOrderNumber(String orderNumber) throws Exception {
@@ -647,7 +580,6 @@ public class OperatorMainController {
                     .showAndWait();
             return;
         }
-
 
         try {
             // fetch only the items for this one order!
@@ -668,8 +600,6 @@ public class OperatorMainController {
             } else {
                 // no items → clear images
                 clearImages();
-                /*imageHboxCenter.getChildren().clear();
-                lblImageCount.setText("0 / 0");*/
             }
         } catch (Exception ex) {
             ex.printStackTrace();

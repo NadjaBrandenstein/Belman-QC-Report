@@ -1,15 +1,16 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-// Other Import
+// Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
 import dk.easv.belmanqcreport.GUI.Model.ImageModel;
 import dk.easv.belmanqcreport.Main;
+// Other Import
 import io.github.palexdev.materialfx.controls.MFXButton;
-// JavaFX Imports
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+// JavaFX Imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,13 +23,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
-import java.io.File;
-import java.net.URL;
-
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
+// Java Imports
+import java.io.File;
+import java.net.URL;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -38,13 +37,9 @@ public class ImageHandlingController {
     @FXML
     private Label lblOrderNumber;
     @FXML
-    private Label lblEmployee;
-    @FXML
     private MFXButton btnDelete;
     @FXML
     private MFXButton btnBackId;
-    @FXML
-    private MFXButton btnRefreshId;
     @FXML
     private MFXButton btnLogoutId;
     @FXML
@@ -93,7 +88,6 @@ public class ImageHandlingController {
         this.model = new ImageHandlingModel();
         this.operatorController = new OperatorMainController();
         this.imageModel = new ImageModel();
-
 
     }
 
