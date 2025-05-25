@@ -535,14 +535,16 @@ public class QcController implements Initializable {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
+            controller.showDeleteButton(false);
             controller.setOrderDetails(order, image, updatedImage -> {
 
-                if (updatedImage == null) {
+                /*if (updatedImage == null) {
                     imagesByPosition.remove(image.getImagePosition());
                     showImageForPosition(image.getImagePosition());
                     updateImageCountLabel();
                     return;
-                }
+                }*/
+
 
                 imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
                 showImageForPosition(updatedImage.getImagePosition());
@@ -663,8 +665,11 @@ public class QcController implements Initializable {
                 return;
             }
 
-            String verb = isDenyAll ? "Deny" : "Approve";
-            if (!showConfirmation("Confirm " + verb, "Are you sure you want to " + verb + " item? " + selected.getOrderItem() + "?")) {
+            String action = isDenyAll ? "Deny" : "Approve";
+            OrderItem selectedItem = lstItem.getSelectionModel().getSelectedItem();
+            int itemId = selectedItem.getOrderItemId();
+
+            if (!showConfirmation("Confirm " + action, "Are you sure you want to " + action + " item? " + selected.getOrderItem() + "?")) {
                 resetCheckBoxes();
                 return;
             }
@@ -672,6 +677,15 @@ public class QcController implements Initializable {
             markAllImages(!isDenyAll);
 
             resetCheckBoxes();
+
+            for(MyImage img : imagesByPosition.values()) {
+                String position = img.getImagePosition().name();
+                try{
+                    appendLog(itemId, position, action, user);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
 
             if (isDenyAll) {
                 updateItemStatus(selected, deniedItems, approvedItems, "Denied", user);
@@ -693,8 +707,8 @@ public class QcController implements Initializable {
             lstItem.refresh();
 
 
-            showInfo("Image of item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
-            logItems.add(String.format("%s all images %s by %s", status, item.getOrderItem(), user));
+            showInfo("Images of item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
+
             lstLog.scrollTo(logItems.size() - 1);
             resetCheckBoxes();
             applyOverlayForItem(item, status.equals("Approved"));

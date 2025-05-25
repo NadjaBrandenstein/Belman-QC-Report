@@ -134,6 +134,16 @@ public class ImageHandlingController {
 
     }
 
+    public void showDeleteButton(boolean visible) {
+        btnDelete.setVisible(visible);
+        btnDelete.setManaged(visible);
+    }
+
+    public void showCheckbox(boolean visible) {
+        checkDeny.setVisible(visible);
+        checkDeny.setManaged(visible);
+    }
+
     @FXML
     private void btnDelete(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -184,6 +194,12 @@ public class ImageHandlingController {
         }
     }
 
+    private boolean showConfirmation (String title, String content){
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, content, ButtonType.OK, ButtonType.CANCEL);
+        confirm.setTitle(title);
+        return confirm.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
+    }
+
     @FXML
     private void btnSave(ActionEvent actionEvent) {
 
@@ -213,6 +229,10 @@ public class ImageHandlingController {
         try{
             imageModel.updateImageStatus(currentImage.getImageID(), validationTypeID);
             currentImage.setValidationTypeID(validationTypeID);
+            if(checkDeny.isSelected()){
+            showConfirmation("Image Status Updated", "The image status has been updated to "
+                            + (checkDeny.isSelected()
+                            ? "Denied" : "Approved") + ".");}
         } catch (Exception e) {
             e.printStackTrace();
         }

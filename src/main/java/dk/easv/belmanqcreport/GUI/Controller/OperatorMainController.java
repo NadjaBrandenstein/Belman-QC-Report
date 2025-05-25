@@ -176,8 +176,18 @@ public class OperatorMainController {
             Parent root = loader.load();
             ImageHandlingController controller = loader.getController();
 
+            controller.showCheckbox(false);
             controller.setOrderDetails(currentOrder,
                     image, updatedImage -> {
+
+                        if (updatedImage == null) {
+                            imagesByPosition.remove(image.getImagePosition());
+                            showImageForPosition(image.getImagePosition());
+                            updateImageCountLabel();
+                            return;
+                        }
+
+
                 capturedImages.set(currentImageIndex, updatedImage);
                 showImageAtIndex(currentImageIndex);
                 updateImageCountLabel();

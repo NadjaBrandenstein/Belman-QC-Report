@@ -1,15 +1,19 @@
         package dk.easv.belmanqcreport.GUI.Controller;
         // Project Imports
-        import dk.easv.belmanqcreport.BE.Order;
-        import dk.easv.belmanqcreport.BE.OrderItem;
-        import dk.easv.belmanqcreport.BE.User;
+        import dk.easv.belmanqcreport.BE.*;
         // Other Imports
         import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
+        import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
+        import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
+        import dk.easv.belmanqcreport.GUI.Model.ImageModel;
+        import dk.easv.belmanqcreport.GUI.Model.LogModel;
         import dk.easv.belmanqcreport.GUI.Model.UserModel;
         import dk.easv.belmanqcreport.Main;
         import io.github.palexdev.materialfx.controls.MFXButton;
         // JavaFX Imports
         import io.github.palexdev.materialfx.controls.MFXTextField;
+        import javafx.collections.FXCollections;
+        import javafx.collections.ObservableList;
         import javafx.event.ActionEvent;
         import javafx.fxml.FXML;
         import javafx.fxml.FXMLLoader;
@@ -26,10 +30,8 @@
 
         import java.io.IOException;
         import java.net.URL;
-        import java.util.List;
-        import java.util.Objects;
-        import java.util.Optional;
-        import java.util.ResourceBundle;
+        import java.time.format.DateTimeFormatter;
+        import java.util.*;
 
 
         public class AdminController implements Initializable {
@@ -40,7 +42,9 @@
             @FXML
             private ListView<OrderItem> lstItem;
             @FXML
-            private ListView lstLog;
+            private ListView<String> lstLog;
+
+            private final ObservableList<String> logItems = FXCollections.observableArrayList();
 
             @FXML
             private Label lblOrderNumber;
@@ -65,7 +69,23 @@
             @FXML
             private MFXButton btnLogout;
 
+            //BE
+            private Order order;
+
+            //Models
             private UserModel userModel;
+            private ImageModel imageModel;
+            private ImageHandlingModel imageHandlingModel;
+            private LogModel logModel;
+
+            //Lists
+            private final Set<OrderItem> deniedItems = new HashSet<>();
+            private final Set<OrderItem> approvedItems = new HashSet<>();
+
+
+
+
+
             @FXML
             private ImageView logoImage;
             private CreateEditUserController createEditUserController;
@@ -74,6 +94,9 @@
             public AdminController() throws Exception {
                 userModel = new UserModel();
                 createEditUserController = new CreateEditUserController();
+                imageHandlingModel = new ImageHandlingModel();
+                imageModel = new ImageModel();
+                logModel = new LogModel();
             }
 
             @Override
@@ -120,11 +143,16 @@
                 // ListView
 
 
-
+                lstLog.setItems(logItems);
+                try {
+                    populateLists();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     lstOrder.setItems(userModel.getOrders());
                     populateOrderItem();
-                    lstLog.setItems(userModel.getLog());
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -269,6 +297,122 @@
                     }
                 });
             }
+
+            private void populateLists() throws Exception {
+
+                List<Order> orders;
+
+                orders = imageHandlingModel.getAllOrders();
+
+                lstOrder.getItems().setAll(orders);
+
+                lstOrder.setCellFactory(lv -> new ListCell<>() {
+                    @Override
+                    protected void updateItem(Order o, boolean empty) {
+                        super.updateItem(o, empty);
+                        setText(empty || o == null ? null : o.getOrderNumber());
+                    }
+                });
+
+                lstOrder.getSelectionModel().selectedItemProperty().addListener((obs, oldOrder, selOrder) -> {
+                    if (selOrder != null) {
+                        this.order = selOrder;
+                        try {
+                            List<OrderItem> items = imageHandlingModel.getItemsByOrderID(selOrder.getOrderID());
+                            lstItem.getItems().setAll(items);
+
+                            //fetching from db
+                            for (OrderItem item : lstItem.getItems()) {
+                                int validType = imageModel.getValidationType(item.getOrderItemId());
+                                if (validType == ValidationType.APPROVED.getId()) {
+                                    approvedItems.add(item);
+                                } else if (validType == ValidationType.DENIED.getId()) {
+                                    deniedItems.add(item);
+                                }
+                            }
+                            lstItem.refresh(); //
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        lstItem.getItems().clear();
+                    }
+                });
+
+                lstItem.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
+                    if (newItem != null) {
+
+                        try {
+                            loadLogList(newItem.getOrderItemId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                lstItem.setCellFactory(lv -> new ListCell<>() {
+                    @Override
+                    protected void updateItem(OrderItem item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                            setStyle("");
+                            return;
+                        }
+                        setText(item.getOrderItem());
+
+                        try {
+                            List<MyImage> images = imageModel.getImageForOrder(item.getOrderItemId());
+
+                            if (images.isEmpty()) {
+                                setStyle("");
+                            } else {
+
+                                boolean allApproved = images.stream()
+                                        .allMatch(img -> img.getValidationTypeID() == ValidationType.APPROVED.getId());
+                                boolean allDenied = images.stream()
+                                        .allMatch(img -> img.getValidationTypeID() == ValidationType.DENIED.getId());
+
+                                if(allApproved) {
+                                    setStyle("-fx-background-color: green;");
+                                } else if (allDenied) {
+                                    setStyle("-fx-background-color: red;");
+                                } else {
+                                    setStyle("");
+                                }
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            private void loadLogList(int orderItemId) throws Exception {
+                logItems.clear();
+
+                for(Log log : logModel.getLogsForItem(orderItemId)){
+
+                    String itemNumber = lstItem.getItems().stream()
+                            .filter(item -> item.getOrderItemId() == log.getOrderItemID())
+                            .findFirst()
+                            .map(OrderItem::getOrderItem)
+                            .orElse("Unknown Item");
+
+                    logItems.add(String.format(
+                            "%s image %s → %s on item %s by %s",
+                            log.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                            log.getImagePosition(),
+                            log.getAction(),
+                            itemNumber,
+                            log.getUsername()
+                    ));
+                }
+                lstLog.scrollTo(logItems.size() - 1);
+            }
+
 
             public void populateOrderItem() throws Exception {
                 List<Order> orders = List.of();
