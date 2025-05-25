@@ -82,11 +82,11 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <MFXButton onAction="#btnScratch" text="Small Scratch">
+                  <MFXButton onAction="#btnScratch" text="Minor Scratch">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin></MFXButton>
-                  <MFXButton onAction="#btnDent" text="Small Dent">
+                  <MFXButton onAction="#btnDent" text="Minor Dent">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin></MFXButton>

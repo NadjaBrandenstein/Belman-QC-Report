@@ -1,7 +1,6 @@
         package dk.easv.belmanqcreport.GUI.Controller;
         // Project Imports
         import dk.easv.belmanqcreport.BE.*;
-        // Other Imports
         import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
         import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
         import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -9,9 +8,10 @@
         import dk.easv.belmanqcreport.GUI.Model.LogModel;
         import dk.easv.belmanqcreport.GUI.Model.UserModel;
         import dk.easv.belmanqcreport.Main;
+        // Other Imports
         import io.github.palexdev.materialfx.controls.MFXButton;
-        // JavaFX Imports
         import io.github.palexdev.materialfx.controls.MFXTextField;
+        // JavaFX Imports
         import javafx.collections.FXCollections;
         import javafx.collections.ObservableList;
         import javafx.event.ActionEvent;
@@ -27,15 +27,13 @@
         import javafx.scene.image.ImageView;
         import javafx.stage.Screen;
         import javafx.stage.Stage;
-
+        // Java Imports
         import java.io.IOException;
         import java.net.URL;
         import java.time.format.DateTimeFormatter;
         import java.util.*;
 
-
         public class AdminController implements Initializable {
-
 
             @FXML
             private ListView<Order> lstOrder;
@@ -81,10 +79,6 @@
             //Lists
             private final Set<OrderItem> deniedItems = new HashSet<>();
             private final Set<OrderItem> approvedItems = new HashSet<>();
-
-
-
-
 
             @FXML
             private ImageView logoImage;
