@@ -12,9 +12,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="/dk/easv/belmanqcreport/CSS/CSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.belmanqcreport.GUI.Controller.QcController">
 
 
     <!-- Top area (can be like a title bar) -->
@@ -61,22 +60,14 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <right>
-                <HBox prefHeight="450.0" prefWidth="120.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <VBox prefHeight="450.0" prefWidth="123.0">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                        </VBox>
-                    </children>
-                </HBox>
+                <HBox prefHeight="650.0" prefWidth="7.0" BorderPane.alignment="CENTER" />
             </right>
             <left>
-                <HBox prefHeight="450.0" prefWidth="463.0" BorderPane.alignment="CENTER">
+                <HBox prefHeight="600.0" prefWidth="502.0" BorderPane.alignment="CENTER">
                     <children>
                         <ListView fx:id="lstOrder" prefHeight="450.0" prefWidth="105.0">
                      <HBox.margin>
-                        <Insets left="20.0" />
+                        <Insets left="70.0" />
                      </HBox.margin></ListView>
                         <ListView fx:id="lstItem" prefHeight="450.0" prefWidth="105.0">
                             <HBox.margin>
@@ -94,7 +85,7 @@
                 <HBox prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
             </top>
          <center>
-            <GridPane prefHeight="450.0" prefWidth="334.0" BorderPane.alignment="CENTER">
+            <GridPane alignment="CENTER" hgap="15" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" vgap="15" BorderPane.alignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                 <columnConstraints>
                     <ColumnConstraints hgrow="ALWAYS" percentWidth="100" />
                     <ColumnConstraints hgrow="ALWAYS" percentWidth="100" />
@@ -105,12 +96,12 @@
                     <RowConstraints percentHeight="50.0" vgrow="ALWAYS" />
                 </rowConstraints>
                <children>
-                  <StackPane fx:id="imageFront" prefHeight="150.0" prefWidth="200.0" />
-                  <StackPane fx:id="imageBack" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                  <StackPane fx:id="imageLeft" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                  <StackPane fx:id="imageRight" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <StackPane fx:id="imageTop" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                  <StackPane fx:id="imageExtra" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <StackPane fx:id="imageTop" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" />
+                  <StackPane fx:id="imageFront" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" GridPane.columnIndex="1" />
+                  <StackPane fx:id="imageBack" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" GridPane.rowIndex="1" />
+                  <StackPane fx:id="imageLeft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <StackPane fx:id="imageRight" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" GridPane.rowIndex="2" />
+                  <StackPane fx:id="imageExtra" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </center>
@@ -123,35 +114,46 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="84.0" prefWidth="101.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <MFXButton fx:id="btnPrevious" onAction="#btnPrevious" prefHeight="25.6" prefWidth="60.0" text="&lt;-" HBox.hgrow="ALWAYS">
-                                    <HBox.margin>
-                                        <Insets right="20.0" />
-                                    </HBox.margin>
-                                </MFXButton>
-                                <Label fx:id="lblImageCount" prefHeight="18.0" prefWidth="27.0" />
-                                <MFXButton fx:id="btnNext" onAction="#btnNext" prefHeight="25.6" prefWidth="60.0" text="-&gt;" HBox.hgrow="ALWAYS">
-                                    <HBox.margin>
-                                        <Insets left="10.0" />
-                                    </HBox.margin>
-                                </MFXButton>
+                                <MFXCheckbox fx:id="idApproveAll" onAction="#checkApproved" text="Approve All">
+                           <HBox.margin>
+                              <Insets bottom="7.0" />
+                           </HBox.margin></MFXCheckbox>
+                                <MFXCheckbox fx:id="idDenyAll" onAction="#checkDenied" text="Deny All">
+                           <HBox.margin>
+                              <Insets bottom="7.0" left="10.0" />
+                           </HBox.margin>
+                        </MFXCheckbox>
+                              <MFXButton fx:id="btnPDFSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="PDFSave">
+                           <HBox.margin>
+                              <Insets bottom="7.0" left="10.0" />
+                           </HBox.margin>
+                        </MFXButton>
                             </children>
                         </HBox>
                     </children>
                 </HBox>
             </center>
             <left>
-                <HBox alignment="CENTER" prefHeight="43.0" prefWidth="479.0" BorderPane.alignment="CENTER" />
+                <HBox alignment="CENTER" prefHeight="43.0" prefWidth="595.0" BorderPane.alignment="CENTER" />
             </left>
             <right>
-                <HBox alignment="CENTER" prefHeight="43.0" prefWidth="335.0" BorderPane.alignment="CENTER">
-                    <children>
-                          <MFXCheckbox fx:id="idApproveAll" onAction="#checkApproved" text="Approve All" />
-                          <MFXCheckbox fx:id="idDenyAll" onAction="#checkDenied" text="Deny All" />
-                        <MFXButton fx:id="btnPDFSave" alignment="CENTER" onAction="#btnSave" prefHeight="62.0" prefWidth="100.0" text="PDFSave">
+                <HBox alignment="CENTER" prefHeight="43.0" prefWidth="371.0" BorderPane.alignment="CENTER">
+               <children>
+                          <MFXButton fx:id="btnPrevious" onAction="#btnPrevious" prefHeight="25.6" prefWidth="60.0" text="&lt;-" HBox.hgrow="ALWAYS">
+                              <HBox.margin>
+                                  <Insets bottom="7.0" right="10.0" />
+                              </HBox.margin>
+                          </MFXButton>
+                          <Label fx:id="lblImageCount" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="27.0">
                      <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin></MFXButton>
-                    </children>
+                        <Insets bottom="7.0" />
+                     </HBox.margin></Label>
+                          <MFXButton fx:id="btnNext" onAction="#btnNext" prefHeight="25.6" prefWidth="60.0" text="-&gt;" HBox.hgrow="ALWAYS">
+                              <HBox.margin>
+                                  <Insets bottom="7.0" left="10.0" right="225.0" />
+                              </HBox.margin>
+                          </MFXButton>
+               </children>
                 </HBox>
             </right>
             <bottom>

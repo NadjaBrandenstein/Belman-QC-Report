@@ -100,7 +100,11 @@ public class QcController implements Initializable {
     private ListView<OrderItem> lstItem;
     @FXML
     private ListView<String> lstLog;
+    @FXML
+    private TableView<Order> orderTableView;
+
     private final ObservableList<String> logItems = FXCollections.observableArrayList();
+    private PDFGeneratorImp pdfGenerator;
 
     private ImageHandlingModel imageHandlingModel;
     private ImageModel imageModel;
@@ -108,8 +112,6 @@ public class QcController implements Initializable {
     private Order order;
     private Window primaryStage;
     private int imagePositionID;
-
-
 
     private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
@@ -633,11 +635,6 @@ public class QcController implements Initializable {
     private void showInfo(String msg) {
         new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
     }
-
-
-    private PDFGeneratorImp pdfGenerator;
-    @FXML
-    private TableView<Order> orderTableView;
 
     @FXML
     private void btnSave(ActionEvent actionEvent) throws Exception {
