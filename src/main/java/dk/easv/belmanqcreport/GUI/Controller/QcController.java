@@ -20,16 +20,11 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Window;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 // JavaFX Imports
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -45,19 +40,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 // Java Imports
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.text.Document;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
-
-import static java.awt.SystemColor.text;
+import java.util.stream.Collectors;
 
 public class QcController implements Initializable {
 
@@ -167,6 +157,9 @@ public class QcController implements Initializable {
                 Position.EXTRA, imageExtra
         );
 
+        btnPrevious.setVisible(false);
+        btnNext.setVisible(false);
+        lblImageCount.setVisible(false);
 
     }
 
@@ -357,13 +350,58 @@ public class QcController implements Initializable {
                 }
             });
 
-            lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
+            List<MyImage> extraImages = images.stream()
+                    .filter(img -> img.getImagePosition() == Position.EXTRA)
+                    .collect(Collectors.toList());
+
+            boolean hasExtraImage = !extraImages.isEmpty();
+
+            if(hasExtraImage) {
+                capturedImages = extraImages;
+                currentImageIndex = 0;
+
+                MyImage firstExtraImage = images.get(currentImageIndex);
+                showImageForExtra(firstExtraImage);
+
+                lblImageCount.setText((currentImageIndex + 1) + "/" + extraImages.size());
+            }
+            else {
+                lblImageCount.setText("");
+            }
 
             //OrderItem selectedItem = lstItem.getSelectionModel().getSelectedItem();
 
+            //boolean hasExtraImage = imagesByPosition.containsKey(Position.EXTRA);
+
+            btnPrevious.setVisible(hasExtraImage);
+            btnNext.setVisible(hasExtraImage);
+            lblImageCount.setVisible(hasExtraImage);
+
+            capturedImages = extraImages;
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void showImageForExtra(MyImage image) {
+        imageExtra.getChildren().clear();
+
+        if (image != null) {
+            ImageView imageView = new ImageView(new Image(image.toURI()));
+            imageView.fitWidthProperty().bind(imageExtra.widthProperty());
+            imageView.fitHeightProperty().bind(imageExtra.heightProperty());
+            imageView.setPreserveRatio(true);
+
+            imageView.setOnMouseClicked(e -> openImageHandlingScene(image));
+
+            Rectangle overlay = new Rectangle();
+            overlay.widthProperty().bind(imageExtra.widthProperty());
+            overlay.heightProperty().bind(imageExtra.heightProperty());
+            overlay.setFill(Color.color(0, 0, 0, 0));
+            overlay.setMouseTransparent(true);
+
+            imageExtra.getChildren().addAll(imageView, overlay);
         }
     }
 
@@ -448,6 +486,10 @@ public class QcController implements Initializable {
         imageLeft.getChildren().clear();
         imageRight.getChildren().clear();
         imageExtra.getChildren().clear();
+
+        btnPrevious.setVisible(false);
+        btnNext.setVisible(false);
+        lblImageCount.setVisible(false);
     }
 
 
@@ -606,7 +648,12 @@ public class QcController implements Initializable {
 
 
     public void updateImageCountLabel() {
-        lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
+        //lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
+        if (!capturedImages.isEmpty() && currentImageIndex >= 0) {
+            lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
+        } else {
+            lblImageCount.setText("");
+        }
     }
 
 
