@@ -1,5 +1,5 @@
 
-
+/* Buttons */
 .mfx-button {
     -fx-background-color: #004b88;
     -fx-text-fill: white;
@@ -13,6 +13,7 @@
     -fx-background-color: #006FCB;
 }
 
+/* Labels*/
 Label{
     -fx-text-fill: black;
 }
@@ -40,21 +41,18 @@ Label{
     -fx-font-size: 16px;
 }
 
-.ContextMenu{
-    -fx-text-fill: black;
-
-}
-
+/* Text field*/
 MFXTextField {
     -fx-border-color: #004b88;
     -fx-font-size: 14px;
 }
-
+ /* Password field*/
 MFXPasswordField {
     -fx-border-color: #004b88;
     -fx-font-size: 14px;
 }
 
+/* TableView*/
 .table-view {
     -fx-border-color: #004b88;
 }
@@ -82,6 +80,11 @@ MFXPasswordField {
     -fx-fill: black;
 }
 
+/* Content Menu*/
+.ContextMenu{
+    -fx-text-fill: black;
+}
+
 .context-menu .menu-item:hover {
     -fx-background-color: #7fa8c5;
     -fx-text-fill: white;
@@ -92,6 +95,7 @@ MFXPasswordField {
     -fx-text-fill: white;
 }
 
+/* ListView*/
 ListView {
     -fx-font-size: 16px;
 }
@@ -115,6 +119,7 @@ ListView .list-cell:selected:hover {
     -fx-text-fill: black;
 }
 
+/* CheckBox*/
 .mfx-checkbox .mfx-ripple-generator {
     -mfx-ripple-color: #004b88;
 }
@@ -124,11 +129,12 @@ ListView .list-cell:selected:hover {
     -fx-border-color: #004b88;
 }
 
+/* Radio button*/
 .mfx-radio-button .mfx-ripple-generator {
     -mfx-ripple-color: #004b88;
 }
 
-
+/*ComboBox*/
 ComboBox {
     -fx-border-color: white;
     -fx-font-weight: bold;
