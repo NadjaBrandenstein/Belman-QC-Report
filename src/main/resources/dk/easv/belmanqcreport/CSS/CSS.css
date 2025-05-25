@@ -73,6 +73,25 @@ MFXPasswordField {
     -fx-text-fill: white;
 }
 
+.table-view .table-row-cell:selected {
+    -fx-background-color: #7fa8c5;
+    -fx-text-fill: black;
+}
+
+.table-view .table-row-cell:selected .text {
+    -fx-fill: black;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #7fa8c5;
+    -fx-text-fill: white;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #7fa8c5;
+    -fx-text-fill: white;
+}
+
 ListView {
     -fx-font-size: 16px;
 }
