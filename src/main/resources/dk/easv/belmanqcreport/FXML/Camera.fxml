@@ -24,7 +24,7 @@
          <center>
             <MFXButton fx:id="captureBtn" onAction="#captureBtn" prefHeight="62.0" prefWidth="100.0" text="Capture" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets bottom="27.0" left="10.0" top="5.0" />
+                  <Insets bottom="25.0" left="10.0" top="25.0" />
                </BorderPane.margin>
             </MFXButton>
          </center>
