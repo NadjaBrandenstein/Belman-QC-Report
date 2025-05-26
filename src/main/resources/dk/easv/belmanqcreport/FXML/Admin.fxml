@@ -88,7 +88,7 @@
          <left>
             <VBox alignment="CENTER" prefHeight="638.0" prefWidth="526.0" BorderPane.alignment="CENTER">
                <children>
-                      <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="395.0">
+                      <TableView fx:id="tblEmployee" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="395.0">
                           <columns>
                               <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
                               <TableColumn fx:id="colFName" prefWidth="75.0" text="First Name" />
