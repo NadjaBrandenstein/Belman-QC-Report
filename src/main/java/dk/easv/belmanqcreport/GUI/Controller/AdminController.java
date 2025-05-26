@@ -571,10 +571,9 @@
                     if(result == ButtonType.OK) {
                         userModel.deleteUser(selectedUser);
                         tblEmployee.getItems().remove(selectedUser);
-                        tblEmployee.refresh();
                     }
                 }
-                tblEmployee.refresh();
+                tblEmployee.setItems(userModel.getAllUsers());
             }
 
             private void activateUser() throws Exception {
@@ -589,10 +588,9 @@
                     if(result == ButtonType.OK) {
                         userModel.activateUser(selectedUser);
                         tblEmployee.getItems().remove(selectedUser);
-                        tblEmployee.refresh();
                     }
                 }
-                tblEmployee.refresh();
+                tblEmployee.setItems(userModel.getAllUsers());
             }
 
             public void setStage(Stage stage) {
