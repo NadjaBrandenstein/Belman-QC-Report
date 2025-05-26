@@ -118,7 +118,7 @@
                         <Insets />
                      </opaqueInsets>
                      <GridPane.margin>
-                        <Insets bottom="70.0" left="200.0" />
+                        <Insets bottom="70.0" left="197.0" />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="lblAddFront" GridPane.columnIndex="1">
@@ -140,7 +140,7 @@
                   <AnchorPane fx:id="imageLeft" style="-fx-border-color: gray;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                   <Label styleClass="positionLabel" text="Right" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets bottom="70.0" left="200.0" />
+                        <Insets bottom="70.0" left="198.0" />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="lblAddRight" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -151,7 +151,7 @@
                   <AnchorPane fx:id="imageRight" style="-fx-border-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label styleClass="positionLabel" text="Back" GridPane.columnIndex="2">
                      <GridPane.margin>
-                        <Insets bottom="70.0" left="200.0" />
+                        <Insets bottom="70.0" left="198.0" />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="lblAddBack" GridPane.columnIndex="2">
