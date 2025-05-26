@@ -91,6 +91,7 @@ public class OperatorMainController {
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
     private Stage stage;
+    private int currentExtraImageIndex = -1;
 
     private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
 
@@ -256,9 +257,9 @@ public class OperatorMainController {
     @FXML
     private void btnPrevious(ActionEvent actionEvent) {
         List<MyImage> extraImages = getExtraImages();
-        if(currentImageIndex > 0 && currentImageIndex < extraImages.size()) {
-            currentImageIndex--;
-            showExtraImageAtIndex(currentImageIndex);
+        if(currentExtraImageIndex > 0) {
+            currentExtraImageIndex--;
+            showExtraImageAtIndex(currentExtraImageIndex);
             updateImageCountLabel();
         }
 
@@ -267,9 +268,9 @@ public class OperatorMainController {
     @FXML
     private void btnNext(ActionEvent actionEvent) {
         List<MyImage> extraImages = getExtraImages();
-        if(currentImageIndex < extraImages.size() -1) {
-            currentImageIndex++;
-            showExtraImageAtIndex(currentImageIndex);
+        if(currentExtraImageIndex < extraImages.size() -1) {
+            currentExtraImageIndex++;
+            showExtraImageAtIndex(currentExtraImageIndex);
             updateImageCountLabel();
         }
 
@@ -315,9 +316,10 @@ public class OperatorMainController {
 
         if(extraImages.isEmpty()) {
             lblImageCount.setText("");
+            currentExtraImageIndex = -1;
         }
         else {
-            lblImageCount.setText((currentImageIndex + 1) + " / " + extraImages.size());
+            lblImageCount.setText((currentExtraImageIndex + 1) + " / " + extraImages.size());
         }
     }
 
@@ -439,8 +441,8 @@ public class OperatorMainController {
 
             if(pos == Position.EXTRA){
                 List<MyImage> extraImages = getExtraImages();
-                currentImageIndex = extraImages.size() - 1;
-                showExtraImageAtIndex(currentImageIndex);
+                currentExtraImageIndex = extraImages.size() - 1;
+                showExtraImageAtIndex(currentExtraImageIndex);
                 //showAllExtraImages();
             }
             else {
