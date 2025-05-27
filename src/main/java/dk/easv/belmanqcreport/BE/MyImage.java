@@ -1,15 +1,14 @@
 package dk.easv.belmanqcreport.BE;
-
+// Project Imports
 import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
+// JavaFX Imports
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-
+// Java Imports
 import java.io.File;
 
 public class MyImage {
-
-    
 
     private int orderID;
 
@@ -31,8 +30,6 @@ public class MyImage {
         this.validationType = validationType;
     }
 
-
-
     public MyImage(File file, Position position) {
 
         this.imageFile = file;
@@ -51,6 +48,7 @@ public class MyImage {
         this.position = Position.fromDbId(imagePositionID);
         this.validationTypeID = validationTypeID;
     }
+
     //called by OrderDAO
     public MyImage(int imageID, String imagePath, String comment) {
         this.imageID   = imageID;
@@ -157,5 +155,13 @@ public class MyImage {
 
     public void setValidationTypeID(int validationTypeID) {
         this.validationTypeID = validationTypeID;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }

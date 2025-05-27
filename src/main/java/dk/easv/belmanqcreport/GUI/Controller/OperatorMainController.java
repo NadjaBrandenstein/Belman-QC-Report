@@ -3,7 +3,6 @@ package dk.easv.belmanqcreport.GUI.Controller;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
-import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.GUI.Model.ImageHandlingModel;
@@ -87,7 +86,7 @@ public class OperatorMainController {
     private Order currentOrder;
     private OrderItem currentOrderItem;
 
-    private final CameraHandling cameraHandler = new CameraHandling();
+    //private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
     private Stage stage;
