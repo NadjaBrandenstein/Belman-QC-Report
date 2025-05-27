@@ -168,15 +168,6 @@ public class PDFGeneratorImp implements PDFGenerator {
                             contentStream.showText(userLabel);
                             contentStream.endText();
 
-                            contentStream.beginText();
-                            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 6);
-                            float dateTextY = textY - 7;
-                            contentStream.newLineAtOffset(rightTextX, dateTextY);
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                            String creationDateStr = "Created: " + sdf.format(new Date());
-                            contentStream.showText(creationDateStr);
-                            contentStream.endText();
-
                             contentStream.setNonStrokingColor(0,0,0);
                         } else {
                             System.out.println("Failed to load image from stream: logoImage is null");
@@ -210,6 +201,8 @@ public class PDFGeneratorImp implements PDFGenerator {
                     contentStream.showText("Items number: " + orderItem.getItemNumber());
                     contentStream.newLine();
                     contentStream.showText("Comment: " + myImage.getComment());
+                    contentStream.newLine();
+                    contentStream.showText("Position: " + myImage.getImagePosition());
                     contentStream.newLine();
                     contentStream.showText("Date taken: " + dateTakenStr);
 
