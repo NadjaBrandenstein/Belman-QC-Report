@@ -164,4 +164,8 @@ public class MyImage {
     public Position getPosition() {
         return position;
     }
+
+    public String getFilePath() {
+        return "";
+    }
 }

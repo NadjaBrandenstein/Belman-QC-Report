@@ -120,7 +120,8 @@ public class CameraHandling {
 
             File dir = new File(outputPath);
             dir.mkdirs();
-            Imgcodecs.imwrite(fullPath, frame);
+            //Imgcodecs.imwrite(fullPath, frame);
+            boolean success = Imgcodecs.imwrite(fullPath, frame);
 
             return new MyImage(new File(fullPath));
         }
