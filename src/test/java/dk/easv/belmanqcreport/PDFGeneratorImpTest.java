@@ -33,7 +33,7 @@ public class PDFGeneratorImpTest {
         pdfGenerator.setOrderItem(testItem);
 
         MyImage testImage = new MyImage();
-        testImage.setImagePath("C:\\Users\\pygem\\OneDrive\\Máy tính\\Datamatiker\\SCO\\Projects\\Belman-QC-Report\\src\\main\\resources\\dk\\easv\\belmanqcreport\\Images\\APPROVED.png");
+        testImage.setImagePath("src/main/resources/dk/easv/belmanqcreport/Images/captured_1747296232726.png");
         testImage.setComment("This is a test comment");
 
         pdfGenerator.generatePDF(testPdfPath, Collections.singletonList(testImage));
