@@ -1,15 +1,16 @@
 package dk.easv.belmanqcreport.DAL.Database;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.DBConnection;
-
+import dk.easv.belmanqcreport.DAL.Interface.IRepository;
+// Other Imports
+import org.mindrot.jbcrypt.BCrypt;
+// Java Imports
 import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 
-import dk.easv.belmanqcreport.DAL.Interface.IRepository;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginRepository implements IRepository<Login> {
 
@@ -17,18 +18,15 @@ public class LoginRepository implements IRepository<Login> {
 
     private User user;
 
-
     public LoginRepository() throws IOException {
         dbConnection = new DBConnection();
         user = new User();
     }
 
-
     @Override
     public List<Login> getAll() throws Exception {
         return List.of();
     }
-
 
     @Override
     public Login add(Login login)throws Exception {
@@ -61,8 +59,6 @@ public class LoginRepository implements IRepository<Login> {
         return login;
     }
 
-
-
     @Override
     public Login update(Login login) throws Exception{
         String sql = "UPDATE Login SET password = ? WHERE username = ?";
@@ -79,7 +75,6 @@ public class LoginRepository implements IRepository<Login> {
         }
         return login;
     }
-
 
     @Override
     public void delete(Login login) throws Exception {

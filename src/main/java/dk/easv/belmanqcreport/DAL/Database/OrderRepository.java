@@ -1,11 +1,11 @@
 package dk.easv.belmanqcreport.DAL.Database;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
-
+// Java Imports
 import java.sql.*;
 import java.util.*;
 
@@ -14,7 +14,6 @@ public class OrderRepository implements IRepository<Order> {
     @Override
     public List<Order> getAll() throws Exception {
         DBConnection dbConnection = new DBConnection();
-
 
         String sql = "SELECT o.orderID, o.userID, o.orderNumber, " +
                 "t.orderItem, t.orderItemID, i.imageID, i.imagePath, i.comment " +
@@ -57,17 +56,14 @@ public class OrderRepository implements IRepository<Order> {
         return new ArrayList<>(orderMap.values());
     }
 
-
     @Override
     public Order add(Order order) throws Exception {
         DBConnection dbConnection = new DBConnection();
         String sql = "INSERT INTO Order (orderID) VALUES (?,?,?)";
 
-
         try (Connection conn = dbConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, order.getOrderID());
-
 
             stmt.executeUpdate();
         }
@@ -85,12 +81,10 @@ public class OrderRepository implements IRepository<Order> {
         try (Connection conn = dbConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-
             stmt.setInt(1, order.getOrderID());
 
             stmt.executeUpdate();
         }
-
         return order;
     }
 
@@ -137,7 +131,6 @@ public class OrderRepository implements IRepository<Order> {
         }
     }
 
-
     public Optional<Order> getOrderByNumber(String orderNumber) throws Exception {
         String sql = "SELECT orderID, userID, orderNumber " +
                 "FROM dbo.[Order] " +
@@ -154,7 +147,6 @@ public class OrderRepository implements IRepository<Order> {
         }
 
     }
-
 
     public List<OrderItem> getItemsByOrderNumber(String orderNumber) throws Exception {
         String sql = "SELECT item.orderItemID, item.orderID, item.orderItem " +

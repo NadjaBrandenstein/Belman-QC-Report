@@ -1,9 +1,11 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-
+// Project Imports
 import dk.easv.belmanqcreport.BLL.UTIL.FXMLNavigator;
 import dk.easv.belmanqcreport.GUI.Model.OrderModel;
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+// JavaFX Imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
+// Java Imports
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -53,7 +55,6 @@ public class OperatorSearchController implements Initializable {
         btnSearch.setText("");
         setButtonIcon(btnSearch, "/dk/easv/belmanqcreport/Icons/search.png");
 
-
         txtSearch.selectableProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 orderModel.getAllOrders();
@@ -78,6 +79,10 @@ public class OperatorSearchController implements Initializable {
 
         try {
             if (orderModel.doesOrderExist(inputOrderNumber)) {
+                if (stage == null) {
+                    stage = (Stage) btnSearch.getScene().getWindow();
+                }
+
                 FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorMain.fxml");
 
                 if (loader != null) {

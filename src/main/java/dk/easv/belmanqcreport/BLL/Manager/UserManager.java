@@ -1,9 +1,9 @@
 package dk.easv.belmanqcreport.BLL.Manager;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.UTIL.Search;
 import dk.easv.belmanqcreport.DAL.Database.UserRepository;
-
+// Java Imports
 import java.util.List;
 
 public class UserManager {

@@ -1,8 +1,8 @@
 package dk.easv.belmanqcreport.DAL;
-
+// Other Imports
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-
+// Java Imports
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,8 +29,6 @@ public class DBConnection {
     public Connection getConnection() throws SQLServerException {
         return dataSource.getConnection();
     }
-
-
 
     public static void main(String[] args) throws Exception {
         DBConnection databaseConnector = new DBConnection();

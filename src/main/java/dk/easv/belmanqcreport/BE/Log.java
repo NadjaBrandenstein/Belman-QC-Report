@@ -1,5 +1,5 @@
 package dk.easv.belmanqcreport.BE;
-
+// Java Import
 import java.time.LocalDateTime;
 
 public class Log {
@@ -21,14 +21,6 @@ public class Log {
 
     public Log() {
 
-    }
-
-    public int getLogID() {
-        return logID;
-    }
-
-    public void setLogID(int logID) {
-        this.logID = logID;
     }
 
     public Integer getOrderItemID() {

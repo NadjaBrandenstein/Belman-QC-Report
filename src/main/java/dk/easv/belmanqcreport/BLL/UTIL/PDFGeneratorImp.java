@@ -1,10 +1,8 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
-
+// Other Imports
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
-import dk.easv.belmanqcreport.BE.*;
-import dk.easv.belmanqcreport.GUI.Controller.QcController;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -12,26 +10,22 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import sun.print.PathGraphics;
-
+// Project Imports
+import dk.easv.belmanqcreport.BE.*;
+// JavaFX Imports
 import javax.imageio.ImageIO;
+// Java Imports
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class PDFGeneratorImp implements IPDFGenerator {
-    private float pageWidth;
-    private float pageHeight;
-    private PathGraphics contentStream;
     private Order order;
     private OrderItem orderItem;
-    private QcController qcController;
     private String employeeName = "";
-    private String orderNumber = "";
 
     private PDFGeneratorImp() {
         order = new Order();
@@ -216,11 +210,6 @@ public class PDFGeneratorImp implements IPDFGenerator {
             e.printStackTrace();
         }
 
-    }
-
-    private String getOrderNumberFromDatabase(OrderItem orderItem) {
-        this.orderItem = orderItem;
-        return "";
     }
 
     public void setEmployeeName(String name){

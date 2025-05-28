@@ -1,11 +1,12 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.GUI.Model.UserModel;
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckListView;
 import io.github.palexdev.materialfx.controls.MFXRadioButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+// JavaFX Imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,8 +19,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+// Java Imports
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,15 +33,11 @@ public class CreateEditUserController implements Initializable {
     public MFXRadioButton radioManual;
     public ListView<String> lstRoleCheckList;
 
-
     private UserModel userModel;
     private Stage stage;
 
     private boolean isEditMode = false;
     private User editingUser;
-
-
-
 
     public CreateEditUserController() throws Exception {
         userModel = new UserModel();
@@ -129,8 +125,6 @@ public class CreateEditUserController implements Initializable {
         // Close the stage after saving
         if (stage != null) stage.close();
     }
-
-
 
     public void btnCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

@@ -1,7 +1,7 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.User;
-
+// Java Imports
 import java.util.ArrayList;
 import java.util.List;
 

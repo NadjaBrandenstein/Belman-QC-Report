@@ -86,7 +86,6 @@ public class OperatorMainController {
     private Order currentOrder;
     private OrderItem currentOrderItem;
 
-    //private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
     private Stage stage;
@@ -142,7 +141,6 @@ public class OperatorMainController {
                     }
                 });
 
-
         getPaneByPosition = Map.of(
                 Position.TOP, imageTop,
                 Position.FRONT, imageFront,
@@ -158,7 +156,6 @@ public class OperatorMainController {
         imageLeft.setOnMouseClicked(event -> handleImageClick(Position.LEFT));
         imageRight.setOnMouseClicked(event -> handleImageClick(Position.RIGHT));
         imageExtra.setOnMouseClicked(event -> handleImageClick(Position.EXTRA));
-
     }
 
     private void openImageHandlingScene(MyImage image) {
@@ -221,7 +218,6 @@ public class OperatorMainController {
         }
 
     }
-
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
@@ -306,7 +302,6 @@ public class OperatorMainController {
             lblImageCount.setText((currentExtraImageIndex + 1) + " / " + extraImages.size());
         }
     }
-
 
     @FXML
     private void btnCamera(ActionEvent actionEvent) {
@@ -638,7 +633,6 @@ public class OperatorMainController {
         imageExtra.getChildren().clear();
         lblImageCount.setText("");
     }
-
 
     public void setStage(Stage stage) {
         this.stage = stage;

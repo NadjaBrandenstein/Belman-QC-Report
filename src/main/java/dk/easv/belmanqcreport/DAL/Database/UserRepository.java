@@ -1,12 +1,12 @@
 package dk.easv.belmanqcreport.DAL.Database;
 
-import dk.easv.belmanqcreport.BE.MyImage;
+//Project Imports
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
-import javafx.beans.property.BooleanProperty;
+// JavaFX
 import javafx.beans.property.SimpleBooleanProperty;
-
+// Java Imports
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +22,6 @@ public class UserRepository implements IRepository<User> {
     public UserRepository() throws IOException {
         dbConnection = new DBConnection();
     }
-
 
     @Override
     public List<User> getAll() {
@@ -54,7 +53,6 @@ public class UserRepository implements IRepository<User> {
 
         return users;
     }
-
 
     @Override
     public User add(User user) {

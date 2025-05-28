@@ -1,11 +1,11 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.DAL.Database.LoginRepository;
 import dk.easv.belmanqcreport.DAL.Database.UserRepository;
 import dk.easv.belmanqcreport.GUI.Controller.LoginController;
 import dk.easv.belmanqcreport.GUI.Controller.QcController;
-
+// Java Imports
 import java.io.IOException;
 
 public class AuthService {

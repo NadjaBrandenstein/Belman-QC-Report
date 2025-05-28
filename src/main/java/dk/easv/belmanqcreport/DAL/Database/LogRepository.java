@@ -1,9 +1,9 @@
 package dk.easv.belmanqcreport.DAL.Database;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.Log;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
-
+// Java Imports
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,11 +21,8 @@ public class LogRepository implements IRepository<Log> {
 
     @Override
     public List<Log> getAll() throws Exception {
-
-
         return List.of();
     }
-
 
     @Override
     public Log add(Log log) throws Exception {

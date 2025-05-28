@@ -5,7 +5,6 @@ import dk.easv.belmanqcreport.BE.Log;
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
-import dk.easv.belmanqcreport.BLL.UTIL.CameraHandling;
 import dk.easv.belmanqcreport.BLL.UTIL.PDFGeneratorImp;
 import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
@@ -37,7 +36,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Window;
 // Java Imports
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +79,6 @@ public class QcController implements Initializable {
     private MFXCheckbox idApproveAll;
     @FXML
     private MFXCheckbox idDenyAll;
-
     @FXML
     private ListView<Order> lstOrder;
     @FXML
@@ -98,10 +95,7 @@ public class QcController implements Initializable {
     private ImageModel imageModel;
     private LogModel logModel;
     private Order order;
-    private Window primaryStage;
-    private int imagePositionID;
 
-    private final CameraHandling cameraHandler = new CameraHandling();
     private List<MyImage> capturedImages = new ArrayList<>();
     private int currentImageIndex = -1;
 
@@ -113,9 +107,6 @@ public class QcController implements Initializable {
     private final Map<Position, MyImage> imagesByPosition = new EnumMap<>(Position.class);
     private final Map<Position, Rectangle> imagePanesOverlay = new EnumMap<>(Position.class);
     private Map<Position, StackPane> getPaneByPosition;
-    private String orderNumber;
-    private String orderItem;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -132,7 +123,6 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
 
         setIcons();
 
@@ -158,7 +148,6 @@ public class QcController implements Initializable {
         btnPrevious.setVisible(false);
         btnNext.setVisible(false);
         lblImageCount.setVisible(false);
-
     }
 
     private void initializeCheckBoxes() {
@@ -192,7 +181,6 @@ public class QcController implements Initializable {
                         .then("Send back")
                         .otherwise("")
         );
-
 
     }
 
@@ -314,8 +302,6 @@ public class QcController implements Initializable {
             }
         });
     }
-
-
 
     private void loadImagesForItem(int orderItemId) {
         try {
@@ -486,7 +472,6 @@ public class QcController implements Initializable {
         lblImageCount.setVisible(false);
     }
 
-
     private void setIcons() {
 
         setImageViewIcon(logoImage, "/dk/easv/belmanqcreport/Icons/Belman.png");
@@ -498,7 +483,6 @@ public class QcController implements Initializable {
         setButtonIcon(btnPrevious, "/dk/easv/belmanqcreport/Icons/previous.png", 50, 50);
         btnNext.setText("");
         setButtonIcon(btnNext, "/dk/easv/belmanqcreport/Icons/next.png", 50, 50);
-
 
     }
 
@@ -602,8 +586,6 @@ public class QcController implements Initializable {
 
                 }
 
-
-
                 Rectangle overlay = imagePanesOverlay.get(updatedImage.getImagePosition());
                 if (selected != null) {
                     boolean denied = updatedImage.getValidationTypeID() == ValidationType.DENIED.getId();
@@ -613,7 +595,6 @@ public class QcController implements Initializable {
                     );
                 }
             });
-
 
             Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
             Stage stage = new Stage();
@@ -627,12 +608,10 @@ public class QcController implements Initializable {
             stage.setScene(scene);
             stage.showAndWait();
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     public void updateImageCountLabel() {
         if (!capturedImages.isEmpty() && currentImageIndex >= 0) {
@@ -641,7 +620,6 @@ public class QcController implements Initializable {
             lblImageCount.setText("");
         }
     }
-
 
     private void setButtonIcon(Button button, String iconPath, double width, double height) {
         if (button == null) {
@@ -664,7 +642,6 @@ public class QcController implements Initializable {
         button.setGraphic(imageView);
     }
 
-
     private void showInfo(String msg) {
         new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
     }
@@ -685,7 +662,6 @@ public class QcController implements Initializable {
                 showAlert(Alert.AlertType.WARNING, "No order item selected.");
                 return;
             }
-
 
             boolean isDenyAll = idDenyAll.isSelected();
             boolean isApproveAll = idApproveAll.isSelected();
@@ -736,7 +712,6 @@ public class QcController implements Initializable {
             removeFrom.remove(item);
             lstItem.refresh();
 
-
             showInfo("Images of item “" + item.getOrderItem() + "” has been " + status.toLowerCase() + ".");
 
             lstLog.scrollTo(logItems.size() - 1);
@@ -765,8 +740,6 @@ public class QcController implements Initializable {
             String orderNumber = lstOrder.getSelectionModel().getSelectedItem().getOrderNumber();
             String orderItem = lstItem.getSelectionModel().getSelectedItem().getOrderItem();
 
-
-
             String filename = "Report " + orderNumber + "-" + orderItem + ".pdf";
             File pdfFile = showSaveDialog(filename);
             if (pdfFile != null) {
@@ -781,10 +754,6 @@ public class QcController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Order getSelectedOrder() {
-        return orderTableView.getSelectionModel().getSelectedItem();
     }
 
     private File showSaveDialog (String initialFileName){
@@ -809,9 +778,6 @@ public class QcController implements Initializable {
             idApproveAll.setSelected(false);
         }
 
-
-
-
         private void setImageViewIcon (ImageView logoImage, String iconPath){
             if (logoImage == null) {
                 System.out.println("logoImage is null. Cannot set icon: " + iconPath);
@@ -830,9 +796,6 @@ public class QcController implements Initializable {
             logoImage.setFitHeight(100); // Set your desired height
             logoImage.setPreserveRatio(true);
         }
-
-
-
 
         @FXML
         private void checkApproved (ActionEvent actionEvent){

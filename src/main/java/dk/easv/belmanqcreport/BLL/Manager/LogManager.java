@@ -1,8 +1,8 @@
 package dk.easv.belmanqcreport.BLL.Manager;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.Log;
 import dk.easv.belmanqcreport.DAL.Database.LogRepository;
-
+// Java Imports
 import java.io.IOException;
 import java.util.List;
 

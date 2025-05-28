@@ -1,8 +1,8 @@
 package dk.easv.belmanqcreport.GUI.Model;
-
+// Project Import
 import dk.easv.belmanqcreport.BE.Log;
 import dk.easv.belmanqcreport.BLL.Manager.LogManager;
-
+// Java Imports
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,11 +29,4 @@ public class LogModel {
         return manager.getLogsForItem(orderItemId);
     }
 
-    public void addLogSafe(int orderItemId, String imagePosition, String action, String user) {
-        try {
-            addLog(orderItemId, imagePosition, action, user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

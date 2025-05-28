@@ -1,17 +1,15 @@
 package dk.easv.belmanqcreport.GUI.Model;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BE.OrderItem;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.Manager.OrderManager;
 import dk.easv.belmanqcreport.BLL.Manager.UserManager;
+// JavaFX Imports
 import javafx.collections.ObservableList;
-
-import java.util.List;
-
-
 import javafx.collections.FXCollections;
-
+// Java Imports
+import java.util.List;
 
 public class UserModel {
 
@@ -38,14 +36,12 @@ public class UserModel {
         tblEmployee.addAll(searchResult);
     }
 
-
     public ObservableList<User> getAllUsers () throws Exception {
         List<User> users = userManager.getAllUsers();
         tblEmployee.clear();
         tblEmployee.addAll(users);
         return tblEmployee;
     }
-
 
     public ObservableList<Order> getOrders () throws Exception {
         List<Order> orders = orderManager.getAllOrders();
@@ -59,11 +55,6 @@ public class UserModel {
         lstOrderItem.clear();
         lstOrderItem.addAll(orderItem);
         return lstOrderItem;
-    }
-
-    public ObservableList<OrderItem> getLog () throws Exception {
-        lstLog.clear();
-        return lstLog;
     }
 
     public void updateUser(User user) throws Exception {

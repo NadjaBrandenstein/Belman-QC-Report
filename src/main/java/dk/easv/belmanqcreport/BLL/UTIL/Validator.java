@@ -1,5 +1,5 @@
 package dk.easv.belmanqcreport.BLL.UTIL;
-
+// Other Imports
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Validator {

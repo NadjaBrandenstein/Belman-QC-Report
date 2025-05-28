@@ -2,22 +2,17 @@ package dk.easv.belmanqcreport.BE;
 // Project Imports
 import dk.easv.belmanqcreport.DAL.Interface.Position;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
-// JavaFX Imports
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 // Java Imports
 import java.io.File;
 
 public class MyImage {
 
     private int orderID;
-
-    private int    imageID;
+    private int imageID;
     private String imagePath;
     private String comment;
     private File imageFile;
     private int imagePositionID;
-    private String imagePosition;
     private Position position;
     private int validationTypeID;
     private ValidationType validationType;
@@ -28,15 +23,6 @@ public class MyImage {
 
     public MyImage(ValidationType validationType) {
         this.validationType = validationType;
-    }
-
-    public MyImage(File file, Position position) {
-
-        this.imageFile = file;
-        this.imagePath = file.getPath();
-        this.comment = "";
-        this.position = position;
-
     }
 
     //called by MyImageDAO
@@ -62,14 +48,6 @@ public class MyImage {
         this.imageFile = file;
         this.imagePath = file.getPath();
         this.comment = "";
-    }
-
-    public MyImage() {
-        this.imageFile = imageFile;
-    }
-
-    public File getImageFile() {
-        return imageFile;
     }
 
     public int getOrderItemID() {
@@ -104,45 +82,16 @@ public class MyImage {
         this.comment = comment;
     }
 
-    public void setImageFile(File imageFile) {
-        this.imageFile = imageFile;
-    }
-
     public String toURI() {
         return imageFile.toURI().toString();
     }
-
-    public ImageView getImageNode() {
-        ImageView imageView = new ImageView();
-        return imageView;
-    }
-
-    public Node getImageView() {
-        return imageView();
-    }
-
-    private Node imageView() {
-        return new ImageView(imageFile.toURI().toString());
-    }
-
-    public int getUserID() { return 0; }
-
-    public int setUserID() { return 0; }
 
     public int getImagePositionID() {
         return position.getDbId();
     }
 
-    public void setImagePositionID(int imagePositionID) {
-        this.imagePositionID = imagePositionID;
-    }
-
     public Position getImagePosition() {
         return position;
-    }
-
-    public void setImagePosition(Position position) {
-        this.position = position;
     }
 
     public int getValidationTypeID() {
@@ -159,10 +108,6 @@ public class MyImage {
 
     public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public Position getPosition() {
-        return position;
     }
 
     public String getFilePath() {

@@ -1,5 +1,5 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-// Other Imports
+// Project Imports
 import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.BE.User;
 import dk.easv.belmanqcreport.BLL.UTIL.AuthService;
@@ -27,6 +27,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    @FXML
+    private HBox imageHboxCenter;
+
     public MFXTextField txtUsername;
     public MFXPasswordField txtPassword;
     public ImageView logoImage;
@@ -37,18 +40,13 @@ public class LoginController implements Initializable {
     private Stage stage;
     private Login login;
     private User user;
-
     private AuthService authService;
-    @FXML
-    private HBox imageHboxCenter;
-
 
     public LoginController() throws IOException {
         authService = new AuthService();
         login = new Login();
         user = new User();
         authService.setLoginController(this);
-
     }
 
     @Override
@@ -58,8 +56,6 @@ public class LoginController implements Initializable {
 
         btnBack.setText("");
         setButtonIcon(btnBack, "/dk/easv/belmanqcreport/Icons/backbtn.png");
-
-
 
         lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;");
         lblForgotPassword.setCursor(Cursor.HAND);
@@ -71,14 +67,10 @@ public class LoginController implements Initializable {
         });
     }
 
-
-
-
     public void btnBack(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
 
     public void btnLogout(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -127,8 +119,6 @@ public class LoginController implements Initializable {
         }
 
     }
-
-
 
     private void adminpage() throws IOException {
         FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/Admin.fxml");

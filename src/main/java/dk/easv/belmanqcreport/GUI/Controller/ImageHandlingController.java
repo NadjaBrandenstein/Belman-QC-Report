@@ -49,10 +49,13 @@ public class ImageHandlingController {
     @FXML
     private HBox imageHboxCenter;
     @FXML
-    private
-    Label alertLbl;
+    private Label alertLbl;
     @FXML
     private ImageView imageView;
+    @FXML
+    private ImageView logoImage;
+    @FXML
+    private MFXCheckbox checkDeny;
 
     private OperatorMainController operatorController;
 
@@ -62,11 +65,6 @@ public class ImageHandlingController {
     private Order currentOrder;
     private MyImage currentImage;
     private Consumer<MyImage> onSaveCallBack;
-
-    @FXML
-    private ImageView logoImage;
-    @FXML
-    private MFXCheckbox checkDeny;
 
     @FXML
     private void initialize() throws Exception {
@@ -88,7 +86,6 @@ public class ImageHandlingController {
         this.model = new ImageHandlingModel();
         this.operatorController = new OperatorMainController();
         this.imageModel = new ImageModel();
-
     }
 
     public void setOrderDetails(Order order, MyImage image, Consumer<MyImage> onUpdate) {
@@ -125,7 +122,6 @@ public class ImageHandlingController {
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(1400);
         imageView.setFitHeight(600);
-
     }
 
     @FXML
@@ -279,7 +275,6 @@ public class ImageHandlingController {
     private void resetCheckbox() {
         checkDeny.setSelected(false);
     }
-
 
     @FXML
     private void btnScratch(ActionEvent actionEvent) {

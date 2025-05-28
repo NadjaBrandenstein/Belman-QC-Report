@@ -1,10 +1,10 @@
 package dk.easv.belmanqcreport.DAL.Database;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.DAL.DBConnection;
 import dk.easv.belmanqcreport.DAL.Interface.IRepository;
 import dk.easv.belmanqcreport.DAL.Interface.ValidationType;
-
+// Java Imports
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -175,9 +175,5 @@ public class ImageRepository implements IRepository<MyImage> {
             stmt.executeUpdate();
         }
     }
-
-
-
-
 
 }

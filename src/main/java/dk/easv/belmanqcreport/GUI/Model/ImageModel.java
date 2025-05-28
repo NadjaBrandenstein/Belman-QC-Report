@@ -1,8 +1,8 @@
 package dk.easv.belmanqcreport.GUI.Model;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.BLL.Manager.ImageManager;
-
+// Java Imports
 import java.util.List;
 
 public class ImageModel {
@@ -28,13 +28,6 @@ public class ImageModel {
         imageManager.updateComment(img);
     }
 
-    /**
-     * Validation part
-     */
-    public void updateValidation(int orderItemID, int validationTypeID) throws Exception {
-        imageManager.updateItemStatus(orderItemID, validationTypeID);
-    }
-
     public int getValidationType(int orderItemID) throws Exception {
         return imageManager.getValidationType(orderItemID);
     }
@@ -42,5 +35,4 @@ public class ImageModel {
     public void updateImageStatus(int imageID, int validationTypeID) throws Exception {
         imageManager.updateImageStatus(imageID, validationTypeID);
     }
-
 }

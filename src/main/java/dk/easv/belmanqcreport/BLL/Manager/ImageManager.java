@@ -1,8 +1,8 @@
 package dk.easv.belmanqcreport.BLL.Manager;
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.MyImage;
 import dk.easv.belmanqcreport.DAL.Database.ImageRepository;
-
+// Java Imports
 import java.util.List;
 
 public class ImageManager {

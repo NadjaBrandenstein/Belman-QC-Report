@@ -96,7 +96,6 @@ public class CameraHandling {
         }
     }
 
-
     public MyImage captureImage(String outputPath) {
         if(frame != null && !frame.empty()) {
             String FileName = "captured_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".png";

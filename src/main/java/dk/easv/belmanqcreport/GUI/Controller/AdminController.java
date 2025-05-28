@@ -41,11 +41,6 @@
             private ListView<OrderItem> lstItem;
             @FXML
             private ListView<String> lstLog;
-
-            private final ObservableList<String> logItems = FXCollections.observableArrayList();
-
-            @FXML
-            private Label lblOrderNumber;
             @FXML
             private Label lblEmployee;
             @FXML
@@ -66,6 +61,8 @@
             private MFXButton btnBack;
             @FXML
             private MFXButton btnLogout;
+            @FXML
+            private ImageView logoImage;
 
             //BE
             private Order order;
@@ -80,8 +77,7 @@
             private final Set<OrderItem> deniedItems = new HashSet<>();
             private final Set<OrderItem> approvedItems = new HashSet<>();
 
-            @FXML
-            private ImageView logoImage;
+            private final ObservableList<String> logItems = FXCollections.observableArrayList();
             private CreateEditUserController createEditUserController;
             private Stage stage;
 
@@ -116,7 +112,6 @@
                     e.printStackTrace();
                 }
 
-
                 tblEmployee.setRowFactory(tv -> new TableRow<User>() {
                     @Override
                     protected void updateItem(User user, boolean empty) {
@@ -135,7 +130,6 @@
                 });
 
                 // ListView
-
 
                 lstLog.setItems(logItems);
                 try {
@@ -525,7 +519,6 @@
                 }
             }
 
-
             public int roleToInt(String role) {
                 return switch (role.toLowerCase()) {
                     case "admin" -> 1;
@@ -535,13 +528,11 @@
                 };
             }
 
-
             private void createUser() throws Exception {
                 FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/CreateEditUser.fxml");
 
                 tblEmployee.setItems(userModel.getAllUsers()); // Refresh after creation
             }
-
 
             private void editUser() throws Exception {
                 User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
@@ -556,7 +547,6 @@
                     tblEmployee.setItems(userModel.getAllUsers());
                 }
             }
-
 
             private void deleteUser() throws Exception {
                 User selectedUser = tblEmployee.getSelectionModel().getSelectedItem();

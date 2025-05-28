@@ -1,11 +1,13 @@
 package dk.easv.belmanqcreport.GUI.Controller;
-
+//Project Imports
 import dk.easv.belmanqcreport.BE.Login;
 import dk.easv.belmanqcreport.DAL.Database.LoginRepository;
 import dk.easv.belmanqcreport.Main;
+// Other Imports
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+// JavaFX Imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
+// Java Imports
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,7 +66,6 @@ public class ForgotPasswordController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     public void btnChangePassword(ActionEvent keyEvent) {
@@ -139,6 +140,5 @@ public class ForgotPasswordController implements Initializable {
         logoImage.setFitHeight(100); // Set your desired height
         logoImage.setPreserveRatio(true);
     }
-
 
 }

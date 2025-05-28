@@ -1,9 +1,8 @@
 package dk.easv.belmanqcreport.GUI.Model;
-
-
+// Project Imports
 import dk.easv.belmanqcreport.BE.Order;
 import dk.easv.belmanqcreport.BLL.Manager.OrderManager;
-
+// Java Imports
 import java.util.List;
 
 public class OrderModel {
@@ -18,10 +17,8 @@ public class OrderModel {
         return orderManager.getAllOrders();
     }
 
-
     public boolean doesOrderExist(String orderNumber) throws Exception {
         return getAllOrders().stream()
                 .anyMatch(order -> order.getOrderNumber().equalsIgnoreCase(orderNumber));
     }
-
 }
