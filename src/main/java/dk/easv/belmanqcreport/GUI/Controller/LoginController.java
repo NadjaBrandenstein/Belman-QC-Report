@@ -61,8 +61,8 @@ public class LoginController implements Initializable {
 
 
 
-        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;"); // Make it look like a link
-        lblForgotPassword.setCursor(Cursor.HAND); // Change cursor to hand on hover
+        lblForgotPassword.setStyle("-fx-text-fill: blue; -fx-underline: true;");
+        lblForgotPassword.setCursor(Cursor.HAND);
 
         lblForgotPassword.setOnMouseClicked(event -> {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -104,7 +104,6 @@ public class LoginController implements Initializable {
             String userType = login.getUserType();
 
             if (userType != null) {
-                // Get the current stage from the event and assign it
                 this.stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
                 switch (userType.toLowerCase()) {
@@ -161,7 +160,7 @@ public class LoginController implements Initializable {
 
     public void btnLoginKey(KeyEvent keyEvent) {
         if (keyEvent.getCode().toString().equals("ENTER")) {
-            btnLogin.fire(); // This doesn't work unless you reference the button directly
+            btnLogin.fire();
         }
     }
 

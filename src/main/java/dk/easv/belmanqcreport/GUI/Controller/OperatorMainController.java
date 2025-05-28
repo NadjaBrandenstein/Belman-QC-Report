@@ -142,14 +142,6 @@ public class OperatorMainController {
                     }
                 });
 
-        /*cbOrderNumber.setOnAction(event -> {
-            currentOrderItem = cbOrderNumber.getSelectionModel().getSelectedItem();
-
-            if (currentOrderItem != null) {
-                loadImagesForItem(currentOrderItem.getOrderItemId());
-
-            }
-        });*/
 
         getPaneByPosition = Map.of(
                 Position.TOP, imageTop,
@@ -230,13 +222,6 @@ public class OperatorMainController {
 
     }
 
-    /*private void showOrderDetails(Order order) {
-        lblOrderNumber.setText(String.valueOf(order.getOrderID()));
-
-        boolean hasComment = order.getComment() != null
-                && !order.getComment().isEmpty();
-        commentIcon.setVisible(hasComment);
-    }*/
 
     @FXML
     private void btnBack(ActionEvent actionEvent) {
@@ -589,7 +574,6 @@ public class OperatorMainController {
         Optional<Order> opt = imageHandlingModel.findOrderByNumber(orderNumber);
         if (opt.isPresent()) {
             currentOrder = opt.get();
-            //showOrderDetails(currentOrder);
         } else {
             new Alert(Alert.AlertType.ERROR, "Could not find order “" + orderNumber + "”")
                     .showAndWait();
@@ -639,17 +623,6 @@ public class OperatorMainController {
 
             updateImageCountLabel();
 
-            /*capturedImages = new ArrayList<>(imgs);
-            currentImageIndex = imgs.isEmpty() ? -1 : 0;
-            clearImages();
-
-            if(currentImageIndex >= 0) {
-                showImageAtIndex(currentImageIndex);
-                updateImageCountLabel();
-            } else {
-                //imageHboxCenter.getChildren().clear();
-                lblImageCount.setText("0 / 0");
-            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -666,24 +639,6 @@ public class OperatorMainController {
         lblImageCount.setText("");
     }
 
-    /*@FXML
-    private void cbOrderNumber(ActionEvent actionEvent) {
-
-        OrderItem selectedOrder = cbOrderNumber.getSelectedItem();
-        if (selectedOrder != null) {
-            currentOrderItem = selectedOrder;
-            capturedImages = new ArrayList<>(currentOrderItem.getImages());
-            currentImageIndex = 0;
-            if (!capturedImages.isEmpty()) {
-                showImageAtIndex(currentImageIndex);
-                updateImageCountLabel();
-            } else {
-                imageHboxCenter.getChildren().clear();
-                lblImageCount.setText("0 / 0");
-            }
-        }
-
-    }*/
 
     public void setStage(Stage stage) {
         this.stage = stage;

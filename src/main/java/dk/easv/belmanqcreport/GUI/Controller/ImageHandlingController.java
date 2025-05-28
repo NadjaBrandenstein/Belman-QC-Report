@@ -141,7 +141,6 @@ public class ImageHandlingController {
 
     public void showCheckbox(boolean visible) {
         checkDeny.setVisible(visible);
-       // checkDeny.setManaged(visible);
     }
 
     @FXML

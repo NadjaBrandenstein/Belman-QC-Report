@@ -367,10 +367,6 @@ public class QcController implements Initializable {
                 lblImageCount.setText("");
             }
 
-            //OrderItem selectedItem = lstItem.getSelectionModel().getSelectedItem();
-
-            //boolean hasExtraImage = imagesByPosition.containsKey(Position.EXTRA);
-
             btnPrevious.setVisible(hasExtraImage);
             btnNext.setVisible(hasExtraImage);
             lblImageCount.setVisible(hasExtraImage);
@@ -580,13 +576,6 @@ public class QcController implements Initializable {
             controller.showDeleteButton(false);
             controller.setOrderDetails(order, image, updatedImage -> {
 
-                /*if (updatedImage == null) {
-                    imagesByPosition.remove(image.getImagePosition());
-                    showImageForPosition(image.getImagePosition());
-                    updateImageCountLabel();
-                    return;
-                }*/
-
 
                 imagesByPosition.put(updatedImage.getImagePosition(), updatedImage);
                 showImageForPosition(updatedImage.getImagePosition());
@@ -646,7 +635,6 @@ public class QcController implements Initializable {
 
 
     public void updateImageCountLabel() {
-        //lblImageCount.setText(imagesByPosition.size() + " / " + Position.values().length);
         if (!capturedImages.isEmpty() && currentImageIndex >= 0) {
             lblImageCount.setText((currentImageIndex + 1) + " / " + capturedImages.size());
         } else {

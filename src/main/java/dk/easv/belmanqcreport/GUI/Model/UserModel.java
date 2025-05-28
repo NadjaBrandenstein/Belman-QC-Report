@@ -62,9 +62,7 @@ public class UserModel {
     }
 
     public ObservableList<OrderItem> getLog () throws Exception {
-        //List<Log> logs = logManager.getLogByOrderItem();
         lstLog.clear();
-        //lstLog.addAll(log);
         return lstLog;
     }
 

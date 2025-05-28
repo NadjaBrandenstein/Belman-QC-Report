@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class PDFGeneratorImp implements PDFGenerator {
+public class PDFGeneratorImp implements IPDFGenerator {
     private float pageWidth;
     private float pageHeight;
     private PathGraphics contentStream;

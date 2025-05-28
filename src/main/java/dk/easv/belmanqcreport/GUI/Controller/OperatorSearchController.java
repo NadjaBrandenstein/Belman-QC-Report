@@ -78,21 +78,19 @@ public class OperatorSearchController implements Initializable {
 
         try {
             if (orderModel.doesOrderExist(inputOrderNumber)) {
-                if (stage == null) {
-                    stage = (Stage) btnSearch.getScene().getWindow();
-                }
-
                 FXMLLoader loader = FXMLNavigator.getInstance().navigateTo(stage, "dk/easv/belmanqcreport/FXML/OperatorMain.fxml");
 
                 if (loader != null) {
                     OperatorMainController controller = loader.getController();
                     controller.setFirstNameAndLastName(this.lblEmployee.getText());
                     controller.setStage(this.stage);
-                    controller.setOrderNumber(inputOrderNumber); // <-- Send order number
+                    controller.setOrderNumber(inputOrderNumber);
                 }
 
             } else {
-                System.out.println("Order not found.");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Order Not Found");
+                alert.setContentText("Please enter a valid order number.");
             }
         } catch (Exception e) {
             e.printStackTrace();

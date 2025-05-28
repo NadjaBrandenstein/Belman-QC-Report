@@ -96,22 +96,6 @@ public class CameraHandling {
         }
     }
 
-    /*public void cleanup() {
-        if(timer != null) {
-            timer.cancel();
-        }
-        if(capture != null && capture.isOpened()) {
-            capture.release();
-        }
-    }*/
-
-
-    /*public Image getCurrentFrame() {
-        if(frame != null && !frame.empty()) {
-            return mat2Image(frame);
-        }
-        return null;
-    }*/
 
     public MyImage captureImage(String outputPath) {
         if(frame != null && !frame.empty()) {
@@ -120,7 +104,6 @@ public class CameraHandling {
 
             File dir = new File(outputPath);
             dir.mkdirs();
-            //Imgcodecs.imwrite(fullPath, frame);
             boolean success = Imgcodecs.imwrite(fullPath, frame);
 
             return new MyImage(new File(fullPath));
